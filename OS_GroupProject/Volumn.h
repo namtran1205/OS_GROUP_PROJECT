@@ -15,6 +15,7 @@ private:
 	uint8_t SectorPerCluster;
 	uint16_t SectorPerBootsector;
 	uint32_t SectorVolumn;
+    uint16_t BytePerSector;
 public:
 		void ReadFatTable(std::ifstream);
         void SetNumberOfFat(uint8_t num) {
