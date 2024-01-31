@@ -4,10 +4,10 @@
 #include <string>
 #include <chrono>
 #include <sstream>
+#include<fstream>
 
 
-
-class Volumn
+class Volume
 {
 private:
 	uint8_t numberOfFat;
@@ -17,7 +17,21 @@ private:
 	uint32_t SectorVolumn;
 public:
 		void ReadFatTable(std::ifstream);
-		
+        void SetNumberOfFat(uint8_t num) {
+            numberOfFat = num;
+        }
+
+        void SetSectorPerCluster(uint8_t sector) {
+            SectorPerCluster = sector;
+        }
+
+        void SetSectorPerBootSector(uint16_t sector) {
+            SectorPerBootsector = sector;
+        }
+
+        void SetSectorVolume(uint32_t sector) {
+            SectorVolumn = sector;
+        }
 
 	 
 
