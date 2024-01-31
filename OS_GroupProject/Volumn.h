@@ -32,6 +32,8 @@ public:
         void SetSectorVolume(uint32_t sector) {
             SectorVolumn = sector;
         }
+        std::vector<uint32_t> GetFatTable();
+
 
 	 
 
