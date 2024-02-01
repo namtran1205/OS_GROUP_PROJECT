@@ -23,7 +23,7 @@ private:
 public:
     Volume();
     std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
-		void ReadFatTable(std::ifstream);
+		void ReadFatTable(const std::wstring& drivePath);
         void ReadVolume(const std::wstring& drivePath);
         void ShowBootSector()
         {
