@@ -71,7 +71,12 @@ void Volume::ReadFatTable(std::ifstream in)
 void Volume::ReadVolume(const std::wstring& drivePath)
 {
     std::vector<BYTE> bootSector = ReadSector(drivePath.c_str(), 0);
-    int v = Convert2LitleEndian(bootSector.begin() + 1, 3);
+    this->numberOfFat = Convert2LitleEndian(bootSector.begin() + 0x10, 1);
+    //this->SectorPerFat = Convert2LitleEndian(bootSector.begin() + 0x24, 4);
+    this->SectorPerCluster = Convert2LitleEndian(bootSector.begin() + 0xD, 1);
+    this->SectorPerBootsector = Convert2LitleEndian(bootSector.begin() + 0xE, 2);
+    this->SectorVolumn = Convert2LitleEndian(bootSector.begin() + 0x20, 4);
+    this->BytePerSector = Convert2LitleEndian(bootSector.begin() + 0xB, 2);
 }
 
 std::vector<uint32_t> Volume::GetFatTable()
