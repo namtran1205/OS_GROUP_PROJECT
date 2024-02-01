@@ -1,11 +1,6 @@
 ﻿#include "Volumn.h"
 
-uint32_t ConvertEndian(uint32_t bigEndianValue) {
-    return ((bigEndianValue & 0xFF) << 24) |
-        (((bigEndianValue >> 8) & 0xFF) << 16) |
-        (((bigEndianValue >> 16) & 0xFF) << 8) |
-        ((bigEndianValue >> 24) & 0xFF);
-}
+
 
 uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes)
 {
@@ -63,6 +58,12 @@ void Volume::ReadFatTable(const std::wstring& drivePath)
     int FatSize = numberOfFat * SectorPerFat;
     int ReadPoint = BytePerSector * SectorPerBootsector;
     std::vector<BYTE> FatSector = ReadSector(drivePath.c_str(), ReadPoint, FatSize);
+    for (int i = 0; i < FatSize; i++)
+    {
+        uint32_t res = Convert2LitleEndian(FatSector.begin() + 4 * i, 4);
+        fatTable.push_back(res);
+    }
+
 
 }
 
@@ -75,6 +76,7 @@ void Volume::ReadVolume(const std::wstring& drivePath)
     this->SectorPerBootsector = Convert2LitleEndian(bootSector.begin() + 0xE, 2);
     this->SectorVolume = Convert2LitleEndian(bootSector.begin() + 0x20, 4);
     this->BytePerSector = Convert2LitleEndian(bootSector.begin() + 0xB, 2);
+    ReadFatTable(drivePath);
 }
 
 std::vector<uint32_t> Volume::GetFatTable()
