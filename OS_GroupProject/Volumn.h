@@ -48,5 +48,5 @@ public:
 
 };
 
-std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint);
+
 
