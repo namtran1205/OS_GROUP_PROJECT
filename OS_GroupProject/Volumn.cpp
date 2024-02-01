@@ -63,6 +63,7 @@ void Volume::ReadFatTable(const std::wstring& drivePath)
     int FatSize = numberOfFat * SectorPerFat;
     int ReadPoint = BytePerSector * SectorPerBootsector;
     std::vector<BYTE> FatSector = ReadSector(drivePath.c_str(), ReadPoint, FatSize);
+
 }
 
 void Volume::ReadVolume(const std::wstring& drivePath)
