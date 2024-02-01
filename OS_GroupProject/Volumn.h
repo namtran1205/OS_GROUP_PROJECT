@@ -4,8 +4,10 @@
 #include <string>
 #include <chrono>
 #include <sstream>
-#include<fstream>
+#include <fstream>
+#include <Windows.h>
 
+typedef std::vector<BYTE>::iterator byteArrayPointer;
 
 class Volume
 {
@@ -19,7 +21,7 @@ private:
     uint16_t BytePerSector;
 public:
 		void ReadFatTable(std::ifstream);
-        void ReadVolume(std::ifstream);
+        void ReadVolume(const std::wstring& drivePath);
         void SetNumberOfFat(uint8_t num) {
             numberOfFat = num;
         }
@@ -43,4 +45,6 @@ public:
 	 
 
 };
+
+std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint);
 
