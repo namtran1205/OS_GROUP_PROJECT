@@ -9,6 +9,7 @@
 
 typedef std::vector<BYTE>::iterator byteArrayPointer;
 
+
 class Volume
 {
 private:
