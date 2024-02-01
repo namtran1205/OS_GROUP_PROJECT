@@ -4,10 +4,18 @@
 #include <iostream>
 #include "Volumn.h"
 #include "Entry.h"
+
 int main()
 {
     
-    
+    Volume a;
+    a.ReadVolume(L"\\\\.\\E:");
+    a.ShowBootSector();
+    std::vector<uint32_t> fatTable = a.GetFatTable();
+    for (int i = 0; i < 5; i++)
+    {
+        std::cout << fatTable[i] << "   ";
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

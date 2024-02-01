@@ -13,19 +13,30 @@ typedef std::vector<BYTE>::iterator byteArrayPointer;
 class Volume
 {
 private:
-    LPCWSTR drive;
 	uint8_t numberOfFat;
 	std::vector<uint32_t> fatTable;
-    uint8_t SectorPerFat;
+    uint32_t SectorPerFat;
 	uint8_t SectorPerCluster;
 	uint16_t SectorPerBootsector;
-	uint32_t SectorVolumn;
+	uint32_t SectorVolume;
     uint16_t BytePerSector;
 public:
     Volume();
-    static std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
-		void ReadFatTable(std::ifstream);
+    std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
+		void ReadFatTable(const std::wstring& drivePath);
         void ReadVolume(const std::wstring& drivePath);
+        void ShowBootSector()
+        {
+            std::cout << "Nf = " <<(int) numberOfFat << std::endl;
+            std::cout << "Sf = " << SectorPerFat << std::endl;
+            std::cout << "Sc = " <<(int) SectorPerCluster << std::endl;
+            std::cout << "Sb = " << SectorPerBootsector << std::endl;
+            std::cout << "Sv = " << SectorVolume << std::endl;
+            std::cout << "BytePerSector = " << BytePerSector << std::endl;
+
+
+
+        }
         void SetNumberOfFat(uint8_t num) {
             numberOfFat = num;
         }
@@ -39,11 +50,12 @@ public:
         }
 
         void SetSectorVolume(uint32_t sector) {
-            SectorVolumn = sector;
+            SectorVolume = sector;
         }
         std::vector<uint32_t> GetFatTable();
 
-        
+
+	 
 
 	 
 
