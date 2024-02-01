@@ -13,6 +13,7 @@ typedef std::vector<BYTE>::iterator byteArrayPointer;
 class Volume
 {
 private:
+    LPCWSTR drive;
 	uint8_t numberOfFat;
 	std::vector<uint32_t> fatTable;
     uint8_t SectorPerFat;
@@ -22,7 +23,7 @@ private:
     uint16_t BytePerSector;
 public:
     Volume();
-    std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
+    static std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
 		void ReadFatTable(std::ifstream);
         void ReadVolume(const std::wstring& drivePath);
         void SetNumberOfFat(uint8_t num) {
@@ -42,8 +43,7 @@ public:
         }
         std::vector<uint32_t> GetFatTable();
 
-
-	 
+        
 
 	 
 

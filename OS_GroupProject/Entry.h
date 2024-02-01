@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Volumn.h"
 enum Attribute;
 class Entry;
 class RDET;
@@ -25,7 +26,9 @@ class Entry
 {
     public:
         Entry();
-
+        std::string getMainName() { return mainName; }
+        std::string getExtendedName() { return extendedName; }
+        int getSize() { return sizeData; }
 
     private:
         char reserved;
@@ -41,8 +44,10 @@ class Entry
         bool isEmpty;
         bool isLabel;
         bool isDeleted;
+        std::vector<uint8_t> data;
         std::vector<Entry> ListSubEntry;
         uint16_t StartCluster;
+
 
 };
 
@@ -53,10 +58,13 @@ public:
     RDET(const std::vector<char> &data);
     std::vector<Entry> getActiveEntry;
     Entry findEntry(const std::string& name);
-
+    std::vector<std::string> Parse_path(std::string path);
+    std::string getString(std::vector<BYTE>, int, int);
+    std::string ReadSector_Data(const std::wstring& drivePath, int);
+    void getData(const std::wstring& drivePath, std::string);
 private:
     std::vector<Entry> entries;
-
+   
 };
 
 
@@ -84,6 +92,7 @@ int ReadSector(LPCWSTR  drive, int readPoint, BYTE sector[512])
         return 1;
     }
 
+
     SetFilePointer(device, readPoint, NULL, FILE_BEGIN);//Set a Point to Read
 
     if (!ReadFile(device, sector, 512, &bytesRead, NULL))
@@ -95,10 +104,10 @@ int ReadSector(LPCWSTR  drive, int readPoint, BYTE sector[512])
         printf("Success!\n");
     }
 }
-int main(int argc, char** argv)
-{
-
-    BYTE sector[512];
-    ReadSector(L"\\\\.\\C:", 0, sector);
-    return 0;
-}
+//int main(int argc, char** argv)
+//{
+//
+//    BYTE sector[512];
+//    ReadSector(L"\\\\.\\C:", 0, sector);
+//    return 0;
+//}

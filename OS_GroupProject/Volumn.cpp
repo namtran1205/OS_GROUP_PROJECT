@@ -40,7 +40,7 @@ std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int readPoint, int sector) 
     // Set the file pointer to the specified read point
     SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
 
-    BYTE* tmpSector = new BYTE[BytePerSector*sector];
+    BYTE* tmpSector = new BYTE[BytePerSector * sector];
     std::vector<BYTE> resultSector(1, 0);
     // Read 512 bytes from the specified position
     if (ReadFile(device, tmpSector, BytePerSector * sector, &bytesRead, NULL))
@@ -83,4 +83,6 @@ std::vector<uint32_t> Volume::GetFatTable()
     return fatTable;
 
 }
+
+
 
