@@ -10,6 +10,7 @@ uint32_t ConvertEndian(uint32_t bigEndianValue) {
 uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes)
 {
     if (numBytes <= 0 || numBytes > 8) return 0;
+
     uint64_t res = 0;
     for (int i = 0; i < numBytes; i++)
     {
@@ -57,29 +58,21 @@ std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int readPoint, int sector) 
     return resultSector;
 }
 
-void Volume::ReadFatTable(std::ifstream in)
+void Volume::ReadFatTable(const std::wstring& drivePath)
 {
-    int fatSize = (SectorPerFat/SectorPerCluster) * numberOfFat ;
-
-    // Di chuyển đến vị trí của bảng FAT 
-    in.seekg(SectorPerBootsector * BytePerSector, std::ios::beg);
-
-    // Đọc từng entry trong bảng FAT và chuyển đổi sang Little Endian 
-    for (int i = 0; i < fatSize; ++i) {
-        uint32_t fatEntry;
-        in.read(reinterpret_cast<char*>(&fatEntry), sizeof(uint32_t));
-        fatTable.push_back(ConvertEndian(fatEntry));
-    }
+    int FatSize = numberOfFat * SectorPerFat;
+    int ReadPoint = BytePerSector * SectorPerBootsector;
+    std::vector<BYTE> FatSector = ReadSector(drivePath.c_str(), ReadPoint, FatSize);
 }
 
 void Volume::ReadVolume(const std::wstring& drivePath)
 {
-    std::vector<BYTE> bootSector = ReadSector(drivePath.c_str(), 0);
-    this->numberOfFat = Convert2LitleEndian(bootSector.begin() + 0x10, 1);
-    //this->SectorPerFat = Convert2LitleEndian(bootSector.begin() + 0x24, 4);
-    this->SectorPerCluster = Convert2LitleEndian(bootSector.begin() + 0xD, 1);
+    std::vector<BYTE> bootSector = ReadSector(drivePath.c_str(), 0,1);
+    this->numberOfFat = (uint8_t)(*(bootSector.begin() + 0x10));
+    this->SectorPerFat = Convert2LitleEndian(bootSector.begin() + 0x24, 4);
+    this->SectorPerCluster =(uint8_t)(*(bootSector.begin() + 0xD));
     this->SectorPerBootsector = Convert2LitleEndian(bootSector.begin() + 0xE, 2);
-    this->SectorVolumn = Convert2LitleEndian(bootSector.begin() + 0x20, 4);
+    this->SectorVolume = Convert2LitleEndian(bootSector.begin() + 0x20, 4);
     this->BytePerSector = Convert2LitleEndian(bootSector.begin() + 0xB, 2);
 }
 

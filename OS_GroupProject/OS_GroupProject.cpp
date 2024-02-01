@@ -4,10 +4,13 @@
 #include <iostream>
 #include "Volumn.h"
 #include "Entry.h"
+
 int main()
 {
     
-    
+    Volume a;
+    a.ReadVolume(L"\\\\.\\E:");
+    a.ShowBootSector();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
