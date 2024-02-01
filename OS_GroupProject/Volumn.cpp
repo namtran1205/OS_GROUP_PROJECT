@@ -13,7 +13,7 @@ uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes)
     uint64_t res = 0;
     for (int i = 0; i < numBytes; i++)
     {
-        res |= (*offset)<<i;
+        res |= (*offset) << (i * 8);
         offset++;
     }
     return res;
