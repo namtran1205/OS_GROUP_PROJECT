@@ -21,6 +21,7 @@ private:
 	uint32_t SectorVolumn;
     uint16_t BytePerSector;
 public:
+    std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector);
 		void ReadFatTable(std::ifstream);
         void ReadVolume(const std::wstring& drivePath);
         void SetNumberOfFat(uint8_t num) {

@@ -19,7 +19,8 @@ uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes)
     return res;
 }
 
-std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint) {
+std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int readPoint, int sector) {
+    // int sector: Number of sector you want read
     int retCode = 0;
     DWORD bytesRead;
     HANDLE device = NULL;
@@ -36,13 +37,13 @@ std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint) {
     // Set the file pointer to the specified read point
     SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
 
-    BYTE* tmpSector = new BYTE[512];
+    BYTE* tmpSector = new BYTE[BytePerSector*sector];
     std::vector<BYTE> resultSector(1, 0);
     // Read 512 bytes from the specified position
-    if (ReadFile(device, tmpSector, 512, &bytesRead, NULL))
+    if (ReadFile(device, tmpSector, BytePerSector * sector, &bytesRead, NULL))
     {
-        resultSector.resize(512, 0);
-        for (int i = 0; i < 512; i++) resultSector[i] = tmpSector[i];
+        resultSector.resize(BytePerSector * sector, 0);
+        for (int i = 0; i < BytePerSector * sector; i++) resultSector[i] = tmpSector[i];
     }
     delete[] tmpSector;
     tmpSector = NULL;
@@ -70,7 +71,7 @@ void Volume::ReadFatTable(std::ifstream in)
 
 void Volume::ReadVolume(const std::wstring& drivePath)
 {
-    std::vector<BYTE> bootSector = ReadSector(drivePath.c_str(), 0);
+    std::vector<BYTE> bootSector = ReadSector(drivePath.c_str(), 0,1);
     int v = Convert2LitleEndian(bootSector.begin() + 1, 3);
 }
 
