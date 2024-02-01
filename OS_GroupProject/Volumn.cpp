@@ -18,9 +18,12 @@ uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes)
     }
     return res;
 }
-
+Volume::Volume()
+{
+    BytePerSector = 512;
+}
 std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int readPoint, int sector) {
-    // int sector: Number of sector you want read
+    
     int retCode = 0;
     DWORD bytesRead;
     HANDLE device = NULL;
