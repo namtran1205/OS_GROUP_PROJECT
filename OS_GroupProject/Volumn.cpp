@@ -7,9 +7,9 @@ uint32_t ConvertEndian(uint32_t bigEndianValue) {
 }
 void Volume::ReadFatTable(std::ifstream in)
 {
-    int fatSize = SectorPerBootsector * numberOfFat;
+    int fatSize = (SectorPerFat/SectorPerCluster) * numberOfFat ;
 
-    // Di chuyển đến vị trí của bảng FAT trong file
+    // Di chuyển đến vị trí của bảng FAT 
     in.seekg(SectorPerBootsector * BytePerSector, std::ios::beg);
 
     // Đọc từng entry trong bảng FAT và chuyển đổi sang Little Endian 

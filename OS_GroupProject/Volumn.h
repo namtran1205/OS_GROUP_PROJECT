@@ -12,12 +12,14 @@ class Volume
 private:
 	uint8_t numberOfFat;
 	std::vector<uint32_t> fatTable;
+    uint8_t SectorPerFat;
 	uint8_t SectorPerCluster;
 	uint16_t SectorPerBootsector;
 	uint32_t SectorVolumn;
     uint16_t BytePerSector;
 public:
 		void ReadFatTable(std::ifstream);
+        void ReadVolume(std::ifstream);
         void SetNumberOfFat(uint8_t num) {
             numberOfFat = num;
         }
