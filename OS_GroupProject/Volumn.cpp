@@ -85,5 +85,11 @@ std::vector<uint32_t> Volume::GetFatTable()
 
 }
 
+int Volume::ClusterToSector(uint16_t k)
+{
+    int i = SectorPerBootsector + SectorPerFat * numberOfFat + (k - 2) * SectorPerCluster;
+    return i;
+}
+
 
 

@@ -23,11 +23,11 @@ std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
     return res;
 }
 
-std::string RDET::ReadSector_Data(Volume a, int id)
+std::string RDET::ReadSector_Data(Volume a, int startOffset, int sector)
 {
     std::string res;
-    std::vector<BYTE> data = a.ReadSector(a.Drive, id * 512, 1);
-    res = getString(data, 0x00, 512);
+    std::vector<BYTE> data = a.ReadSector(a.Drive, startOffset, sector);
+    res = getString(data, 0x00, a.GetBytePerSector() * sector);
     return res;
 }
 void RDET::getData(Volume a, std::string st)
@@ -36,24 +36,30 @@ void RDET::getData(Volume a, std::string st)
         st[i] = toupper(st[i]);
     for (int i = 0; i < entries.size(); i++)
     {
-        std::string s = entries[i].getMainName() + '.' + entries[i].getExtendedName();
-        if (st == s)
+        if (entries[i].getExtendedName() == "txt")
         {
-            int size = entries[i].getSize();
-            std::vector<BYTE> data;
-            int id = i;
-            while (size > 0)
+            std::string s = entries[i].getMainName() + '.' + entries[i].getExtendedName();
+            if (st == s && !entries[i].is_Folder())
             {
-                std::cout << ReadSector_Data(a, id);
-                size -= 512;
-                id++;
+                uint16_t StartCluster = entries[i].GetStartCluster();
+                std::vector<uint32_t> fatTable = a.GetFatTable();
+
+                do
+                {
+                    int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
+                    std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
+                    StartCluster = fatTable[StartCluster];
+                } while (fatTable[StartCluster] != 0xFFFFFFF); // should check situation BAD???
+
+
             }
-            std::cout << std::endl;
+            else
+            {
+
+                std::cout << "NOT FOUND" << std::endl;
+            }
         }
-        else
-        {
-            std::cout << "NOT FOUND" << std::endl;
-        }
+        else std::cout << "Please use another app to open it\n";
     }
 }
 

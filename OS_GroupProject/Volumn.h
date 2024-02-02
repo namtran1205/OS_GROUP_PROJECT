@@ -25,6 +25,14 @@ public:
     LPCWSTR Drive;
     std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
 		void ReadFatTable(const std::wstring& drivePath);
+        uint16_t GetBytePerSector()
+        {
+            return BytePerSector;
+        }
+        uint8_t GetSectorPerCluster()
+        {
+            return SectorPerCluster;
+        }
         void ReadVolume(const std::wstring& drivePath);
         void ShowBootSector()
         {
@@ -55,7 +63,7 @@ public:
         }
         std::vector<uint32_t> GetFatTable();
 
-
+        int ClusterToSector(uint16_t);
 	 
 
 	 
