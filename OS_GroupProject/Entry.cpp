@@ -6,10 +6,7 @@ Entry::Entry()
     
 }
 
-Entry RDET::findEntry(const std::string& name)
-{
-    return Entry();
-}
+
 
 
 
@@ -34,11 +31,18 @@ void RDET::getData(Volume a, std::string st)
 {
     for (int i = 0; i < st.length(); i++)
         st[i] = toupper(st[i]);
-    for (int i = 0; i < entries.size(); i++)
+    Entry st_entry;
+    if (!findEntry(st, st_entry))
     {
-        if (entries[i].is_Folder())
+        std::cout << "NOT FOUND\n";
+        return;
+
+    }
+    if (st_entry.is_Folder())
+    {
+        if (st_entry.getMainName() == st)
         {
-            std::vector<Entry> sub = entries[i].getListSubEntry();
+            std::vector<Entry> sub = st_entry.getListSubEntry();
             for (int i = 0; i < sub.size(); i++)
             {
                 std::cout << sub[i].getMainName();
@@ -47,29 +51,31 @@ void RDET::getData(Volume a, std::string st)
                 std::cout << sub[i].getExtendedName() << std::endl;
             }
             return;
+
         }
-        if (entries[i].getExtendedName() == "txt")
+    }
+    else
+    {
+        if (st_entry.getExtendedName() == "txt")
         {
-            std::string s = entries[i].getMainName() + '.' + entries[i].getExtendedName();
+            std::string s = st_entry.getMainName() + '.' + st_entry.getExtendedName();
             if (st == s)
             {
-                uint16_t StartCluster = entries[i].GetStartCluster();
+                uint16_t StartCluster = st_entry.GetStartCluster();
                 std::vector<uint32_t> fatTable = a.GetFatTable();
 
-                while (StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7) 
+                while (StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
                 {
                     int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
                     std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
                     StartCluster = fatTable[StartCluster];
                 }  // should check situation BAD???
             }
-            else
-            {
-
-                std::cout << "NOT FOUND" << std::endl;
-            }
+          
         }
         else std::cout << "Please use another app to open it\n";
+
     }
+   
 }
 

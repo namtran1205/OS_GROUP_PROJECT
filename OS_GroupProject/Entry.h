@@ -52,6 +52,7 @@ class Entry
         bool isEmpty;
         bool isLabel;
         bool isDeleted;
+        bool findEntry(const std::string& name, Entry&);
         std::vector<Entry> ListSubEntry;
         uint16_t StartCluster;
 
@@ -64,7 +65,7 @@ class RDET
 public:
     RDET(const std::vector<char> &data);
     std::vector<Entry> getActiveEntry;
-    Entry findEntry(const std::string& name);
+    bool findEntry(const std::string& name,Entry&);
     //std::vector<std::string> Parse_path(std::string path);
     std::string getString(std::vector<BYTE>, int, int);
     std::string ReadSector_Data(Volume , int,int);
