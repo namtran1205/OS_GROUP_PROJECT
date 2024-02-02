@@ -36,12 +36,22 @@ void RDET::getData(Volume a, std::string st)
         st[i] = toupper(st[i]);
     for (int i = 0; i < entries.size(); i++)
     {
+        if (entries[i].is_Folder())
+        {
+            std::vector<Entry> sub = entries[i].getListSubEntry();
+            for (int i = 0; i < sub.size(); i++)
+            {
+                std::cout << sub[i].getMainName();
+                if (!sub[i].is_Folder())
+                    std::cout << '.';
+                std::cout << sub[i].getExtendedName() << std::endl;
+            }
+            return;
+        }
         if (entries[i].getExtendedName() == "txt")
         {
             std::string s = entries[i].getMainName() + '.' + entries[i].getExtendedName();
-            /*if (entries[i].is_Folder())
-                for (int i = 0; entries[)*/
-            if (st == s )
+            if (st == s)
             {
                 uint16_t StartCluster = entries[i].GetStartCluster();
                 std::vector<uint32_t> fatTable = a.GetFatTable();
@@ -52,8 +62,6 @@ void RDET::getData(Volume a, std::string st)
                     std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
                     StartCluster = fatTable[StartCluster];
                 }  // should check situation BAD???
-
-
             }
             else
             {

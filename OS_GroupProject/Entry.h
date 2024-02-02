@@ -34,7 +34,10 @@ class Entry
         {
             return StartCluster;
         }
-        
+        std::vector<Entry> getListSubEntry()
+        {
+            return ListSubEntry;
+        }
     private:
         char reserved;
         std::string mainName;
