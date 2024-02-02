@@ -57,10 +57,10 @@ public:
     RDET(const std::vector<char> &data);
     std::vector<Entry> getActiveEntry;
     Entry findEntry(const std::string& name);
-    std::vector<std::string> Parse_path(std::string path);
+    //std::vector<std::string> Parse_path(std::string path);
     std::string getString(std::vector<BYTE>, int, int);
-    std::string ReadSector_Data(const std::wstring& drivePath, int);
-    void getData(const std::wstring& drivePath, std::string);
+    std::string ReadSector_Data(Volume , int);
+    void getData(Volume, std::string);
 private:
     std::vector<Entry> entries;
    

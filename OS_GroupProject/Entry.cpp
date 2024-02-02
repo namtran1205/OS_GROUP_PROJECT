@@ -11,21 +11,7 @@ Entry RDET::findEntry(const std::string& name)
     return Entry();
 }
 
-std::vector<std::string> RDET::Parse_path(std::string path)
-{
-    std::vector<std::string> direct;
-    std::string dir = "";
-    for (char ch : dir)
-        if (ch == '\\' || ch == '/')
-        {
-            direct.push_back(dir);
-            dir = "";
-        }
-        else dir += ch;
-    if (dir != "")
-        direct.push_back(dir);
-    return direct;
-}
+
 
 
 std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
@@ -37,14 +23,14 @@ std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
     return res;
 }
 
-std::string RDET::ReadSector_Data(const std::wstring& drivePath, int id)
+std::string RDET::ReadSector_Data(Volume a, int id)
 {
     std::string res;
-    std::vector<BYTE> data = Volume::ReadSector(drivePath.c_str(), id * 512, 1);
+    std::vector<BYTE> data = a.ReadSector(a.Drive, id * 512, 1);
     res = getString(data, 0x00, 512);
     return res;
 }
-void RDET::getData(const std::wstring& drivePath, std::string st)
+void RDET::getData(Volume a, std::string st)
 {
     for (int i = 0; i < st.length(); i++)
         st[i] = toupper(st[i]);
@@ -58,7 +44,7 @@ void RDET::getData(const std::wstring& drivePath, std::string st)
             int id = i;
             while (size > 0)
             {
-                std::cout << ReadSector_Data(drivePath, id);
+                std::cout << ReadSector_Data(a, id);
                 size -= 512;
                 id++;
             }
