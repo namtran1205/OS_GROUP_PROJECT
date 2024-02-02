@@ -6,10 +6,37 @@ Entry::Entry()
     
 }
 
+bool Entry::findEntry(int id, Entry& res)
+{
+    if (ID == id)
+    {
+        res = *this;
+        return true;
+    }
+    for (int i = 0; i < ListSubEntry.size(); i++)
+    {
+        if(ListSubEntry[i].findEntry(id,res)) return true;
+    }
+    return false;
+    
+}
+
+int Entry::GetID()
+{
+    return ID;
+}
 
 
 
 
+
+
+bool RDET::findEntry(int id, Entry& res)
+{
+    for (int i = 0; i < entries.size(); i++)
+        if (entries[i].findEntry(id, res)) return true;
+    return false;
+}
 
 std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
 {

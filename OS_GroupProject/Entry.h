@@ -38,6 +38,9 @@ class Entry
         {
             return ListSubEntry;
         }
+        bool findEntry(int, Entry&);
+        int GetID();
+
     private:
         char reserved;
         std::string mainName;
@@ -47,15 +50,16 @@ class Entry
         std::chrono::system_clock::time_point LastAccess;
         std::chrono::system_clock::time_point DatedUpdated;
         int sizeData;
+        int ID; // create ID for entry
 	    bool isFolder;
         bool isSubEntry;
         bool isEmpty;
         bool isLabel;
         bool isDeleted;
-        bool findEntry(const std::string& name, Entry&);
+       
         std::vector<Entry> ListSubEntry;
         uint16_t StartCluster;
-
+      
 
 };
 
@@ -65,7 +69,7 @@ class RDET
 public:
     RDET(const std::vector<char> &data);
     std::vector<Entry> getActiveEntry;
-    bool findEntry(const std::string& name,Entry&);
+    bool findEntry(int,Entry&);
     //std::vector<std::string> Parse_path(std::string path);
     std::string getString(std::vector<BYTE>, int, int);
     std::string ReadSector_Data(Volume , int,int);
