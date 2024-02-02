@@ -29,7 +29,12 @@ class Entry
         std::string getMainName() { return mainName; }
         std::string getExtendedName() { return extendedName; }
         int getSize() { return sizeData; }
-        bool isFolder() { return isFolder; }
+        bool is_Folder() { return isFolder; }
+        uint16_t GetStartCluster()
+        {
+            return StartCluster;
+        }
+        
     private:
         char reserved;
         std::string mainName;

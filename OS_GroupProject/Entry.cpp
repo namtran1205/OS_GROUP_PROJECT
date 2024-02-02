@@ -39,17 +39,19 @@ void RDET::getData(Volume a, std::string st)
         if (entries[i].getExtendedName() == "txt")
         {
             std::string s = entries[i].getMainName() + '.' + entries[i].getExtendedName();
-            if (st == s && !entries[i].is_Folder())
+            /*if (entries[i].is_Folder())
+                for (int i = 0; entries[)*/
+            if (st == s )
             {
                 uint16_t StartCluster = entries[i].GetStartCluster();
                 std::vector<uint32_t> fatTable = a.GetFatTable();
 
-                do
+                while (StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7) 
                 {
                     int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
                     std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
                     StartCluster = fatTable[StartCluster];
-                } while (fatTable[StartCluster] != 0xFFFFFFF); // should check situation BAD???
+                }  // should check situation BAD???
 
 
             }
