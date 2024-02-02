@@ -54,12 +54,12 @@ std::string RDET::ReadSector_Data(Volume a, int startOffset, int sector)
     res = getString(data, 0x00, a.GetBytePerSector() * sector);
     return res;
 }
-void RDET::getData(Volume a, std::string st)
+
+void RDET::AccessEntry(Volume a, int id)
 {
-    for (int i = 0; i < st.length(); i++)
-        st[i] = toupper(st[i]);
+    
     Entry st_entry;
-    if (!findEntry(st, st_entry))
+    if (!findEntry(id, st_entry))
     {
         std::cout << "NOT FOUND\n";
         return;
@@ -67,8 +67,6 @@ void RDET::getData(Volume a, std::string st)
     }
     if (st_entry.is_Folder())
     {
-        if (st_entry.getMainName() == st)
-        {
             std::vector<Entry> sub = st_entry.getListSubEntry();
             for (int i = 0; i < sub.size(); i++)
             {
@@ -76,33 +74,27 @@ void RDET::getData(Volume a, std::string st)
                 if (!sub[i].is_Folder())
                     std::cout << '.';
                 std::cout << sub[i].getExtendedName() << std::endl;
-            }
+            
             return;
 
         }
     }
-    else
-    {
-        if (st_entry.getExtendedName() == "txt")
+    else if (st_entry.getExtendedName() == "txt")
         {
-            std::string s = st_entry.getMainName() + '.' + st_entry.getExtendedName();
-            if (st == s)
-            {
-                uint16_t StartCluster = st_entry.GetStartCluster();
-                std::vector<uint32_t> fatTable = a.GetFatTable();
+            uint16_t StartCluster = st_entry.GetStartCluster();
+            std::vector<uint32_t> fatTable = a.GetFatTable();
 
-                while (StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
-                {
-                    int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
-                    std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
-                    StartCluster = fatTable[StartCluster];
-                }  // should check situation BAD???
-            }
-          
+            while (StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
+            {
+                int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
+                std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
+                StartCluster = fatTable[StartCluster];
+            }  // should check situation BAD???
         }
         else std::cout << "Please use another app to open it\n";
+        
 
-    }
+    
    
 }
 

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "Volumn.h"
+#include <wincrypt.h>
 enum Attribute;
 class Entry;
 class RDET;
@@ -73,7 +74,7 @@ public:
     //std::vector<std::string> Parse_path(std::string path);
     std::string getString(std::vector<BYTE>, int, int);
     std::string ReadSector_Data(Volume , int,int);
-    void getData(Volume, std::string);
+    void AccessEntry(Volume, int);
 private:
     std::vector<Entry> entries;
    
