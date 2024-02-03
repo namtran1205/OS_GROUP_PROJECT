@@ -20,7 +20,7 @@ private:
 	uint16_t SectorPerBootsector;
 	uint32_t SectorVolume;
     uint16_t BytePerSector;
-
+    uint32_t StartClusterOfRDET;
 public:
     Volume();
     LPCWSTR Drive;
