@@ -76,6 +76,7 @@ void Volume::ReadVolume(const std::wstring& drivePath)
     this->SectorPerBootsector = Convert2LitleEndian(bootSector.begin() + 0xE, 2);
     this->SectorVolume = Convert2LitleEndian(bootSector.begin() + 0x20, 4);
     this->BytePerSector = Convert2LitleEndian(bootSector.begin() + 0xB, 2);
+    this->StartClusterOfRDET = Convert2LitleEndian(bootSector.begin() + 0x2C, 4);
     ReadFatTable(drivePath);
 }
 

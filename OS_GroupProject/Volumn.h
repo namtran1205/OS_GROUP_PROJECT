@@ -20,6 +20,7 @@ private:
 	uint16_t SectorPerBootsector;
 	uint32_t SectorVolume;
     uint16_t BytePerSector;
+
 public:
     Volume();
     LPCWSTR Drive;
