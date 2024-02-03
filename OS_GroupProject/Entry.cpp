@@ -83,12 +83,14 @@ void RDET::AccessEntry(Volume a, int id)
         {
             uint16_t StartCluster = st_entry.GetStartCluster();
             std::vector<uint32_t> fatTable = a.GetFatTable();
-
-            while (StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
+            int size = st_entry.getSize();
+            while (size > 0 && StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
             {
                 int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
                 std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster());
+                size -= a.GetBytePerSector() * a.GetSectorPerCluster();
                 StartCluster = fatTable[StartCluster];
+
             }  // should check situation BAD???
         }
         else std::cout << "Please use another app to open it\n";
