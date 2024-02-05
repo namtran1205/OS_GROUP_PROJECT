@@ -14,12 +14,12 @@ class RDET;
 
 enum Attribute
 {
-    READ_ONLY,
-    HIDDEN,
-    SYSTEM,
-    VOLLABEL,
-    DIRECTORY,
-    ARCHIVE,
+    READ_ONLY = 0x01,
+    HIDDEN = 0x02,
+    SYSTEM = 0x04,
+    VOLLABEL = 0x08,
+    DIRECTORY = 0x10,
+    ARCHIVE = 0x20,
 };
 
 
@@ -41,7 +41,7 @@ class Entry
         }
         bool findEntry(int, Entry&);
         int GetID();
-
+        
     private:
         char reserved;
         std::string mainName;

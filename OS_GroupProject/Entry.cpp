@@ -42,7 +42,7 @@ std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
 {
     std::string res;
     for (int i = offset; i < offset + num; i++)
-        if (data[i] != 0x00 && data[i] != 0xFF)
+        if (data[i] > 0x00 && data[i] < 0xFF)
             res += static_cast<char>(data[i]);
     return res;
 }
@@ -74,7 +74,7 @@ void RDET::AccessEntry(Volume a, int id)
                 if (!sub[i].is_Folder())
                     std::cout << '.';
                 std::cout << sub[i].getExtendedName() << std::endl;
-            
+ 
             return;
 
         }
