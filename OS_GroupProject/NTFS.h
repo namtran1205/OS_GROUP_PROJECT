@@ -1,30 +1,76 @@
 #pragma once
-#include "vector"
+#include "Volumn.h"
+
 class Record {
 private:
     std::vector<Attribute> listAttribute;
     uint32_t mask;           // 0x00->0x03 address in Record header
     uint32_t firstAttribute; // 0x14->0x15 
 public:
+    void ReadRecord(); // Bo qua 16 record dau tien
 
 };
 
-class NTFSVolumn {
+class NTFSVolume {
 private:
+    std:: wstring driveName;
     uint32_t BytePerSector;    // 0xB 2 byte
     uint32_t SectorPerCluster; // 0xD->0xE
-    int32_t MFTsize;           // 0x40->0x40  the true size is 2^abs(MFTsize)
+    uint32_t MFTsize;           // 0x40->0x40  the true size is 2^abs(MFTsize) -> luu chinh xac roi
     uint64_t SectorVolume;     // 0x28->0x2F
     uint64_t StartMFTCluster;  // 0x30->0x37
     std::vector<Record> ListRecord;
+
+public:
+    NTFSVolume(const std::wstring &drive);
+    void readBootSector(const std::wstring &drive);
 };
 
 class Attribute {
-private:
+protected:
     uint32_t AttributeID;      // 0x0->0x3 
     uint32_t AttributeSize;    // 0x4->0x7
     uint32_t residentFlag;     // 0x8->0x8 
     uint32_t maskFlag;         // 0xC->0xD
+public:
+    virtual void ReadBasicInfo();
+    
+
 
 };
 
+class Standard_Info : public Attribute
+{
+    uint32_t flag; // 0x32 -> 0x35
+public:
+    void ReadBasicInfo();
+     void ReadStandard_info();
+
+
+
+};
+class File_Name : public Attribute 
+{
+    uint32_t LengthOfName; //0x64
+    std::wstring NameOfFile; // 0x66 8 byte
+public:
+    void ReadBasicInfo();
+    void ReadFile_Name();
+
+   
+
+};
+class Data : public Attribute
+{
+    uint32_t type; //0x8 : if value = 0 -> resident
+public:
+    void ReadBasicInfo();
+    void ReadData();
+
+
+};
+
+
+
+
+std::vector<BYTE> ReadData(LPCWSTR drive, int readPoint, int numBytes); 

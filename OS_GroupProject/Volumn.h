@@ -73,3 +73,4 @@ public:
 
 
 
+uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
