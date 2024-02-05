@@ -18,7 +18,7 @@ Volume::Volume()
 {
     BytePerSector = 512;
 }
-std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int readPoint, int sector) {
+std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int64_t readPoint, int sector) {
     
     int retCode = 0;
     DWORD bytesRead;
@@ -56,7 +56,7 @@ std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int readPoint, int sector) 
 void Volume::ReadFatTable(const std::wstring& drivePath)
 {
     int FatSize = numberOfFat * SectorPerFat;
-    int ReadPoint = BytePerSector * SectorPerBootsector;
+    int64_t ReadPoint = BytePerSector * SectorPerBootsector;
     std::vector<BYTE> FatSector = ReadSector(drivePath.c_str(), ReadPoint, FatSize);
     for (int i = 0; i < FatSize; i++)
     {

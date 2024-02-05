@@ -24,7 +24,7 @@ private:
 public:
     Volume();
     LPCWSTR Drive;
-    std::vector<BYTE> ReadSector(LPCWSTR drive, int readPoint, int sector); // int sector: Number of sector you want read
+    std::vector<BYTE> ReadSector(LPCWSTR drive, int64_t readPoint, int sector); // int sector: Number of sector you want read
 		void ReadFatTable(const std::wstring& drivePath);
         uint16_t GetBytePerSector()
         {
@@ -73,3 +73,4 @@ public:
 
 
 
+uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
