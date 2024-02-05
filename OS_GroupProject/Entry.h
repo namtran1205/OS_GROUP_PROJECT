@@ -73,7 +73,7 @@ public:
     bool findEntry(int,Entry&);
     //std::vector<std::string> Parse_path(std::string path);
     std::string getString(std::vector<BYTE>, int, int);
-    std::string ReadSector_Data(Volume , int, int, int);
+    std::string ReadSector_Data(Volume , int64_t, int, int);
     void AccessEntry(Volume, int);
 private:
     std::vector<Entry> entries;

@@ -6,7 +6,9 @@ private:
     std::vector<Attribute> listAttribute;
     uint32_t mask;           // 0x00->0x03 address in Record header
     uint32_t firstAttribute; // 0x14->0x15 
+    int FirstReadPoint;
 public:
+    void SetReadPoint(int);
     void ReadRecord(); // Bo qua 16 record dau tien
 
 };

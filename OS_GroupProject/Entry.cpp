@@ -47,7 +47,7 @@ std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
     return res;
 }
 
-std::string RDET::ReadSector_Data(Volume a, int startOffset, int sector, int size)
+std::string RDET::ReadSector_Data(Volume a, int64_t startOffset, int sector, int size)
 {
     std::string res;
     std::vector<BYTE> data = a.ReadSector(a.Drive, startOffset, size);
@@ -86,7 +86,7 @@ void RDET::AccessEntry(Volume a, int id)
             int size = st_entry.getSize();
             while (size > 0 && StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
             {
-                int startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
+                int64_t startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
                 int num = min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
                 std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster(), num);
                 size -= a.GetBytePerSector() * a.GetSectorPerCluster();
