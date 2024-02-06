@@ -87,7 +87,7 @@ void RDET::AccessEntry(Volume a, int id)
             while (size > 0 && StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
             {
                 int64_t startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
-                int num = std::min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
+                int num = min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
                 std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster(), num);
                 size -= a.GetBytePerSector() * a.GetSectorPerCluster();
                 StartCluster = fatTable[StartCluster];

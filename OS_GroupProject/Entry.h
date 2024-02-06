@@ -3,8 +3,6 @@
 #include <chrono>
 #include <sstream>
 #include <fstream>
-#include <algorithm>
-#include <cmath>
 #include <string>
 #include <vector>
 #include "Volumn.h"
