@@ -78,8 +78,6 @@ class Data : public AttributeNTFS
 public:
     void ReadBasicInfo();
     void ReadData();
-
-
 };
 
 

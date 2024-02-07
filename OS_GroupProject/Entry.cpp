@@ -6,7 +6,7 @@ Entry::Entry()
     
 }
 
-bool Entry::findEntry(int id, Entry& res)
+bool Entry::findEntry(int id, Entry& res) const
 {
     if (ID == id)
     {
@@ -21,7 +21,7 @@ bool Entry::findEntry(int id, Entry& res)
     
 }
 
-int Entry::GetID()
+int Entry::GetID() const
 {
     return ID;
 }
@@ -31,14 +31,14 @@ int Entry::GetID()
 
 
 
-bool RDET::findEntry(int id, Entry& res)
+bool RDET::findEntry(int id, Entry& res) const
 {
     for (int i = 0; i < entries.size(); i++)
         if (entries[i].findEntry(id, res)) return true;
     return false;
 }
 
-std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
+std::string RDET::getString(std::vector<BYTE> data, int offset, int num) const
 {
     std::string res;
     for (int i = offset; i < offset + num; i++)
@@ -47,7 +47,7 @@ std::string RDET::getString(std::vector<BYTE> data, int offset, int num)
     return res;
 }
 
-std::string RDET::ReadSector_Data(Volume a, int64_t startOffset, int sector, int size)
+std::string RDET::ReadSector_Data(Volume a, int64_t startOffset, int sector, int size) const
 {
     std::string res;
     std::vector<BYTE> data = a.ReadSector(a.Drive, startOffset, size);
@@ -87,7 +87,7 @@ void RDET::AccessEntry(Volume a, int id)
             while (size > 0 && StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
             {
                 int64_t startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
-                int num = std::min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
+                int num = min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
                 std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster(), num);
                 size -= a.GetBytePerSector() * a.GetSectorPerCluster();
                 StartCluster = fatTable[StartCluster];
@@ -95,9 +95,5 @@ void RDET::AccessEntry(Volume a, int id)
             }  // should check situation BAD???
         }
         else std::cout << "Please use another app to open it\n";
-        
-
-    
-   
 }
 

@@ -7,7 +7,7 @@ std::vector<BYTE> ReadData(LPCWSTR drive, int readPoint, int numBytes) {
     HANDLE device = NULL;
 
     // Open the specified drive with GENERIC_READ access
-    device = CreateFile(LPCSTR(drive), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE || numBytes <= 0) {
         // Failed to open the drive
@@ -51,3 +51,4 @@ void NTFSVolume::readBootSector(const std::wstring &drive)
     SectorVolume = Convert2LitleEndian(memory.begin() + 0x28, 8);       // 0x28->0x2F
     StartMFTCluster = Convert2LitleEndian(memory.begin() + 0x30, 8);    // 0x30->0x37
 }
+

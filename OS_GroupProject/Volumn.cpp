@@ -1,4 +1,6 @@
 ﻿#include "Volumn.h"
+#include "Entry.h"
+
 
 
 
@@ -18,14 +20,14 @@ Volume::Volume()
 {
     BytePerSector = 512;
 }
-std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int64_t readPoint, int sector) {
+std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const {
     
     int retCode = 0;
     DWORD bytesRead;
     HANDLE device = NULL;
 
     // Open the specified drive with GENERIC_READ access
-    device = CreateFile(LPCSTR(drive), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
         // Failed to open the drive
@@ -80,17 +82,40 @@ void Volume::ReadVolume(const std::wstring& drivePath)
     ReadFatTable(drivePath);
 }
 
-std::vector<uint32_t> Volume::GetFatTable()
+std::vector<uint32_t> Volume::GetFatTable() const
 {
     return fatTable;
 
 }
 
-int Volume::ClusterToSector(uint16_t k)
+int Volume::ClusterToSector(uint16_t k) const
 {
     int i = SectorPerBootsector + SectorPerFat * numberOfFat + (k - 2) * SectorPerCluster;
     return i;
 }
 
+
+std::vector<Entry*> Volume::ReadDirectory(uint32_t startCluster) const {
+    std::vector<Entry*> entries;
+    uint32_t currentCluster = startCluster;
+
+    while (currentCluster < 0x0FFFFFF8) { // Valid data cluster range
+        // Convert cluster number to sector and read the sector
+        uint64_t sectorNumber = ClusterToSector(currentCluster);
+        int64_t readPoint = sectorNumber * BytePerSector;
+        std::vector<BYTE> data = ReadSector(Drive, readPoint, SectorPerCluster);
+
+        // Process each directory entry in this sector
+        for (int i = 0; i < data.size(); i += 32) { // Assuming 32 bytes per entry
+            // Entry parsing logic goes here
+            // Create Entry objects and add them to the entries vector
+        }
+
+        // Move to the next cluster using the FAT table
+        currentCluster = fatTable[currentCluster];
+    }
+
+    return entries;
+}
 
 

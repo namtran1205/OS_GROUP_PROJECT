@@ -27,20 +27,20 @@ class Entry
 {
     public:
         Entry();
-        std::string getMainName() { return mainName; }
-        std::string getExtendedName() { return extendedName; }
-        int getSize() { return sizeData; }
-        bool is_Folder() { return isFolder; }
-        uint16_t GetStartCluster()
+        std::string getMainName() const { return mainName; }
+        std::string getExtendedName() const { return extendedName; }
+        int getSize() const { return sizeData; }
+        bool is_Folder() const { return isFolder; }
+        uint16_t GetStartCluster() const
         {
             return StartCluster;
         }
-        std::vector<Entry*> getListSubEntry()
+        std::vector<Entry*> getListSubEntry() const
         {
             return ListSubEntry;
         }
-        bool findEntry(int, Entry&);
-        int GetID();
+        bool findEntry(int, Entry&) const;
+        int GetID() const;
         
     private:
         char reserved;
@@ -69,16 +69,18 @@ class RDET
 {
 public:
     RDET(const std::vector<char> &data){};
-    std::vector<Entry> getActiveEntry;
-    bool findEntry(int,Entry&);
+    std::vector<Entry> getActiveEntry() const { return entries; }
+    bool findEntry(int,Entry&) const;
     //std::vector<std::string> Parse_path(std::string path);
-    std::string getString(std::vector<BYTE>, int, int);
-    std::string ReadSector_Data(Volume , int64_t, int, int);
+    std::string getString(std::vector<BYTE>, int, int) const;
+    std::string ReadSector_Data(Volume , int64_t, int, int) const;
     void AccessEntry(Volume, int);
 private:
     std::vector<Entry> entries;
    
 };
+
+
 
 
 

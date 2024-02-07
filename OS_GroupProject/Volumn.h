@@ -7,6 +7,8 @@
 #include <fstream>
 #include <Windows.h>
 
+class Entry;
+
 typedef std::vector<BYTE>::iterator byteArrayPointer;
 
 
@@ -24,13 +26,13 @@ private:
 public:
     Volume();
     LPCWSTR Drive;
-    std::vector<BYTE> ReadSector(LPCWSTR drive, int64_t readPoint, int sector); // int sector: Number of sector you want read
+    std::vector<BYTE> ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const; // int sector: Number of sector you want read
 		void ReadFatTable(const std::wstring& drivePath);
-        uint16_t GetBytePerSector()
+        uint16_t GetBytePerSector() const
         {
             return BytePerSector;
         }
-        uint8_t GetSectorPerCluster()
+        uint8_t GetSectorPerCluster() const
         {
             return SectorPerCluster;
         }
@@ -43,8 +45,6 @@ public:
             std::cout << "Sb = " << SectorPerBootsector << std::endl;
             std::cout << "Sv = " << SectorVolume << std::endl;
             std::cout << "BytePerSector = " << BytePerSector << std::endl;
-
-
 
         }
         void SetNumberOfFat(uint8_t num) {
@@ -62,12 +62,14 @@ public:
         void SetSectorVolume(uint32_t sector) {
             SectorVolume = sector;
         }
-        std::vector<uint32_t> GetFatTable();
+        std::vector<uint32_t> GetFatTable() const;
+        uint32_t GetStartClusterOfRootDirectory() const {
+            return StartClusterOfRDET;
+        }
 
-        int ClusterToSector(uint16_t);
-	 
+        int ClusterToSector(uint16_t) const;
 
-	 
+        std::vector<Entry*> ReadDirectory(uint32_t startCluster) const;
 
 };
 
