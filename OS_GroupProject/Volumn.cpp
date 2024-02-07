@@ -25,7 +25,7 @@ std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int64_t readPoint, int sect
     HANDLE device = NULL;
 
     // Open the specified drive with GENERIC_READ access
-    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    device = CreateFile(LPCSTR(drive), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
         // Failed to open the drive
