@@ -35,7 +35,7 @@ class Entry
         {
             return StartCluster;
         }
-        std::vector<Entry> getListSubEntry()
+        std::vector<Entry*> getListSubEntry()
         {
             return ListSubEntry;
         }
@@ -58,7 +58,7 @@ class Entry
         bool isLabel;
         bool isDeleted;
        
-        std::vector<Entry> ListSubEntry;
+        std::vector<Entry*> ListSubEntry;
         uint16_t StartCluster;
       
 
@@ -68,7 +68,7 @@ class Entry
 class RDET
 {
 public:
-    RDET(const std::vector<char> &data);
+    RDET(const std::vector<char> &data){};
     std::vector<Entry> getActiveEntry;
     bool findEntry(int,Entry&);
     //std::vector<std::string> Parse_path(std::string path);

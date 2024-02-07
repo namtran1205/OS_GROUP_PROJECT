@@ -15,7 +15,7 @@ bool Entry::findEntry(int id, Entry& res)
     }
     for (int i = 0; i < ListSubEntry.size(); i++)
     {
-        if(ListSubEntry[i].findEntry(id,res)) return true;
+        if(ListSubEntry[i]->findEntry(id,res)) return true;
     }
     return false;
     
@@ -67,13 +67,13 @@ void RDET::AccessEntry(Volume a, int id)
     }
     if (st_entry.is_Folder())
     {
-            std::vector<Entry> sub = st_entry.getListSubEntry();
+            std::vector<Entry*> sub = st_entry.getListSubEntry();
             for (int i = 0; i < sub.size(); i++)
             {
-                std::cout << sub[i].getMainName();
-                if (!sub[i].is_Folder())
+                std::cout << sub[i]->getMainName();
+                if (!sub[i]->is_Folder())
                     std::cout << '.';
-                std::cout << sub[i].getExtendedName() << std::endl;
+                std::cout << sub[i]->getExtendedName() << std::endl;
  
             return;
 
@@ -87,7 +87,7 @@ void RDET::AccessEntry(Volume a, int id)
             while (size > 0 && StartCluster != 0xFFFFFFF && StartCluster != 0xFFFFFF7)
             {
                 int64_t startOffset = a.ClusterToSector(StartCluster) * a.GetBytePerSector();
-                int num = min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
+                int num = std::min(a.GetBytePerSector() * a.GetSectorPerCluster(), size);
                 std::cout << ReadSector_Data(a, startOffset, a.GetSectorPerCluster(), num);
                 size -= a.GetBytePerSector() * a.GetSectorPerCluster();
                 StartCluster = fatTable[StartCluster];
