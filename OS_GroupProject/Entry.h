@@ -47,7 +47,7 @@ class Entry
         char reserved;
         std::string mainName;
         std::string extendedName;
-        Attribute attribute;
+        AttributeFAT32 attribute;
         std::chrono::system_clock::time_point DateCreated;
         std::chrono::system_clock::time_point LastAccess;
         std::chrono::system_clock::time_point DatedUpdated;

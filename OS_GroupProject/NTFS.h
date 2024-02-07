@@ -3,7 +3,7 @@
 
 class Record {
 private:
-    std::vector<Attribute> listAttribute;
+    std::vector<AttributeNTFS> listAttribute;
     uint32_t mask;           // 0x00->0x03 address in Record header
     uint32_t firstAttribute; // 0x14->0x15 
     int FirstReadPoint;
