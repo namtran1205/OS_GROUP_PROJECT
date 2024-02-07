@@ -1,6 +1,16 @@
 #pragma once
 #include "Volumn.h"
 
+
+class Record;
+class NTFSVolume;
+class AttributeNTFS;
+class Data;
+class File_Name;
+class Standard_Info;
+
+
+
 class Record {
 private:
     std::vector<AttributeNTFS> listAttribute;

@@ -8,7 +8,6 @@
 #include "Volumn.h"
 #include <wincrypt.h>
 
-enum AttributeFAT32;
 class Entry;
 class RDET;
 
