@@ -7,12 +7,13 @@
 #include <vector>
 #include "Volumn.h"
 #include <wincrypt.h>
-enum Attribute;
+
+enum AttributeFAT32;
 class Entry;
 class RDET;
 
 
-enum Attribute
+enum AttributeFAT32
 {
     READ_ONLY = 0x01,
     HIDDEN = 0x02,

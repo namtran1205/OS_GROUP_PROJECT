@@ -28,10 +28,10 @@ public:
     void readBootSector(const std::wstring &drive);
 };
 
-class Attribute {
+class AttributeNTFS {
 protected:
-    uint32_t AttributeID;      // 0x0->0x3 
-    uint32_t AttributeSize;    // 0x4->0x7
+    uint32_t ID;      // 0x0->0x3 
+    uint32_t Size;    // 0x4->0x7
     uint32_t residentFlag;     // 0x8->0x8 
     uint32_t maskFlag;         // 0xC->0xD
 public:
@@ -41,7 +41,7 @@ public:
 
 };
 
-class Standard_Info : public Attribute
+class Standard_Info : public AttributeNTFS
 {
     uint32_t flag; // 0x32 -> 0x35
 public:
@@ -51,7 +51,7 @@ public:
 
 
 };
-class File_Name : public Attribute 
+class File_Name : public AttributeNTFS 
 {
     uint32_t LengthOfName; //0x64
     std::wstring NameOfFile; // 0x66 8 byte
@@ -62,7 +62,7 @@ public:
    
 
 };
-class Data : public Attribute
+class Data : public AttributeNTFS
 {
     uint32_t type; //0x8 : if value = 0 -> resident
 public:
