@@ -1,25 +1,52 @@
 #include "Entry.h"
 
 
-Entry::Entry()
+Entry::Entry(std::vector<BYTE> data)
 {
-    
+    if (data.size() >= 32) {
+        // Parse the sector data and initialize the Entry members accordingly
+        if (data[11] == 0x0F)
+        {
+            isSubEntry = true;
+            unicode = std::wstring(data.begin() + 1, data.begin() + 11);
+            extend1 = std::string(data.begin() + 14, data.begin() + 28);
+            extend2 = std::string(data.begin() + 28, data.begin() + 32);
+        }
+        else
+        {
+            attribute = static_cast<AttributeFAT32>(data[11]);
+            reserved = data[12];
+            mainName = std::string(data.begin(), data.begin() + 9);
+            extendedName = std::string(data.begin() + 14, data.begin() + 26);
+            isFolder = ((attribute & 0x10) != 0);
+            isEmpty = (data[0] == 0x00);
+            isLabel = ((attribute & 0x08) != 0);
+            isDeleted = (data[0] == 0xE5);
+        }
+        // Parse other relevant information and initialize class members
+        // ...
+    }
+    else {
+        // Handle invalid sector data size
+        // You might want to throw an exception or handle it based on your error-handling strategy.
+    }
 }
 
-bool Entry::findEntry(int id, Entry& res) const
-{
-    if (ID == id)
-    {
-        res = *this;
-        return true;
-    }
-    for (int i = 0; i < ListSubEntry.size(); i++)
-    {
-        if(ListSubEntry[i]->findEntry(id,res)) return true;
-    }
-    return false;
-    
-}
+
+//bool Entry::findEntry(int id, Entry& res) const
+//{
+//    if (ID == id)
+//    {
+//        res = *this;
+//        return true;
+//    }
+//    for (int i = 0; i < ListSubEntry.size(); i++)
+//    {
+//        if(ListSubEntry[i]->findEntry(id,res)) return true;
+//    }
+//    return false;
+//    
+//}
 
 int Entry::GetID() const
 {
@@ -29,14 +56,18 @@ int Entry::GetID() const
 
 
 
-
-
-bool RDET::findEntry(int id, Entry& res) const
+RDET::RDET(const uint32_t& startCluster)
 {
-    for (int i = 0; i < entries.size(); i++)
-        if (entries[i].findEntry(id, res)) return true;
-    return false;
+
 }
+
+
+//bool RDET::findEntry(int id, Entry& res) const
+//{
+//    for (int i = 0; i < entries.size(); i++)
+//        if (entries[i].findEntry(id, res)) return true;
+//    return false;
+//}
 
 std::string RDET::getString(std::vector<BYTE> data, int offset, int num) const
 {

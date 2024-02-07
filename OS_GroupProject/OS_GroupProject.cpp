@@ -32,11 +32,15 @@ void PrintDirectoryTree(const Volume& volume, uint32_t startCluster, int depth =
 int main()
 {
     Volume volume;
-    std::wstring drivePath = L"\\\\.\\C:"; // Example path to the drive
+    std::wstring drivePath = L"\\\\.\\F:"; // Example path to the drive
     volume.ReadVolume(drivePath); // Initialize the volume with drive information
-    uint32_t startCluster = volume.GetStartClusterOfRootDirectory(); // Get the starting cluster of the root directory or the specific folder you want
-    PrintDirectoryTree(volume, startCluster); // Print the directory tree starting from the root or a specific folder
-    return  0;
+
+    uint32_t startCluster = volume.GetStartClusterOfRootDirectory(); // Get the starting cluster of the root directory
+    std::vector<Entry*> testEntries = volume.ReadDirectory(startCluster); // Test reading directory entries
+    std::cout << "Number of entries: " << testEntries.size() << std::endl; // Debug statement
+
+    PrintDirectoryTree(volume, startCluster); // Print the directory tree starting from the root
+    return   0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

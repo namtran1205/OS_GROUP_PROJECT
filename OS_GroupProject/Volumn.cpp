@@ -20,7 +20,7 @@ Volume::Volume()
 {
     BytePerSector = 512;
 }
-std::vector<BYTE> Volume:: ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const {
+std::vector<BYTE> Volume::ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const {
     
     int retCode = 0;
     DWORD bytesRead;

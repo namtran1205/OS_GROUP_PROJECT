@@ -9,6 +9,8 @@
 
 class Entry;
 
+class RDET;
+
 typedef std::vector<BYTE>::iterator byteArrayPointer;
 
 
@@ -17,14 +19,23 @@ class Volume
 private:
 	uint8_t numberOfFat;
 	std::vector<uint32_t> fatTable;
+    RDET DirectoryTable;
     uint32_t SectorPerFat;
 	uint8_t SectorPerCluster;
 	uint16_t SectorPerBootsector;
 	uint32_t SectorVolume;
     uint16_t BytePerSector;
     uint32_t StartClusterOfRDET;
+	HANDLE device = INVALID_HANDLE_VALUE;
+
 public:
     Volume();
+    ~Volume()
+    {
+		if (device != INVALID_HANDLE_VALUE) {
+			CloseHandle(device);
+		}
+    };
     LPCWSTR Drive;
     std::vector<BYTE> ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const; // int sector: Number of sector you want read
 		void ReadFatTable(const std::wstring& drivePath);
