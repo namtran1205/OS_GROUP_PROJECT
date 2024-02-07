@@ -87,7 +87,7 @@ public:
     //std::vector<std::string> Parse_path(std::string path);
     std::string getString(std::vector<BYTE>, int, int) const;
     std::string ReadSector_Data(Volume , int64_t, int, int) const;
-    void AddSector();
+    void AddSector(Volume);
     void AccessEntry(Volume, int);
     uint16_t GetStartCluster() const
     {

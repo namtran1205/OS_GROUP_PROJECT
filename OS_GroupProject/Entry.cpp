@@ -86,6 +86,8 @@ std::string RDET::ReadSector_Data(Volume a, int64_t startOffset, int sector, int
     return res;
 }
 
+// ?? s?a sau
+/*
 void RDET::AccessEntry(Volume a, int id)
 {
     
@@ -127,4 +129,10 @@ void RDET::AccessEntry(Volume a, int id)
         }
         else std::cout << "Please use another app to open it\n";
 }
+*/
 
+
+void RDET::AddSector(Volume)
+{
+
+}
