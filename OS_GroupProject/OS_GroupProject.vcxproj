@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="Header.cpp" />
     <ClCompile Include="NTFS.cpp" />
     <ClCompile Include="OS_GroupProject.cpp" />
     <ClCompile Include="Volumn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entry.h" />
+    <ClInclude Include="Header.h" />
     <ClInclude Include="NTFS.h" />
     <ClInclude Include="Volumn.h" />
   </ItemGroup>

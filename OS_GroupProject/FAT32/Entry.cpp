@@ -48,18 +48,18 @@ Entry::Entry(std::vector<BYTE> data)
 //    
 //}
 
-int Entry::GetID() const
-{
-    return ID;
-}
+// int Entry::GetID() const
+// {
+//     return ID;
+// }
 
 
 
 
-RDET::RDET(const uint32_t& startCluster)
-{
+// RDET::RDET(const uint32_t& startCluster)
+// {
 
-}
+// }
 
 
 //bool RDET::findEntry(int id, Entry& res) const
@@ -69,22 +69,22 @@ RDET::RDET(const uint32_t& startCluster)
 //    return false;
 //}
 
-std::string RDET::getString(std::vector<BYTE> data, int offset, int num) const
-{
-    std::string res;
-    for (int i = offset; i < offset + num; i++)
-        if (data[i] > 0x00 && data[i] < 0xFF)
-            res += static_cast<char>(data[i]);
-    return res;
-}
+// std::string RDET::getString(std::vector<BYTE> data, int offset, int num) const
+// {
+//     std::string res;
+//     for (int i = offset; i < offset + num; i++)
+//         if (data[i] > 0x00 && data[i] < 0xFF)
+//             res += static_cast<char>(data[i]);
+//     return res;
+// }
 
-std::string RDET::ReadSector_Data(Volume a, int64_t startOffset, int sector, int size) const
-{
-    std::string res;
-    std::vector<BYTE> data = a.ReadSector(a.Drive, startOffset, size);
-    res = getString(data, 0x00, size);
-    return res;
-}
+// std::string RDET::ReadSector_Data(Volume a, int64_t startOffset, int sector, int size) const
+// {
+//     std::string res;
+//     std::vector<BYTE> data = a.ReadSector(a.Drive, startOffset, size);
+//     res = getString(data, 0x00, size);
+//     return res;
+// }
 
 // ?? s?a sau
 /*
@@ -132,7 +132,7 @@ void RDET::AccessEntry(Volume a, int id)
 */
 
 
-void RDET::AddSector(Volume)
-{
+// void RDET::AddSector(Volume)
+// {
 
-}
+// }

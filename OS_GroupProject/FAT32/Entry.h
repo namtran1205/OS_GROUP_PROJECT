@@ -1,12 +1,5 @@
 #pragma once
-#include <iostream>
-#include <chrono>
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include "Volumn.h"
-#include <wincrypt.h>
+#include "../StaticVariable.h"
 
 class Entry;
 class RDET;
@@ -27,19 +20,14 @@ class Entry
     public:
         Entry() {};
         Entry(std::vector<BYTE>);
+
+    public:
+        bool is_Folder() const { return isFolder; }
+
         std::string getMainName() const { return mainName; }
         std::string getExtendedName() const { return extendedName; }
+
         int getSize() const { return sizeData; }
-        bool is_Folder() const { return isFolder; }
-        //uint16_t GetStartCluster() const
-        //{
-        //    return StartCluster;
-        //}
-        //std::vector<Entry*> getListSubEntry() const
-        //{
-        //    return ListSubEntry;
-        //}
-        //bool findEntry(int, Entry&) const;
         int GetID() const;
         
     private:
@@ -69,36 +57,6 @@ class Entry
       
 
 };
-
-class SubEntry : public Entry
-{
-private:
-    char seq;
-    
-};
-
-
-class RDET
-{
-public:
-    RDET(const uint32_t& startCluster);
-    std::vector<Entry> getActiveEntry() const { return entries; }
-    bool findEntry(int,Entry&) const;
-    //std::vector<std::string> Parse_path(std::string path);
-    std::string getString(std::vector<BYTE>, int, int) const;
-    std::string ReadSector_Data(Volume , int64_t, int, int) const;
-    void AddSector(Volume);
-    void AccessEntry(Volume, int);
-    uint16_t GetStartCluster() const
-    {
-        return StartCluster;
-    }
-private:
-    std::vector<Entry> entries;
-	uint16_t StartCluster;
-   
-};
-
 
 
 

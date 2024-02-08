@@ -1,0 +1,74 @@
+Quy ước code:
+	- Nếu muốn khai báo một biến global sử dụng cho tất cả các file thì phải khai báo trong namespace staticValue trong file Header.(h/cpp).
+	- Trong 1 class, tầm vực public phải đặt trên tầm vực private (*Tui nghĩ là do trong 1 class người ta chỉ quan tâm class đó làm gì thôi nên public phải đặt trước private để dễ nhận biết class đó đang làm công việc gì)
+	- Trong 1 class, tất cả các phương thức getter bắt buộc phải có khai báo từ khóa "const".
+	- Bắt buộc, trong các class không được viết chi tiết code, chỉ viết "định nghĩa", hay "tên" của các hàm.
+	- Trong 1 class, phải chia Constructor, Getter, Setter, và các Hàm hỗ trợ khác thành các "tầm vực public khác nhau".
+	VD:
+
+	Class ABC
+	{
+		public:
+			Contrucstor1();
+			Constructor2(Para1, Para2);
+			Constructor3(string, int,...);
+			~Constructor();
+		public:
+			Getter1() const;
+			Getter2() const;
+		public:
+			setter1();
+			setter2();
+		public:
+			Function1(do sthing1);
+			Function2(do sthing2);
+		protected:
+			FunctionABC();
+			FunctionBCD();
+		private:
+			attribute1;
+			attribute2;
+	};
+
+
+	- Khi viết các class, hoặc các hàm lớn thì cặp dấu "{ }" không được cùng hàng. 
+	VD:
+	Class A
+	{
+
+	};
+
+	Các trường hợp sai:
+	Class A{ABCCC};  
+	Class A{
+
+	};
+
+	Tương tự đối với hàm lớn:
+	int Fucntion1()
+	{
+		return 1;
+	}
+
+	- Chỉ khi bên trong các hàm thì có thể viết tùy thích
+	- Các class khi được viết xong phải khai báo ở đầu file .h, nhưng nằm ở bên dưới thư viện, và nằm bên dưới các biến toàn cục nếu có
+	VD:
+
+	//Đây là file .h
+	#include <iostream>
+	#define PI 3.14
+	class A;
+	class B;
+	class A
+	{
+	};
+	class B
+	{
+	};
+
+
+Quy ước đặt tên:
+		- class : Viết hoa chữ cái đầu mỗi từ, nếu từ đó là một từ viết tắt của một cụm từ tiếng anh thì viết hoa hết vd: (class Entry, class FAT32, class RDET, class FileAllocationTable, class HelloWorld....)
+		- biến và hàm: Đặt tên rõ ràng ý nghĩa và đặt theo quy ước, viết hoa chữ cái đầu mỗi từ TRỪ CHỮ Đầu Tiên. Vd: readDirectory, getSectorPerCluster,...
+		- biến toàn cục: viết in hoa tất cả vd: FIX_WIDTH,..
+		– Tất cả thư viện được khai báo trong header file,  file .cpp chỉ include header file cùng tên, vd Entry.cpp chỉ include Entry.h
