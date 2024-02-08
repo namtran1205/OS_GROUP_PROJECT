@@ -1,6 +1,5 @@
 #pragma once
 #include "../StaticVariable.h"
-
 class BootSector : public VolumeBootRecord
 {
 public:
@@ -14,16 +13,13 @@ public:
     int ClusterToSector(uint16_t) const;
 
 public:
+
     void SetNumberOfFat(uint8_t num);
     void SetSectorPerCluster(uint8_t sector);
     void SetSectorPerBootSector(uint16_t sector);
     void SetSectorVolume(uint32_t sector);
 
-public:
-    void ReadFatTable(const std::wstring &drivePath);
-    void 
-    ReadVolume(const std::wstring &drivePath);
-    void show();
+    
 
 private:
     uint8_t numberOfFat;
