@@ -127,17 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="Header.cpp" />
+    <ClCompile Include="FAT32.cpp" />
+    <ClCompile Include="FileManagementSystem.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="NTFS.cpp" />
-    <ClCompile Include="OS_GroupProject.cpp" />
-    <ClCompile Include="Volumn.cpp" />
+    <ClCompile Include="SectorReader.cpp" />
+    <ClCompile Include="StaticVariable.cpp" />
+    <ClCompile Include="VolumeBootRecord.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entry.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="FAT32.h" />
+    <ClInclude Include="FileManagementSystem.h" />
     <ClInclude Include="NTFS.h" />
-    <ClInclude Include="Volumn.h" />
+    <ClInclude Include="SectorReader.h" />
+    <ClInclude Include="StaticVariable.h" />
+    <ClInclude Include="VolumeBootRecord.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
