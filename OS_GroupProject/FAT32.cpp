@@ -13,6 +13,8 @@ FAT32::~FAT32()
 void FAT32::readBootSector()
 {
     
+    
+    
 }
 void FAT32::readRDET()
 {
