@@ -52,8 +52,8 @@ class Entry
         std::string extend2;
         
        
-        //std::vector<Entry*> ListSubEntry;
-        //uint16_t StartCluster;
+        std::vector<Entry*> ListSubEntry;
+        uint16_t StartCluster;
       
 
 };
