@@ -11,19 +11,19 @@ public:
     std::vector<uint32_t> GetFatTable() const;
     uint32_t GetStartClusterOfRootDirectory() const;
     int ClusterToSector(uint16_t) const;
-
+   
 public:
 
     void SetNumberOfFat(uint8_t num);
     void SetSectorPerCluster(uint8_t sector);
     void SetSectorPerBootSector(uint16_t sector);
     void SetSectorVolume(uint32_t sector);
-
+    int GetNumberOfFat();
     
 
 private:
     uint8_t numberOfFat;
-    std::vector<uint32_t> fatTable;
+    
     uint32_t SectorPerFat;
     uint8_t SectorPerCluster;
     uint16_t SectorPerBootsector;

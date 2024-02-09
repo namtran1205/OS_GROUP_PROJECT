@@ -2,50 +2,58 @@
 
 SectorReader::SectorReader()
 {
+    byteOfSector = 512;
 }
-SectorReader::SectorReader(LPCWSTR drive, int64_t readPoint, int sector)
+SectorReader::SectorReader(LPCWSTR drive)
 {
     this->drive = drive;
-    this->readPoint = readPoint;
-    this->sector = sector;
+  
 }
 SectorReader::~SectorReader()
 {
 }
 
-int SectorReader::ReadSector(LPCWSTR drive, int readPoint, BYTE sector[512]) const
+
+
+std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
 {
+    
     int retCode = 0;
     DWORD bytesRead;
     HANDLE device = NULL;
 
-    device = CreateFile(drive,                              // Drive to open
-                        GENERIC_READ,                       // Access mode
-                        FILE_SHARE_READ | FILE_SHARE_WRITE, // Share Mode
-                        NULL,                               // Security Descriptor
-                        OPEN_EXISTING,                      // How to create
-                        0,                                  // File attributes
-                        NULL);                              // Handle to template
+    // Open the specified drive with GENERIC_READ access
+    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
-    if (device == INVALID_HANDLE_VALUE) // Open Error
-    {
-        printf("CreateFile: %u\n", GetLastError());
-        return 1;
+    if (device == INVALID_HANDLE_VALUE) {
+        // Failed to open the drive
+        // vector's size == 0
+        return std::vector<BYTE>();
     }
 
-    SetFilePointer(device, readPoint, NULL, FILE_BEGIN); // Set a Point to Read
+    // Set the file pointer to the specified read point
+    SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
 
-    if (!ReadFile(device, sector, 512, &bytesRead, NULL))
+    BYTE* tmpSector = new BYTE[byteOfSector * sector];
+    std::vector<BYTE> resultSector(1, 0);
+    // Read 512 bytes from the specified position
+    if (ReadFile(device, tmpSector, byteOfSector * sector, &bytesRead, NULL))
     {
-        printf("ReadFile: %u\n", GetLastError());
+        resultSector.resize(byteOfSector * sector, 0);
+        for (int i = 0; i < byteOfSector * sector; i++) resultSector[i] = tmpSector[i];
     }
-    else
-    {
-        printf("Success!\n");
-    }
+    delete[] tmpSector;
+    tmpSector = NULL;
+
+    // Close the file handle
+    CloseHandle(device);
+
+    return resultSector;
+    
 }
 
-std::vector<BYTE> SectorReader::ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const
+void SectorReader::SetByteOfSector(int ByteOfSector)
 {
+    this->byteOfSector = ByteOfSector;
     
 }

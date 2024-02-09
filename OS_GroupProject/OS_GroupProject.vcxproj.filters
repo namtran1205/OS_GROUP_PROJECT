@@ -36,6 +36,18 @@
     <ClCompile Include="VolumeBootRecord.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FAT32\BootSector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FAT32\Entry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FAT32\FAT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FAT32\RDET.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NTFS.h">
@@ -54,6 +66,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VolumeBootRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FAT32\BootSector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FAT32\Entry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FAT32\FAT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FAT32\RDET.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

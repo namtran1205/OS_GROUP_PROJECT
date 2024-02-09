@@ -128,6 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FAT32.cpp" />
+    <ClCompile Include="FAT32\BootSector.cpp" />
+    <ClCompile Include="FAT32\Entry.cpp" />
+    <ClCompile Include="FAT32\FAT.cpp" />
+    <ClCompile Include="FAT32\RDET.cpp" />
     <ClCompile Include="FileManagementSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NTFS.cpp" />
@@ -137,6 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FAT32.h" />
+    <ClInclude Include="FAT32\BootSector.h" />
+    <ClInclude Include="FAT32\Entry.h" />
+    <ClInclude Include="FAT32\FAT.h" />
+    <ClInclude Include="FAT32\RDET.h" />
     <ClInclude Include="FileManagementSystem.h" />
     <ClInclude Include="NTFS.h" />
     <ClInclude Include="SectorReader.h" />

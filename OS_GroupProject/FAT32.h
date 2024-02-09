@@ -28,7 +28,7 @@ private:
     BootSector* bootSector;
     RDET* rootDirectory;
     FAT* fileAllocationTable;
-
+    SectorReader* sectorReader;
 };
 
 

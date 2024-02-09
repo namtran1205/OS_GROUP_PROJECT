@@ -5,16 +5,18 @@ class SectorReader
 {
 public:
     SectorReader();
-    SectorReader(LPCWSTR drive, int64_t readPoint, int sector);
+    SectorReader(LPCWSTR drive, int64_t readPoint, int byteofsector);
     ~SectorReader();
 
 public:
 public:
-    int ReadSector(LPCWSTR drive, int readPoint, BYTE sector[512]) const;
-    vector<BYTE> ReadSector(LPCWSTR drive, int64_t readPoint, int sector) const;
+   
+    vector<BYTE> ReadSector( int64_t readPoint, int sector) const;
+    void SetByteOfSector(int);
 private:
     LPCWSTR drive;
     int64_t readPoint;
+	int byteOfSector;
     int sector;
 
 };
