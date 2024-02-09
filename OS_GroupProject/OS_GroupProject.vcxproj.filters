@@ -5,17 +5,19 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NTFS.cpp">
+    <ClCompile Include="BootSector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FAT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FAT32.cpp">
@@ -27,6 +29,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NTFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RDET.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SectorReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,49 +44,42 @@
     <ClCompile Include="VolumeBootRecord.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FAT32\BootSector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FAT32\Entry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FAT32\FAT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FAT32\RDET.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NTFS.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="BootSector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entry.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FAT.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="FAT32.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="FileManagementSystem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NTFS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RDET.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SectorReader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="StaticVariable.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="VolumeBootRecord.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="FAT32\BootSector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FAT32\Entry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FAT32\FAT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FAT32\RDET.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CodingConvention.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
