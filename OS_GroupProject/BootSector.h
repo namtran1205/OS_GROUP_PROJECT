@@ -8,30 +8,29 @@ class BootSector : public VolumeBootRecord
 {
 public:
     BootSector();
+    BootSector(SectorReader*);
     ~BootSector();
-public:
-    uint16_t GetBytePerSector() const;
-    uint8_t GetSectorPerCluster() const;
-    void ReadBootSector(SectorReader* sectorReader);
-    uint32_t GetStartClusterOfRootDirectory() const;
-    int ClusterToSector(uint16_t) const;
-    int GetSectorPerFat() const;
-    int GetSectorPerBootsector() const;
 public:
     void SetNumberOfFat(uint8_t num);
     void SetSectorPerCluster(uint8_t sector);
     void SetSectorPerBootSector(uint16_t sector);
     void SetSectorVolume(uint32_t sector);
-    int GetNumberOfFat() const;
     
+public:
+    uint16_t GetBytePerSector() const;
+    uint8_t GetSectorPerCluster() const;
+    uint32_t GetStartClusterOfRootDirectory() const;
+    int ClusterToSector(uint16_t) const;
+    int GetSectorPerFat() const;
+    int GetSectorPerBootsector() const;
+    int GetNumberOfFat() const;
 
 public:
-    void show();
+    void ReadBootSector();
 
 
 private:
     uint8_t numberOfFat;
-    
     uint32_t SectorPerFat;
     uint8_t SectorPerCluster;
     uint16_t SectorPerBootsector;

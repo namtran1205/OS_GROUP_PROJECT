@@ -2,12 +2,20 @@
 
 
 
-FAT32::FAT32()
+//FAT32::FAT32()
+//{
+//	sectorReader = new SectorReader();
+//	bootSector = new BootSector();
+//	rootDirectory = new RDET();
+//	fileAllocationTable = new FAT();
+//}
+FAT32::FAT32(LPCWSTR drive)
 {
-	bootSector = new BootSector();
-	rootDirectory = new RDET();
-	fileAllocationTable = new FAT();
-	sectorReader = new SectorReader();
+    sectorReader = new SectorReader(drive);
+    bootSector = new BootSector(sectorReader);
+    rootDirectory = new RDET();
+    fileAllocationTable = new FAT();
+
 }
 FAT32::~FAT32()
 {
@@ -41,10 +49,9 @@ void FAT32::readRDET()
 
 
 
-void FAT32::readVolume(LPCWSTR drive)
+void FAT32::readVolume()
 {
-    sectorReader->SetDirve(drive);
-    bootSector->ReadBootSector(sectorReader);
+    bootSector->ReadBootSector();
     fileAllocationTable->ReadFatTable(bootSector, sectorReader);
     
     

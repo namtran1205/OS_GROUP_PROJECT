@@ -10,7 +10,7 @@ NTFS::~NTFS()
 }
 
 
-void NTFS::readVolume(LPCWSTR)
+void NTFS::readVolume()
 {
     cout << 1;
 }

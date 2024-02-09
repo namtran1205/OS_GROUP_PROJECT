@@ -12,6 +12,5 @@ void FAT::ReadFatTable(BootSector* bootSector, SectorReader* sectorReader)
 		fatTable.push_back(res);
 	}
 
-	
-	
+
 }

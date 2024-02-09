@@ -5,6 +5,11 @@ SectorReader::SectorReader()
     byteOfSector = 512;
 }
 
+SectorReader::SectorReader(LPCWSTR drive) : SectorReader()
+{
+    this->drive = drive;
+}
+
 SectorReader::~SectorReader()
 {
 }

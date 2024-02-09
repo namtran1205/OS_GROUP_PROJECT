@@ -37,8 +37,8 @@ int main()
     // std::cout << "Number of entries: " << testEntries.size() << std::endl; // Debug statement
     // PrintDirectoryTree(volume, startCluster); // Print the directory tree starting from the root
     
-    FAT32* fat32 = new FAT32();
-    fat32->readVolume(L"\\\\.\\F:");
+    FAT32* fat32 = new FAT32(L"\\\\.\\F:");
+    fat32->readVolume();
     delete fat32;
     fat32 = nullptr;
     return   0;

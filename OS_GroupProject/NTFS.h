@@ -37,7 +37,7 @@ public:
 
 public:
     // NTFSVolume(const std::wstring &drive);
-    void readVolume(LPCWSTR drive) ;
+    void readVolume() override;
     string toString() const ;
 
 private:

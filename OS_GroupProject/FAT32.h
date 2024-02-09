@@ -17,14 +17,15 @@ class FAT32 : public FileManagementSystem
 {
 
 public:
-    FAT32();
+    //FAT32();
+    FAT32(LPCWSTR drive);
     ~FAT32() ;
 public:
     
 
 public:
     
-    void readVolume(LPCWSTR drive) override;
+    void readVolume() override;
     
     void readRDET();
    
