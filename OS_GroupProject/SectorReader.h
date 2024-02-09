@@ -15,7 +15,7 @@ public:
 private:
     LPCWSTR drive;
     int64_t readPoint;
-	int byteOfSector;
+	uint32_t byteOfSector;
     int sector;
 
 };
