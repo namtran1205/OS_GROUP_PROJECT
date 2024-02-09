@@ -19,9 +19,9 @@ public:
 public:
     
     void readVolume(LPCWSTR drive) override;
-    void readBootSector();
+    
     void readRDET();
-    void readFAT();
+   
     string toString() const override;
 private:
 

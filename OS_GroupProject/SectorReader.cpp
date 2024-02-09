@@ -15,6 +15,11 @@ SectorReader::~SectorReader()
 
 
 
+void SectorReader::SetDirve(LPCWSTR drive)
+{
+    this->drive = drive;
+}
+
 std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
 {
     

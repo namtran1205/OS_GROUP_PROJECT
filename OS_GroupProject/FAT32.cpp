@@ -10,24 +10,21 @@ FAT32::~FAT32()
 {
 }
 
-void FAT32::readBootSector()
-{
-    
-    
-    
-}
+
 void FAT32::readRDET()
 {
     this->rootDirectory->show();
 }
 
-void FAT32::readFAT()
-{
-}
+
 
 void FAT32::readVolume(LPCWSTR drive)
 {
-    this->readBootSector();
+    sectorReader->SetDirve(drive);
+    bootSector->ReadBootSector(sectorReader);
+    fileAllocationTable->ReadFatTable(bootSector, sectorReader);
+    
+    
 }
 string FAT32::toString() const
 {

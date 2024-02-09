@@ -8,10 +8,11 @@ public:
 public:
     uint16_t GetBytePerSector() const;
     uint8_t GetSectorPerCluster() const;
-    std::vector<uint32_t> GetFatTable() const;
+    void ReadBootSector(SectorReader& sectorReader);
     uint32_t GetStartClusterOfRootDirectory() const;
     int ClusterToSector(uint16_t) const;
-   
+    int GetSectorPerFat();
+    int GetSectorPerBootsector();
 public:
 
     void SetNumberOfFat(uint8_t num);
