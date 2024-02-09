@@ -14,3 +14,8 @@ void FAT::ReadFatTable(BootSector* bootSector, SectorReader* sectorReader)
 
 
 }
+
+uint32_t FAT::GetFatTbale()
+{
+	return fatTable;
+}
