@@ -40,8 +40,8 @@ int main()
     
     FAT32* fat32 = new FAT32();
     fat32->readVolume(L"\\\\.\\E:");
-    delete fat32;
-    fat32 = nullptr;
+    /*delete fat32;
+    fat32 = nullptr;*/
     return   0;
 }
 
