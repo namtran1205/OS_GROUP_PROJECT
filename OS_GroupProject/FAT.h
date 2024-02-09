@@ -7,7 +7,7 @@ class FAT
 {
 public:
 	void ReadFatTable(BootSector* bootSector, SectorReader* sectorReader);
-	uint32_t GetFatTbale();
+	vector<uint32_t> GetFatTbale();
 private:
 	std::vector<uint32_t> fatTable;
 	uint32_t numberOfFat;

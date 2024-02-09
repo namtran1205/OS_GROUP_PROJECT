@@ -54,7 +54,6 @@ void FAT32::readVolume()
     bootSector->ReadBootSector();
     fileAllocationTable->ReadFatTable(bootSector, sectorReader);
     
-    
 }
 string FAT32::toString() const
 {
