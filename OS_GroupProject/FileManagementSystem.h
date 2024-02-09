@@ -1,6 +1,8 @@
 #pragma once
 #include "StaticVariable.h"
 
+using namespace std;
+
 class FileManagementSystem
 {
 public:

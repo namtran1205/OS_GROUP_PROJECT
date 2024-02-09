@@ -1,5 +1,9 @@
 #pragma once
-#include "../StaticVariable.h"
+#include "StaticVariable.h"
+#include "VolumeBootRecord.h"
+#include "SectorReader.h"
+
+
 class BootSector : public VolumeBootRecord
 {
 public:

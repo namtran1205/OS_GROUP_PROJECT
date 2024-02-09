@@ -1,6 +1,6 @@
 #pragma once
-#include "../StaticVariable.h"
-
+#include "StaticVariable.h"
+#include "Entry.h"
 
 class RDET
 {

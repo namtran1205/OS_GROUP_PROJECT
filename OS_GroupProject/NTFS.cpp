@@ -1,5 +1,25 @@
 #include "NTFS.h"
 
+NTFS::NTFS()
+{
+
+}
+NTFS::~NTFS()
+{
+
+}
+
+
+void NTFS::readVolume(LPCWSTR)
+{
+    cout << 1;
+}
+string NTFS::toString() const
+{
+    return "NTFS";
+}
+
+
 // std::vector<BYTE> ReadData(LPCWSTR drive, int readPoint, int numBytes) {
     
 //     int retCode = 0;

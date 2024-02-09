@@ -1,8 +1,7 @@
 ﻿// OS_GroupProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "StaticVariable.h"
-#include <iostream>
-#include <filesystem>
+#include "FAT32.h"
 
 
 // void PrintDirectoryTree(const Volume& volume, uint32_t startCluster, int depth = 0) {
@@ -40,8 +39,8 @@ int main()
     
     FAT32* fat32 = new FAT32();
     fat32->readVolume(L"\\\\.\\E:");
-    /*delete fat32;
-    fat32 = nullptr;*/
+    delete fat32;
+    fat32 = nullptr;
     return   0;
 }
 

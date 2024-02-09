@@ -1,5 +1,11 @@
 #pragma once
 #include "StaticVariable.h"
+#include "FileManagementSystem.h"
+#include "BootSector.h"
+#include "RDET.h"
+#include "FAT.h"
+#include "SectorReader.h"
+
 
 class Entry;
 

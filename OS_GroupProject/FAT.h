@@ -1,6 +1,7 @@
 #pragma once
-#include "../StaticVariable.h"
-
+#include "StaticVariable.h"
+#include "BootSector.h"
+#include "SectorReader.h"
 
 class FAT
 {

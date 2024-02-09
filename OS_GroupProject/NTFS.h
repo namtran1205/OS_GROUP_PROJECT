@@ -1,5 +1,8 @@
 #pragma once
 #include "StaticVariable.h"
+#include "FileManagementSystem.h"
+using namespace std;
+
 
 // class Record;
 // class NTFSVolume;
@@ -24,6 +27,19 @@
 
 class NTFS : public FileManagementSystem
 {
+public:
+    NTFS();
+    ~NTFS();
+public:
+
+
+
+
+public:
+    // NTFSVolume(const std::wstring &drive);
+    void readVolume(LPCWSTR drive) ;
+    string toString() const ;
+
 private:
     std:: wstring driveName;
     uint32_t BytePerSector;    // 0xB 2 byte
@@ -33,9 +49,7 @@ private:
     uint64_t StartMFTCluster;  // 0x30->0x37
     // std::vector<Record> ListRecord;
 
-public:
-    // NTFSVolume(const std::wstring &drive);
-    void readBootSector(const std::wstring &drive);
+
 };
 
 // class AttributeNTFS {

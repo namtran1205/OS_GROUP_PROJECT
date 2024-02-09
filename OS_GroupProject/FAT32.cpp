@@ -1,5 +1,4 @@
-﻿#pragma once
-#include "FAT32.h"
+﻿#include "FAT32.h"
 
 
 
@@ -28,4 +27,5 @@ void FAT32::readVolume(LPCWSTR drive)
 }
 string FAT32::toString() const
 {
+    return "FAT32";
 }

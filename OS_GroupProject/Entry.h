@@ -1,5 +1,5 @@
 #pragma once
-#include "../StaticVariable.h"
+#include "StaticVariable.h"
 
 class Entry;
 class RDET;
@@ -28,7 +28,7 @@ class Entry
         std::string getExtendedName() const { return extendedName; }
 
         int getSize() const { return sizeData; }
-        int GetID() const;
+        int GetID() const { return this->ID;}
         
     private:
         char reserved;
