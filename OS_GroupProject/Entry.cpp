@@ -21,6 +21,7 @@ Entry::Entry(std::vector<BYTE> data)
             isFolder = ((attribute & 0x10) != 0);
             isEmpty = (data[0] == 0x00);
             isLabel = ((attribute & 0x08) != 0);
+            isSystem = ((attribute & 0x04) != 0);
             isDeleted = (data[0] == 0xE5);
         }
         // Parse other relevant information and initialize class members
@@ -30,6 +31,11 @@ Entry::Entry(std::vector<BYTE> data)
         // Handle invalid sector data size
         // You might want to throw an exception or handle it based on your error-handling strategy.
     }
+}
+
+bool Entry::isActiveEntry()
+{
+    return !(isDeleted || isEmpty || isSubEntry || isLabel || isSystem);
 }
 
 

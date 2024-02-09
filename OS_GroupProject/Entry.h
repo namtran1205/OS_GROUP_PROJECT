@@ -29,6 +29,7 @@ class Entry
 
         int getSize() const { return sizeData; }
         int GetID() const { return this->ID;}
+        bool isActiveEntry();
         
     private:
         char reserved;
@@ -43,6 +44,7 @@ class Entry
 	    bool isFolder;
         bool isEmpty;
         bool isLabel;
+        bool isSystem;
         bool isDeleted;
         
         bool isSubEntry;
