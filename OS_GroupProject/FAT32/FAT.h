@@ -1,11 +1,11 @@
 #pragma once
 #include "../StaticVariable.h"
-#include "BootSector.h"
+
 
 class FAT
 {
 public:
-	void ReadFatTable(BootSector*, LPCWSTR drive);
+	void ReadFatTable(BootSector* bootSector, SectorReader* sectorReader);
 
 private:
 	std::vector<uint32_t> fatTable;
