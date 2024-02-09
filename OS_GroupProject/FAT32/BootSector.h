@@ -8,7 +8,7 @@ public:
 public:
     uint16_t GetBytePerSector() const;
     uint8_t GetSectorPerCluster() const;
-    void ReadBootSector(SectorReader& sectorReader);
+    void ReadBootSector(SectorReader* sectorReader);
     uint32_t GetStartClusterOfRootDirectory() const;
     int ClusterToSector(uint16_t) const;
     int GetSectorPerFat();
