@@ -5,7 +5,6 @@ class SectorReader
 {
 public:
     SectorReader();
-  
     ~SectorReader();
 
 

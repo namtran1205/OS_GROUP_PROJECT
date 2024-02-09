@@ -16,7 +16,7 @@ public:
 	virtual ~VolumeBootRecord();
 
 public:
-	virtual void ReadSector(SectorReader* sectorReader) = 0;
+	virtual void ReadSector(SectorReader* sectorReader);
 
 private:
 

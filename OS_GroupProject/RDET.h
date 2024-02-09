@@ -5,6 +5,7 @@
 class RDET
 {
 public:
+    RDET();
     RDET(const uint32_t& startCluster);
     // std::vector<Entry> getActiveEntry() const { return entries; }
     // bool findEntry(int,Entry&) const;

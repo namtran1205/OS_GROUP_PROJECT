@@ -4,9 +4,33 @@
 
 FAT32::FAT32()
 {
+	bootSector = new BootSector();
+	rootDirectory = new RDET();
+	fileAllocationTable = new FAT();
+	sectorReader = new SectorReader();
 }
 FAT32::~FAT32()
 {
+    if (!bootSector)
+    {
+        delete bootSector;
+        bootSector = nullptr;
+    }
+    if (!rootDirectory)
+    {
+        delete rootDirectory;
+        rootDirectory = nullptr;
+    }
+    if (!fileAllocationTable)
+    {
+        delete fileAllocationTable;
+        fileAllocationTable = nullptr;
+    }
+    if (!sectorReader)
+    {
+        delete sectorReader;
+        sectorReader = nullptr;
+    }
 }
 
 
