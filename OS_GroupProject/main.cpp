@@ -38,7 +38,7 @@ int main()
     // PrintDirectoryTree(volume, startCluster); // Print the directory tree starting from the root
     
     FAT32* fat32 = new FAT32();
-    fat32->readVolume(L"\\\\.\\E:");
+    fat32->readVolume(L"\\\\.\\F:");
     delete fat32;
     fat32 = nullptr;
     return   0;

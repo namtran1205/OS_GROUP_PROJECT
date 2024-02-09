@@ -34,6 +34,9 @@ void BootSector::ReadBootSector(SectorReader* sectorReader)
     this->BytePerSector = Utils:: Convert2LitleEndian(bootSector.begin() + 0xB, 2);
     this->StartClusterOfRDET = Utils::Convert2LitleEndian(bootSector.begin() + 0x2C, 4);
     sectorReader->SetByteOfSector(BytePerSector);
+
+
+    this->show();
 }
 
 void BootSector::SetNumberOfFat(uint8_t num)
@@ -56,9 +59,20 @@ void BootSector::SetSectorVolume(uint32_t sector)
     SectorVolume = sector;
 }
 
-int BootSector::GetNumberOfFat()
+int BootSector::GetNumberOfFat() const
 {
     return numberOfFat;
+}
+
+void BootSector::show()
+{
+    std::cout << "Nf = " << (int)numberOfFat << std::endl;
+    std::cout << "Sf = " << SectorPerFat << std::endl;
+    std::cout << "Sc = " << (int)SectorPerCluster << std::endl;
+    std::cout << "Sb = " << SectorPerBootsector << std::endl;
+    std::cout << "Sv = " << SectorVolume << std::endl;
+    std::cout << "BytePerSector = " << BytePerSector << std::endl;
+
 }
 
 uint32_t BootSector::GetStartClusterOfRootDirectory() const
@@ -72,12 +86,12 @@ int BootSector::ClusterToSector(uint16_t k) const
     return i;
 }
 
-int BootSector::GetSectorPerFat()
+int BootSector::GetSectorPerFat() const
 {
     return SectorPerFat;
 }
 
-int BootSector::GetSectorPerBootsector()
+int BootSector::GetSectorPerBootsector() const
 {
     return SectorPerBootsector;
 }
