@@ -116,7 +116,7 @@ int MainEntry::getSize() const
     return sizeData;
 }
 
-SubEntry::SubEntry()
+SubEntry::SubEntry() : Entry()
 {
 }
 
