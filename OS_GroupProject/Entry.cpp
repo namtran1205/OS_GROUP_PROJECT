@@ -14,14 +14,14 @@ Entry::Entry(std::vector<BYTE> data)
         }
         else
         {
-            attribute = static_cast<AttributeFAT32>(data[11]);
+            attributes = static_cast<Attribute>(data[11]);
             reserved = data[12];
             mainName = std::string(data.begin(), data.begin() + 9);
             extendedName = std::string(data.begin() + 14, data.begin() + 26);
-            isFolder = ((attribute & 0x10) != 0);
+            isFolder = ((attributes & 0x10) != 0);
             isEmpty = (data[0] == 0x00);
-            isLabel = ((attribute & 0x08) != 0);
-            isSystem = ((attribute & 0x04) != 0);
+            isLabel = ((attributes & 0x08) != 0);
+            isSystem = ((attributes & 0x04) != 0);
             isDeleted = (data[0] == 0xE5);
         }
         // Parse other relevant information and initialize class members

@@ -5,7 +5,7 @@ class Entry;
 class RDET;
 
 
-enum AttributeFAT32
+enum Attribute
 {
     READ_ONLY = 0x01,
     HIDDEN = 0x02,
@@ -35,7 +35,7 @@ class Entry
         char reserved;
         std::string mainName;
         std::string extendedName;
-        AttributeFAT32 attribute;
+        Attribute attributes;
         std::chrono::system_clock::time_point DateCreated;
         std::chrono::system_clock::time_point LastAccess;
         std::chrono::system_clock::time_point DatedUpdated;
