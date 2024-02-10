@@ -2,6 +2,7 @@
 
 RDET::RDET(shared_ptr<FAT> fatTable)
 {
+    this->fatTable = fatTable;
 }
 
 int RDET::getSize() const

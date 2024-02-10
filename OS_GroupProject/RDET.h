@@ -29,10 +29,11 @@ public:
 public:
     void readDirectory();
 protected:
-    std::vector<shared_ptr<Entry>> entries;
+    shared_ptr<FAT> fatTable;
     uint16_t size;
 	uint16_t startCluster;
     uint16_t clusterNumber;   
+    std::vector<shared_ptr<Entry>> entries;
 };
 
 class SDET : public RDET

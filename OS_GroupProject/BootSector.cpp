@@ -3,6 +3,7 @@
 
 BootSector::BootSector(shared_ptr<SectorReader> sectorReader)
 {
+    this->sectorReader = sectorReader;
     std::vector<BYTE> bootSector = sectorReader->ReadSector(0, 1);
     this->numberOfFat = (uint8_t)(*(bootSector.begin() + 0x10));
     this->SectorPerFat = Utils::Convert2LitleEndian(bootSector.begin() + 0x24, 4);
@@ -20,6 +21,11 @@ BootSector::~BootSector()
         CloseHandle(device);
     }
 };
+
+shared_ptr<SectorReader> BootSector::getSectorReader() const
+{
+    return this->sectorReader;
+}
 
 uint16_t BootSector::GetBytePerSector() const
 {

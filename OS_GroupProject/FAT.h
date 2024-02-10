@@ -9,10 +9,11 @@ public:
 	FAT(shared_ptr<BootSector>);
 
 public:
-	void readFatTable(shared_ptr<BootSector> bootSector, shared_ptr<SectorReader> sectorReader);
+	void readFatTable();
 	vector<uint32_t> GetFatTbale();
 
 private:
+	shared_ptr<BootSector> bootSector;
 	std::vector<uint32_t> fatTable;
 	uint32_t numberOfFat;
 };

@@ -16,19 +16,24 @@ public:
     void SetSectorVolume(uint32_t sector);
     
 public:
+    shared_ptr<SectorReader> getSectorReader() const;
+
     uint16_t GetBytePerSector() const;
     uint8_t GetSectorPerCluster() const;
     uint32_t GetStartClusterOfRootDirectory() const;
+
     int ClusterToSector(uint16_t) const;
     int GetSectorPerFat() const;
     int GetSectorPerBootsector() const;
     int GetNumberOfFat() const;
-
+    
 public:
     void readVolumeBootRecord() override;
 
 
 private:
+    shared_ptr<SectorReader> sectorReader;
+
     uint8_t numberOfFat;
     uint32_t SectorPerFat;
     uint8_t SectorPerCluster;
