@@ -33,11 +33,33 @@ Entry::Entry(std::vector<BYTE> data)
     }
 }
 
-bool Entry::isActiveEntry()
+bool Entry::isActiveEntry() const
 {
     return !(isDeleted || isEmpty || isSubEntry || isLabel || isSystem);
 }
 
+bool Entry::is_Folder() const
+{
+    return isFolder;
+}
+
+std::string Entry::getMainName() const
+{
+    return mainName;
+}
+std::string Entry::getExtendedName() const
+{
+    return extendedName;
+}
+
+int Entry::getSize() const
+{
+    return sizeData;
+}
+int Entry::GetID() const
+{
+    return this->ID;
+}
 
 //bool Entry::findEntry(int id, Entry& res) const
 //{

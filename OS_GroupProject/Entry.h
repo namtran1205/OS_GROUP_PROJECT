@@ -22,14 +22,14 @@ class Entry
         Entry(std::vector<BYTE>);
 
     public:
-        bool is_Folder() const { return isFolder; }
+        bool is_Folder() const;
+        bool isActiveEntry() const;
 
-        std::string getMainName() const { return mainName; }
-        std::string getExtendedName() const { return extendedName; }
+        std::string getMainName() const;
+        std::string getExtendedName() const;
 
-        int getSize() const { return sizeData; }
-        int GetID() const { return this->ID;}
-        bool isActiveEntry();
+        int getSize() const;
+        int GetID() const;
         
     private:
         char reserved;
