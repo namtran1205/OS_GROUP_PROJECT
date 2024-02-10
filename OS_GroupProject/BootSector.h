@@ -7,8 +7,7 @@
 class BootSector : public VolumeBootRecord
 {
 public:
-    BootSector();
-    BootSector(SectorReader*);
+    BootSector(shared_ptr<SectorReader>);
     ~BootSector();
 public:
     void SetNumberOfFat(uint8_t num);
@@ -26,7 +25,7 @@ public:
     int GetNumberOfFat() const;
 
 public:
-    void readBootSector();
+    void readVolumeBootRecord() override;
 
 
 private:

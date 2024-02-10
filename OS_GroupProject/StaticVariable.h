@@ -6,6 +6,7 @@
 #include <vector>
 #include <filesystem>
 #include <sstream>
+#include <memory>
 #include <fstream>
 #include <windows.h>
 

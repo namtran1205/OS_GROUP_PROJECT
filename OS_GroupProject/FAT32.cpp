@@ -11,34 +11,15 @@
 //}
 FAT32::FAT32(LPCWSTR drive)
 {
-    sectorReader = new SectorReader(drive);
-    bootSector = new BootSector(sectorReader);
-    rootDirectory = new RDET();
-    fileAllocationTable = new FAT();
+    sectorReader = make_shared<SectorReader>(drive);
+    bootSector = make_shared<BootSector>(sectorReader);
+    fileAllocationTable =  make_shared<FAT>(bootSector);
+    rootDirectory =  make_shared<RDET>(fileAllocationTable);
 
 }
 FAT32::~FAT32()
 {
-    if (!bootSector)
-    {
-        delete bootSector;
-        bootSector = nullptr;
-    }
-    if (!rootDirectory)
-    {
-        delete rootDirectory;
-        rootDirectory = nullptr;
-    }
-    if (!fileAllocationTable)
-    {
-        delete fileAllocationTable;
-        fileAllocationTable = nullptr;
-    }
-    if (!sectorReader)
-    {
-        delete sectorReader;
-        sectorReader = nullptr;
-    }
+    //No need to delete any pointers because we're using smart pointer C++
 }
 
 
@@ -46,10 +27,12 @@ FAT32::~FAT32()
 
 void FAT32::readVolume()
 {
-    bootSector->readBootSector();
+    bootSector->readVolumeBootRecord();
     fileAllocationTable->readFatTable(bootSector, sectorReader);
     rootDirectory->readDirectory();
 }
+
+
 string FAT32::toString() const
 {
     return "FAT32";

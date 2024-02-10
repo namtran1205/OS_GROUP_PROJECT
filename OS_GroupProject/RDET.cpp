@@ -1,10 +1,6 @@
 #include "RDET.h"
 
-RDET::RDET()
-{
-}
-
-RDET::RDET(const uint32_t &startCluster)
+RDET::RDET(shared_ptr<FAT> fatTable)
 {
 }
 
@@ -15,10 +11,10 @@ int RDET::getSize() const
 
 int RDET::getStartCluster() const
 {
-    return 0;
+    return this->startCluster;
 }
 
-vector<Entry *> RDET::getEntries() const
+vector<shared_ptr<Entry>> RDET::getEntries() const
 {
     return this->entries;
 }

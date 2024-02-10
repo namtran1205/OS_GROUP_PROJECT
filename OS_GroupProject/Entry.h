@@ -54,7 +54,7 @@ class Entry
         std::string extend2;
         
        
-        std::vector<Entry*> ListSubEntry; // must have List sub entry because an entry may have many sub entries in it
+        std::vector<shared_ptr<Entry>> ListSubEntry; // must have List sub entry because an entry may have many sub entries in it
         uint16_t StartCluster;
       
 

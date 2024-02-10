@@ -1,10 +1,7 @@
 #include "BootSector.h"
 
-BootSector::BootSector()
-{
-    BytePerSector = 512;
-}
-BootSector::BootSector(SectorReader* sectorReader)
+
+BootSector::BootSector(shared_ptr<SectorReader> sectorReader)
 {
     std::vector<BYTE> bootSector = sectorReader->ReadSector(0, 1);
     this->numberOfFat = (uint8_t)(*(bootSector.begin() + 0x10));
@@ -33,7 +30,7 @@ uint8_t BootSector::GetSectorPerCluster() const
     return SectorPerCluster;
 }
 
-void BootSector::readBootSector()
+void BootSector::readVolumeBootRecord()
 {
     std::cout << "Nf = " << (int)numberOfFat << std::endl;
     std::cout << "Sf = " << SectorPerFat << std::endl;

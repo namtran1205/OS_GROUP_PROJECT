@@ -30,10 +30,10 @@ public:
    
 private:
 
-    BootSector* bootSector;
-    RDET* rootDirectory;
-    FAT* fileAllocationTable;
-    SectorReader* sectorReader;
+    shared_ptr<BootSector> bootSector;
+    shared_ptr<RDET> rootDirectory;
+    shared_ptr<FAT> fileAllocationTable;
+    shared_ptr<SectorReader> sectorReader;
 };
 
 

@@ -1,6 +1,10 @@
 #include "FAT.h"
 
-void FAT::readFatTable(BootSector* bootSector, SectorReader* sectorReader)
+FAT::FAT(shared_ptr<BootSector> bootSector)
+{
+}
+
+void FAT::readFatTable(shared_ptr<BootSector> bootSector, shared_ptr<SectorReader> sectorReader)
 {
 	numberOfFat = bootSector->GetNumberOfFat();
 	int FatSize = numberOfFat * bootSector->GetSectorPerFat();
@@ -11,8 +15,6 @@ void FAT::readFatTable(BootSector* bootSector, SectorReader* sectorReader)
 		uint32_t res = Utils::Convert2LitleEndian(FatSector.begin() + 4 * i, 4);
 		fatTable.push_back(res);
 	}
-
-
 }
 
 vector<uint32_t> FAT::GetFatTbale()

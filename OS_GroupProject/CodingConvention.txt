@@ -72,3 +72,9 @@ Quy ước đặt tên:
 		- biến và hàm: Đặt tên rõ ràng ý nghĩa và đặt theo quy ước, viết hoa chữ cái đầu mỗi từ TRỪ CHỮ Đầu Tiên. Vd: readDirectory, getSectorPerCluster,...
 		- biến toàn cục: viết in hoa tất cả vd: FIX_WIDTH,..
 		– Tất cả thư viện được khai báo trong header file,  file .cpp chỉ include header file cùng tên, vd Entry.cpp chỉ include Entry.h
+
+
+Cách sử dụng smart pointer C++ thay cho pointer C:
+	https://learn.microsoft.com/en-us/cpp/cpp/smart-pointers-modern-cpp?view=msvc-170&viewFallbackFrom=vs-2019
+Ưu điểm: Sẽ không có memory leak
+Nhược điểm: Chưa biết - chắc là sẽ chạy chậm hơn 1 tí (không đáng kể) *I think so..!!

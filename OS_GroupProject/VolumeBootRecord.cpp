@@ -7,6 +7,7 @@ VolumeBootRecord::~VolumeBootRecord()
 {
 }
 
-void VolumeBootRecord::ReadSector(SectorReader* sectorReader)
+void VolumeBootRecord::readVolumeBootRecord()
 {
+
 }

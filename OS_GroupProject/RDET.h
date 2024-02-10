@@ -1,20 +1,12 @@
 #pragma once
 #include "StaticVariable.h"
 #include "Entry.h"
+#include "FAT.h"
 
 class RDET
 {
 public:
-    RDET();
-    RDET(const uint32_t& startCluster);
-
-
-
-
-
-
-
-
+    RDET(shared_ptr<FAT>);
 
     // std::vector<Entry> getActiveEntry() const { return entries; }
     // bool findEntry(int,Entry&) const;
@@ -30,7 +22,7 @@ public:
 public:
     virtual int getSize() const;
     virtual int getStartCluster() const;
-    virtual vector<Entry*> getEntries() const;
+    virtual vector<shared_ptr<Entry>> getEntries() const;
 
 
 public:
@@ -38,7 +30,7 @@ public:
 
 
 private:
-    std::vector<Entry*> entries;
+    std::vector<shared_ptr<Entry>> entries;
     uint16_t size;
 	uint16_t startCluster;
 
