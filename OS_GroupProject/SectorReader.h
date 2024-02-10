@@ -9,7 +9,7 @@ public:
     ~SectorReader();
 
 public:
-    vector<BYTE> ReadSector( int64_t readPoint, int sector) const;
+    vector<BYTE> ReadSector(int64_t readPoint, int sector) const;
 public:
     void SetDirve(LPCWSTR);
     void SetByteOfSector(int);

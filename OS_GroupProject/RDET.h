@@ -20,19 +20,25 @@ public:
     //     return StartCluster;
     // }
 public:
-    virtual int getSize() const;
-    virtual int getStartCluster() const;
-    virtual vector<shared_ptr<Entry>> getEntries() const;
-
+    int getSize() const;
+    int getStartCluster() const;
+    vector<shared_ptr<Entry>> getEntries() const;
 
 public:
+    virtual string toString() const;
+public:
     void readDirectory();
-
-
-private:
+protected:
     std::vector<shared_ptr<Entry>> entries;
     uint16_t size;
 	uint16_t startCluster;
+    uint16_t clusterNumber;   
+};
 
-   
+class SDET : public RDET
+{
+public:
+    SDET(shared_ptr<FAT>);
+public:
+    string toString() const override;
 };

@@ -19,7 +19,20 @@ vector<shared_ptr<Entry>> RDET::getEntries() const
     return this->entries;
 }
 
+string RDET::toString() const
+{
+    return "RDET";
+}
+
 void RDET::readDirectory()
 {
 }
 
+SDET::SDET(shared_ptr<FAT> fatTable) : RDET(fatTable)
+{
+}
+
+string SDET::toString() const
+{
+    return "SDET";
+}

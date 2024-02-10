@@ -1,65 +1,155 @@
 #include "Entry.h"
 
-
-Entry::Entry(std::vector<BYTE> data)
+Attribute::Attribute()
 {
-    if (data.size() >= 32) {
-        // Parse the sector data and initialize the Entry members accordingly
-        if (data[11] == 0x0F)
-        {
-            isSubEntry = true;
-            unicode = std::wstring(data.begin() + 1, data.begin() + 11);
-            extend1 = std::string(data.begin() + 14, data.begin() + 28);
-            extend2 = std::string(data.begin() + 28, data.begin() + 32);
-        }
-        else
-        {
-            attributes = static_cast<Attribute>(data[11]);
-            reserved = data[12];
-            mainName = std::string(data.begin(), data.begin() + 9);
-            extendedName = std::string(data.begin() + 14, data.begin() + 26);
-            isFolder = ((attributes & 0x10) != 0);
-            isEmpty = (data[0] == 0x00);
-            isLabel = ((attributes & 0x08) != 0);
-            isSystem = ((attributes & 0x04) != 0);
-            isDeleted = (data[0] == 0xE5);
-        }
+}
+
+Attribute::Attribute(BYTE data) : Attribute()
+{
+    this->data = data;
+}
+
+bool Attribute::isReadOnly() const
+{
+    return ((data & 0x01) != 0);
+}
+
+bool Attribute::isHidden() const
+{
+    return  ((data & 0x02) != 0);
+}
+
+bool Attribute::isSystem() const
+{
+    return ((data & 0x04) != 0);
+}
+
+bool Attribute::isVollabel() const
+{
+    return  ((data & 0x08) != 0);
+}
+
+bool Attribute::isDirectory() const
+{
+    return  ((data & 0x10) != 0);
+}
+
+bool Attribute::isArchive() const
+{
+    return  ((data & 0x20) != 0);
+}
+
+Entry::Entry()
+{
+}
+
+Entry::Entry(std::vector<BYTE> datas) : Entry()
+{
+    this->datas = datas;
+}
+
+
+
+MainEntry::MainEntry()
+{
+
+}
+
+MainEntry::MainEntry(std::vector<BYTE> datas) : Entry(datas)
+{
+    // if (datas.size() >= 32) {
+    //     // Parse the sector data and initialize the Entry members accordingly
+    //     if (datas[11] == 0x0F)
+    //     {
+    //         isSubEntry = true;
+    //         unicode = std::wstring(datas.begin() + 1, datas.begin() + 11);
+    //         extend1 = std::string(datas.begin() + 14, datas.begin() + 28);
+    //         extend2 = std::string(datas.begin() + 28, datas.begin() + 32);
+    //     }
+    //     else
+    //     {
+    mainName = std::string(datas.begin(), datas.begin() + 7);
+
+    extendedName = std::string(datas.begin() + 8, datas.begin() + 10);
+
+    attributes = static_cast<Attribute>(datas[11]);
+
+    reserved = datas[12];
+
+    int highWord = int(Utils::Convert2LitleEndian(datas.begin() + 0x14,2));
+    int lowWord = int(Utils::Convert2LitleEndian(datas.begin() + 0x1A,2));
+    startCluster = (highWord << 8) + lowWord;
+    
+    sizeData = int(Utils::Convert2LitleEndian(datas.begin() + 0x1C, 4));
+        // }
         // Parse other relevant information and initialize class members
         // ...
-    }
-    else {
+    // }
+    // else {
         // Handle invalid sector data size
         // You might want to throw an exception or handle it based on your error-handling strategy.
-    }
+    // }
 }
 
-bool Entry::isActiveEntry() const
-{
-    return !(isDeleted || isEmpty || isSubEntry || isLabel || isSystem);
-}
+// bool Entry::isActiveEntry() const
+// {
+//     return !(iSh || isEmpty || isLabel || isSystem);
+// }
 
-bool Entry::is_Folder() const
-{
-    return isFolder;
-}
 
-std::string Entry::getMainName() const
+std::string MainEntry::getMainName() const
 {
     return mainName;
 }
-std::string Entry::getExtendedName() const
+std::string MainEntry::getExtendedName() const
 {
     return extendedName;
 }
 
-int Entry::getSize() const
+int MainEntry::getStartCluster() const
+{
+    return this->startCluster;
+}
+
+int MainEntry::getSize() const
 {
     return sizeData;
 }
-int Entry::GetID() const
+
+SubEntry::SubEntry()
 {
-    return this->ID;
 }
+
+SubEntry::SubEntry(vector<BYTE> datas) : Entry(datas)
+{
+    seq = int(Utils::Convert2LitleEndian(datas.begin(), 1));
+    unicode = wstring(datas.begin() + 1, datas.begin() + 10);
+}
+
+
+
+int SubEntry::getSeq() const
+{
+    return this->seq;
+}
+
+wstring SubEntry::getUnicode() const
+{
+    return this->unicode;
+}
+
+string SubEntry::getExtend1() const
+{
+    return this->extend1;
+}
+
+string SubEntry::getExtend2() const
+{
+    return this->extend2;
+}
+
+
+
 
 //bool Entry::findEntry(int id, Entry& res) const
 //{
@@ -164,3 +254,4 @@ void RDET::AccessEntry(Volume a, int id)
 // {
 
 // }
+
