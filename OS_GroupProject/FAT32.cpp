@@ -42,18 +42,13 @@ FAT32::~FAT32()
 }
 
 
-void FAT32::readRDET()
-{
-    this->rootDirectory->show();
-}
-
 
 
 void FAT32::readVolume()
 {
-    bootSector->ReadBootSector();
-    fileAllocationTable->ReadFatTable(bootSector, sectorReader);
-    
+    bootSector->readBootSector();
+    fileAllocationTable->readFatTable(bootSector, sectorReader);
+    rootDirectory->readDirectory();
 }
 string FAT32::toString() const
 {

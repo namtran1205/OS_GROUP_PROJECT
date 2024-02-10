@@ -7,6 +7,15 @@ class RDET
 public:
     RDET();
     RDET(const uint32_t& startCluster);
+
+
+
+
+
+
+
+
+
     // std::vector<Entry> getActiveEntry() const { return entries; }
     // bool findEntry(int,Entry&) const;
     // //std::vector<std::string> Parse_path(std::string path);
@@ -19,7 +28,13 @@ public:
     //     return StartCluster;
     // }
 public:
-    void show();
+    virtual int getSize() const;
+    virtual int getStartCluster() const;
+    virtual vector<Entry*> getEntries() const;
+
+
+public:
+    void readDirectory();
 
 
 private:

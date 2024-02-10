@@ -26,7 +26,7 @@ public:
     int GetNumberOfFat() const;
 
 public:
-    void ReadBootSector();
+    void readBootSector();
 
 
 private:

@@ -24,12 +24,10 @@ public:
     
 
 public:
+    string toString() const override;
     
     void readVolume() override;
-    
-    void readRDET();
    
-    string toString() const override;
 private:
 
     BootSector* bootSector;

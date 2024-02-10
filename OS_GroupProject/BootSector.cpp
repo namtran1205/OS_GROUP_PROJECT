@@ -33,7 +33,7 @@ uint8_t BootSector::GetSectorPerCluster() const
     return SectorPerCluster;
 }
 
-void BootSector::ReadBootSector()
+void BootSector::readBootSector()
 {
     std::cout << "Nf = " << (int)numberOfFat << std::endl;
     std::cout << "Sf = " << SectorPerFat << std::endl;

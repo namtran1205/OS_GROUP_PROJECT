@@ -1,6 +1,6 @@
 #include "FAT.h"
 
-void FAT::ReadFatTable(BootSector* bootSector, SectorReader* sectorReader)
+void FAT::readFatTable(BootSector* bootSector, SectorReader* sectorReader)
 {
 	numberOfFat = bootSector->GetNumberOfFat();
 	int FatSize = numberOfFat * bootSector->GetSectorPerFat();
