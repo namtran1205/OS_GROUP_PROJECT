@@ -1,8 +1,8 @@
 #pragma once
 #include "StaticVariable.h"
 
-class Entry;
 class Attribute;
+class Entry;
 class MainEntry;
 class SubEntry;
 
@@ -27,76 +27,86 @@ private:
     BYTE data;
 };
 
-
 class Entry
 {
-    public:
-        Entry();
-        Entry(std::vector<BYTE>);
-    public:
-        virtual string toString() const = 0;
-    protected: 
-        vector<BYTE> datas;
+public:
+    Entry();
+    Entry(std::vector<BYTE>);
+
+public:
+    virtual string toString(int level) const = 0;
+
+protected:
+    vector<BYTE> datas;
 };
-
-
 
 class MainEntry : public Entry
 {
-    public:
-        MainEntry();
-        MainEntry(std::vector<BYTE>);
+public:
+    MainEntry();
+    MainEntry(std::vector<BYTE>);
 
-    public:
-        // bool is_Folder() const;
-        // bool isActiveEntry() const;
+public:
+    // bool is_Folder() const;
+    // bool isActiveEntry() const;
 
-        std::string getMainName() const;
-        std::string getExtendedName() const;
-        int getStartCluster() const;
-        int getSize() const;
-        // int GetID() const;
-        
-    private:
-        char reserved;
-        std::string mainName;
-        std::string extendedName;
-        Attribute attributes;
-        std::chrono::system_clock::time_point dateCreated;
-        std::chrono::system_clock::time_point lastAccess;
-        std::chrono::system_clock::time_point datedUpdated;
-        int sizeData;
-        int startCluster;
-        // int ID; // create ID for entry
+    std::string getMainName() const;
+    std::string getExtendedName() const;
+    int getStartCluster() const;
+    int getSize() const;
+    // int GetID() const;
 
-	    // bool isFolder;
-        // bool isEmpty;
-        // bool isLabel;
-        // bool isSystem;
-        // bool isDeleted;
-        std::vector<shared_ptr<SubEntry>> subEntries; // must have List sub entry because an entry may have many sub entries in it
+public:
+    string toString(int level) const override;
+
+protected:
+    int startCluster;
+
+private:
+    char reserved;
+    std::string mainName;
+    std::string extendedName;
+    Attribute attributes;
+    std::chrono::system_clock::time_point dateCreated;
+    std::chrono::system_clock::time_point lastAccess;
+    std::chrono::system_clock::time_point datedUpdated;
+    int sizeData;
+    
+    //If the file/folder's name is too long:
+    //then the LFN Entry (Long Files Name) will be created to store these names without changing Main Entry's format
+    //LFN Entry is the other name of SubEntry.
+    std::vector<shared_ptr<SubEntry>> subEntries; 
+
+
+    // int ID; // create ID for entry
+
+    // bool isFolder;
+    // bool isEmpty;
+    // bool isLabel;
+    // bool isSystem;
+    // bool isDeleted;
 };
 
-
-class SubEntry : public Entry 
+class SubEntry : public Entry
 {
 public:
     SubEntry();
     SubEntry(vector<BYTE>);
+
 public:
     int getSeq() const;
     wstring getUnicode() const;
-    string getExtend1() const;
-    string getExtend2() const;
+    wstring getExtend1() const;
+    wstring getExtend2() const;
+
+public:
+    string toString(int level) const override;
 
 private:
     int seq;
-    std::wstring unicode;
-    std::string extend1;
-    std::string extend2;
+    wstring unicode;
+    wstring extend1;
+    wstring extend2;
+
+    string name;
 };
-
-
-
-
-

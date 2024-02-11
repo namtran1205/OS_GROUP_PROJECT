@@ -22,7 +22,8 @@ public:
 public:
     int getSize() const;
     int getStartCluster() const;
-    vector<shared_ptr<Entry>> getEntries() const;
+    shared_ptr<FAT> getFAT() const;
+    vector<shared_ptr<MainEntry>> getMainEntries() const;
 
 public:
     virtual string toString() const;
@@ -33,7 +34,7 @@ protected:
     uint16_t size;
 	uint16_t startCluster;
     uint16_t clusterNumber;   
-    std::vector<shared_ptr<Entry>> entries;
+    std::vector<shared_ptr<MainEntry>> entries;
 };
 
 class SDET : public RDET
@@ -42,4 +43,5 @@ public:
     SDET(shared_ptr<FAT>);
 public:
     string toString() const override;
+
 };

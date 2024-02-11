@@ -116,6 +116,12 @@ int MainEntry::getSize() const
     return sizeData;
 }
 
+string MainEntry::toString(int level) const
+{
+    return "MainEntry";
+}
+
+
 SubEntry::SubEntry() : Entry()
 {
 }
@@ -138,17 +144,25 @@ wstring SubEntry::getUnicode() const
     return this->unicode;
 }
 
-string SubEntry::getExtend1() const
+wstring SubEntry::getExtend1() const
 {
     return this->extend1;
 }
 
-string SubEntry::getExtend2() const
+wstring SubEntry::getExtend2() const
 {
     return this->extend2;
 }
 
-
+string SubEntry::toString(int level) const
+{
+    //for(int i = 0; i < this->.size(); ++i)
+    //{
+    //    weak_ptr<Entry> entry = entries[i];
+    //    entry.lock()->toString(0);
+    //}
+    return "SubEntry";
+}
 
 
 //bool Entry::findEntry(int id, Entry& res) const
