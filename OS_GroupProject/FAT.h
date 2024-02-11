@@ -10,7 +10,7 @@ public:
 
 public:
 	void readFatTable();
-	vector<uint32_t> GetFatTbale();
+	vector<uint32_t> GetFatTable();
 
 private:
 	shared_ptr<BootSector> bootSector;

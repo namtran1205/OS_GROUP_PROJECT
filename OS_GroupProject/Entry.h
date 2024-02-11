@@ -1,11 +1,14 @@
 #pragma once
 #include "StaticVariable.h"
+#include "FAT.h"
+#include "RDET.h"
+
 
 class Attribute;
 class Entry;
 class MainEntry;
 class SubEntry;
-
+class SDET;
 
 class Attribute 
 {
@@ -44,7 +47,7 @@ class MainEntry : public Entry
 {
 public:
     MainEntry();
-    MainEntry(std::vector<BYTE>);
+    MainEntry(shared_ptr<FAT>,vector<BYTE>);
 
 public:
     // bool is_Folder() const;
@@ -61,7 +64,6 @@ public:
 
 protected:
     int startCluster;
-
 private:
     char reserved;
     std::string mainName;
@@ -71,12 +73,16 @@ private:
     std::chrono::system_clock::time_point lastAccess;
     std::chrono::system_clock::time_point datedUpdated;
     int sizeData;
-    
+
     //If the file/folder's name is too long:
     //then the LFN Entry (Long Files Name) will be created to store these names without changing Main Entry's format
     //LFN Entry is the other name of SubEntry.
-    std::vector<shared_ptr<SubEntry>> subEntries; 
+    std::vector<shared_ptr<SubEntry>> subEntries;
 
+
+private:
+    shared_ptr<SDET> subDirectory;
+    shared_ptr<FAT> fatTable;
 
     // int ID; // create ID for entry
 

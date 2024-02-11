@@ -1,7 +1,11 @@
 #pragma once
 #include "StaticVariable.h"
-#include "Entry.h"
 #include "FAT.h"
+#include "Entry.h"
+
+class RDET;
+class SDET;
+class MainEntry;
 
 class RDET
 {

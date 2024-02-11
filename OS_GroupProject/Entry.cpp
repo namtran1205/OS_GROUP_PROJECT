@@ -50,24 +50,16 @@ Entry::Entry(std::vector<BYTE> datas) : Entry()
 
 
 
-MainEntry::MainEntry()
+MainEntry::MainEntry() : Entry()
 {
 
 }
 
-MainEntry::MainEntry(std::vector<BYTE> datas) : Entry(datas)
+
+MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> datas) : Entry(datas)
 {
-    // if (datas.size() >= 32) {
-    //     // Parse the sector data and initialize the Entry members accordingly
-    //     if (datas[11] == 0x0F)
-    //     {
-    //         isSubEntry = true;
-    //         unicode = std::wstring(datas.begin() + 1, datas.begin() + 11);
-    //         extend1 = std::string(datas.begin() + 14, datas.begin() + 28);
-    //         extend2 = std::string(datas.begin() + 28, datas.begin() + 32);
-    //     }
-    //     else
-    //     {
+    this->fatTable = fatTable;
+
     mainName = std::string(datas.begin(), datas.begin() + 7);
 
     extendedName = std::string(datas.begin() + 8, datas.begin() + 10);
@@ -81,14 +73,15 @@ MainEntry::MainEntry(std::vector<BYTE> datas) : Entry(datas)
     startCluster = (highWord << 8) + lowWord;
     
     sizeData = int(Utils::Convert2LitleEndian(datas.begin() + 0x1C, 4));
-        // }
-        // Parse other relevant information and initialize class members
-        // ...
-    // }
-    // else {
-        // Handle invalid sector data size
-        // You might want to throw an exception or handle it based on your error-handling strategy.
-    // }
+
+
+    if(attributes.isDirectory())
+    {
+        subDirectory = make_shared<SDET>(fatTable);
+    }
+    else
+        subDirectory = nullptr;
+
 }
 
 // bool Entry::isActiveEntry() const

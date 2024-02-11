@@ -18,7 +18,7 @@ void FAT::readFatTable()
 	}
 }
 
-vector<uint32_t> FAT::GetFatTbale()
+vector<uint32_t> FAT::GetFatTable()
 {
 	return fatTable;
 }
