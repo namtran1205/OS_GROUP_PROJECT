@@ -30,9 +30,7 @@ public:
     vector<shared_ptr<MainEntry>> getMainEntries() const;
 
 public:
-    virtual string toString() const;
-public:
-    void readDirectory();
+    virtual void readDirectory(int level = 0);
 protected:
     shared_ptr<FAT> fatTable;
     uint16_t size;
@@ -45,7 +43,9 @@ class SDET : public RDET
 {
 public:
     SDET(shared_ptr<FAT>);
+
 public:
-    string toString() const override;
+    void readDirectory(int level = 0) override;
+
 
 };

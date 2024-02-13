@@ -64,7 +64,8 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> datas) : Entry(datas
 
     extendedName = std::string(datas.begin() + 8, datas.begin() + 10);
 
-    attributes = static_cast<Attribute>(datas[11]);
+    attributes = make_shared<Attribute>(datas[11]);
+    // attributes = static_cast<Attribute>(datas[11]);
 
     reserved = datas[12];
 
@@ -75,7 +76,7 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> datas) : Entry(datas
     sizeData = int(Utils::Convert2LitleEndian(datas.begin() + 0x1C, 4));
 
 
-    if(attributes.isDirectory())
+    if(attributes->isDirectory())
     {
         subDirectory = make_shared<SDET>(fatTable);
     }
@@ -109,9 +110,35 @@ int MainEntry::getSize() const
     return sizeData;
 }
 
+shared_ptr<Attribute> MainEntry::getAttribute() const
+{
+    return this->attributes;
+}
+
+shared_ptr<SDET> MainEntry::getSubDirectory() const
+{
+    return this->subDirectory;
+}
+
+shared_ptr<FAT> MainEntry::getFatTable() const
+{
+    return this->fatTable;
+}
+
+string MainEntry::getFullName() const
+{
+
+    //This function which included logical implementation returns the full name of file/folders
+    return string();
+}
+
 string MainEntry::toString(int level) const
 {
-    return "MainEntry";
+    string res = "";
+    for(int i = 0; i < level; ++i)
+        res += "\t";
+    res += this->getFullName();
+    return res;
 }
 
 
