@@ -51,17 +51,19 @@ public:
 
 public:
     // bool is_Folder() const;
-    // bool isActiveEntry() const;
 
     std::string getMainName() const;
     std::string getExtendedName() const;
     int getStartCluster() const;
     int getSize() const;
-    // int GetID() const;
+ 
+     int getID() const;
 
 public:
     string toString(int level) const override;
 
+public:
+     bool isActiveEntry() const;
 protected:
     int startCluster;
 private:
@@ -73,6 +75,8 @@ private:
     std::chrono::system_clock::time_point lastAccess;
     std::chrono::system_clock::time_point datedUpdated;
     int sizeData;
+    bool isEmpty;
+    bool isDeleted;
 
     //If the file/folder's name is too long:
     //then the LFN Entry (Long Files Name) will be created to store these names without changing Main Entry's format
@@ -84,13 +88,8 @@ private:
     shared_ptr<SDET> subDirectory;
     shared_ptr<FAT> fatTable;
 
-    // int ID; // create ID for entry
-
-    // bool isFolder;
-    // bool isEmpty;
-    // bool isLabel;
-    // bool isSystem;
-    // bool isDeleted;
+     //int ID; // create ID for entry (first sector of entry)
+    
 };
 
 class SubEntry : public Entry

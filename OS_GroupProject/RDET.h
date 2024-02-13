@@ -28,11 +28,12 @@ public:
     int getStartCluster() const;
     shared_ptr<FAT> getFAT() const;
     vector<shared_ptr<MainEntry>> getMainEntries() const;
-
+    
 public:
     virtual string toString() const;
 public:
     void readDirectory();
+    bool findEntry(int, MainEntry&) const;
 protected:
     shared_ptr<FAT> fatTable;
     uint16_t size;

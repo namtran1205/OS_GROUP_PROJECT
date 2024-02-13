@@ -84,11 +84,6 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> datas) : Entry(datas
 
 }
 
-// bool Entry::isActiveEntry() const
-// {
-//     return !(iSh || isEmpty || isLabel || isSystem);
-// }
-
 
 std::string MainEntry::getMainName() const
 {
@@ -114,6 +109,10 @@ string MainEntry::toString(int level) const
     return "MainEntry";
 }
 
+bool MainEntry::isActiveEntry() const
+{
+    return !(isDeleted || isEmpty || attributes.isVollabel() || attributes.isSystem());
+}
 
 SubEntry::SubEntry() : Entry()
 {
@@ -194,12 +193,13 @@ string SubEntry::toString(int level) const
 //    return false;
 //}
 
-// std::string RDET::getString(std::vector<BYTE> data, int offset, int num) const
+// std::wstring RDET::getString(std::vector<BYTE> data, int offset, int num) const
 // {
-//     std::string res;
+//     std::wstring res;
 //     for (int i = offset; i < offset + num; i++)
 //         if (data[i] > 0x00 && data[i] < 0xFF)
 //             res += static_cast<char>(data[i]);
+//     res = wstring(data.begin() + offset, data.begin() + offset + num);
 //     return res;
 // }
 

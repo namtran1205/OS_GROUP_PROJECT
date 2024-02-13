@@ -39,6 +39,14 @@ void RDET::readDirectory()
     }
 }
 
+bool RDET::findEntry(int id, MainEntry& a) const
+{
+    for (int i = 0; i < entries.size(); i++)
+       if (entries[i]->isActiveEntry() && entries[i]->getID() == id)
+            return true;
+    return false;
+}
+
 SDET::SDET(shared_ptr<FAT> fatTable) : RDET(fatTable)
 {
 }
