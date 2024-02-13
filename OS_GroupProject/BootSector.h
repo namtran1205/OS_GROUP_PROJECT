@@ -33,13 +33,16 @@ public:
 
 private:
     shared_ptr<SectorReader> sectorReader;
-
     uint8_t numberOfFat;
-    uint32_t SectorPerFat;
-    uint8_t SectorPerCluster;
-    uint16_t SectorPerBootsector;
-    uint32_t SectorVolume;
-    uint16_t BytePerSector;
-    uint32_t StartClusterOfRDET;
+    uint32_t numberEntriesOfRDET;
+    uint32_t sectorPerFat;
+    uint8_t sectorPerCluster;
+    uint16_t sectorPerBootsector;
+    uint32_t sectorVolume;
+    uint32_t sectorRDET;
+    uint16_t bytePerSector;
+    uint32_t startClusterOfFAT1;
+    uint32_t startClusterOfRDET;
+    uint32_t startClusterOfDATA;
     HANDLE device = INVALID_HANDLE_VALUE;
 };

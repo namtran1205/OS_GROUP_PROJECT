@@ -3,6 +3,8 @@
 RDET::RDET(shared_ptr<FAT> fatTable)
 {
     this->fatTable = fatTable;
+
+    
 }
 
 int RDET::getSize() const
@@ -40,6 +42,7 @@ void RDET::readDirectory(int level)
 
 SDET::SDET(shared_ptr<FAT> fatTable) : RDET(fatTable)
 {
+    
 }
 
 void SDET::readDirectory(int level)

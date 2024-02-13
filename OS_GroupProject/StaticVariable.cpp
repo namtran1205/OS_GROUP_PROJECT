@@ -1,5 +1,12 @@
 #include "StaticVariable.h"
 
+namespace StaticVariable
+{
+    //This place contains global variable
+    int BYTES_PER_CLUSTER = 4;
+}
+
+
 
 
 uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)

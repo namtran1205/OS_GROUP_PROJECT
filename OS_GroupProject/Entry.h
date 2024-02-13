@@ -71,6 +71,7 @@ public:
 
 protected:
     int startCluster;
+    int sizeData;
 private:
     char reserved;
     std::string mainName;
@@ -79,7 +80,6 @@ private:
     std::chrono::system_clock::time_point dateCreated;
     std::chrono::system_clock::time_point lastAccess;
     std::chrono::system_clock::time_point datedUpdated;
-    int sizeData;
 
     //If the file/folder's name is too long:
     //then the LFN Entry (Long Files Name) will be created to store these names without changing Main Entry's format
@@ -91,6 +91,9 @@ private:
     shared_ptr<SDET> subDirectory;
     shared_ptr<FAT> fatTable;
 
+};
+
+
     // int ID; // create ID for entry
 
     // bool isFolder;
@@ -98,7 +101,7 @@ private:
     // bool isLabel;
     // bool isSystem;
     // bool isDeleted;
-};
+
 
 class SubEntry : public Entry
 {
