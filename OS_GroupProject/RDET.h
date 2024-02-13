@@ -30,6 +30,7 @@ public:
     vector<shared_ptr<MainEntry>> getMainEntries() const;
     
 public:
+    virtual void readDirectory(int level = 0);
     virtual string toString() const;
 public:
     void readDirectory();
@@ -46,7 +47,9 @@ class SDET : public RDET
 {
 public:
     SDET(shared_ptr<FAT>);
+
 public:
-    string toString() const override;
+    void readDirectory(int level = 0) override;
+
 
 };

@@ -59,6 +59,13 @@ public:
  
      int getID() const;
 
+    shared_ptr<Attribute> getAttribute() const;
+    shared_ptr<SDET> getSubDirectory() const;
+    shared_ptr<FAT> getFatTable() const;
+
+public:
+    string getFullName() const;
+
 public:
     string toString(int level) const override;
 
@@ -70,7 +77,7 @@ private:
     char reserved;
     std::string mainName;
     std::string extendedName;
-    Attribute attributes;
+    shared_ptr<Attribute> attributes;
     std::chrono::system_clock::time_point dateCreated;
     std::chrono::system_clock::time_point lastAccess;
     std::chrono::system_clock::time_point datedUpdated;
