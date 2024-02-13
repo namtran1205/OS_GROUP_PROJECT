@@ -138,7 +138,7 @@ string MainEntry::toString(int level) const
 
 bool MainEntry::isActiveEntry() const
 {
-    return !(isDeleted || isEmpty || attributes.isVollabel() || attributes.isSystem());
+    return !(isDeleted || isEmpty || attributes->isVollabel() || attributes->isSystem());
 }
 
 SubEntry::SubEntry() : Entry()

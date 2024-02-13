@@ -31,9 +31,6 @@ public:
     
 public:
     virtual void readDirectory(int level = 0);
-    virtual string toString() const;
-public:
-    void readDirectory();
     bool findEntry(int, MainEntry&) const;
 protected:
     shared_ptr<FAT> fatTable;
