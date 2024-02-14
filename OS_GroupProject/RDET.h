@@ -14,9 +14,11 @@ public:
 
 
 public:
+    //The size of RDET is stored as number of "BYTE" unit.
     int getSize() const;
+    int getNumberOfSector() const;
     int getStartCluster() const;
-    shared_ptr<FAT> getFAT() const;
+    shared_ptr<FAT> getFatTable() const;
     vector<shared_ptr<MainEntry>> getMainEntries() const;
 
 public:
@@ -25,7 +27,7 @@ protected:
     shared_ptr<FAT> fatTable;
     uint16_t size;
 	uint16_t startCluster;
-    uint16_t clusterNumber;   
+    uint16_t numberOfSector;   
     std::vector<shared_ptr<MainEntry>> entries;
 };
 
@@ -36,8 +38,6 @@ public:
 
 public:
     void readDirectory(int level = 0) override;
-
-
 };
 
 

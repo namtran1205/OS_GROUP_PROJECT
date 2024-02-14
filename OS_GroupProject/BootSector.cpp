@@ -31,11 +31,11 @@ shared_ptr<SectorReader> BootSector::getSectorReader() const
     return this->sectorReader;
 }
 
-uint16_t BootSector::GetBytePerSector() const
+uint16_t BootSector::getBytePerSector() const
 {
     return bytePerSector;
 }
-uint8_t BootSector::GetSectorPerCluster() const
+uint8_t BootSector::getSectorPerCluster() const
 {
     return sectorPerCluster;
 }
@@ -50,22 +50,22 @@ void BootSector::readVolumeBootRecord()
     std::cout << "Bytes per Sectors - BytePerSector = " << bytePerSector << std::endl;
 }
 
-void BootSector::SetNumberOfFat(uint8_t num)
+void BootSector::setNumberOfFat(uint8_t num)
 {
     numberOfFat = num;
 }
 
-void BootSector::SetSectorPerCluster(uint8_t sector)
+void BootSector::setSectorPerCluster(uint8_t sector)
 {
     sectorPerCluster = sector;
 }
 
-void BootSector::SetSectorPerBootSector(uint16_t sector)
+void BootSector::setSectorPerBootSector(uint16_t sector)
 {
     sectorPerBootsector = sector;
 }
 
-void BootSector::SetSectorVolume(uint32_t sector)
+void BootSector::setSectorVolume(uint32_t sector)
 {
     sectorVolume = sector;
 }
@@ -77,9 +77,14 @@ int BootSector::GetNumberOfFat() const
 
 
 
-uint32_t BootSector::GetStartClusterOfRootDirectory() const
+uint32_t BootSector::getStartClusterOfRDET() const
 {
     return startClusterOfRDET;
+}
+
+uint32_t BootSector::getNumberSectorOfRDET() const
+{
+    return this->sectorRDET;
 }
 
 int BootSector::ClusterToSector(uint16_t k) const

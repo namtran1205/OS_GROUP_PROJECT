@@ -4,6 +4,7 @@ namespace StaticVariable
 {
     //This place contains global variable
     int BYTES_PER_CLUSTER = 4;
+    int BYTES_PER_ENTRY = 32;
 }
 
 

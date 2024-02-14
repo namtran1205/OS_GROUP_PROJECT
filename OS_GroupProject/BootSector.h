@@ -10,18 +10,19 @@ public:
     BootSector(shared_ptr<SectorReader>);
     ~BootSector();
 public:
-    void SetNumberOfFat(uint8_t num);
-    void SetSectorPerCluster(uint8_t sector);
-    void SetSectorPerBootSector(uint16_t sector);
-    void SetSectorVolume(uint32_t sector);
+    void setNumberOfFat(uint8_t num);
+    void setSectorPerCluster(uint8_t sector);
+    void setSectorPerBootSector(uint16_t sector);
+    void setSectorVolume(uint32_t sector);
     
 public:
     shared_ptr<SectorReader> getSectorReader() const;
 
-    uint16_t GetBytePerSector() const;
-    uint8_t GetSectorPerCluster() const;
-    uint32_t GetStartClusterOfRootDirectory() const;
+    uint16_t getBytePerSector() const;
+    uint8_t getSectorPerCluster() const;
+    uint32_t getStartClusterOfRDET() const;
 
+    uint32_t getNumberSectorOfRDET() const;
     int ClusterToSector(uint16_t) const;
     int GetSectorPerFat() const;
     int GetSectorPerBootsector() const;

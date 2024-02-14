@@ -30,6 +30,7 @@ namespace StaticVariable
 {
     //This place contains global variable
     extern int BYTES_PER_CLUSTER;
+    extern int BYTES_PER_ENTRY;
 }
 
 
