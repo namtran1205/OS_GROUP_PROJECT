@@ -13,9 +13,9 @@ BootSector::BootSector(shared_ptr<SectorReader> sectorReader)
     this->sectorRDET = this->numberEntriesOfRDET * 32 / this->bytePerSector;
     this->sectorVolume = Utils::Convert2LitleEndian(bootSector.begin() + 0x20, 4);
     this->bytePerSector = Utils::Convert2LitleEndian(bootSector.begin() + 0xB, 2);
-    this->startClusterOfFAT1 = this->sectorPerBootsector;
-    this->startClusterOfRDET = this->startClusterOfFAT1 + this->sectorPerFat * this->numberOfFat;
-    this->startClusterOfDATA = this->startClusterOfRDET + sectorRDET;
+    this->startSectorOfFAT1 = this->sectorPerBootsector;
+    this->startSectorOfRDET = this->startSectorOfFAT1 + this->sectorPerFat * this->numberOfFat;
+    this->startSectorOfDATA = this->startSectorOfRDET + sectorRDET;
     sectorReader->SetByteOfSector(bytePerSector);
 }
 BootSector::~BootSector()
@@ -77,9 +77,19 @@ int BootSector::GetNumberOfFat() const
 
 
 
-uint32_t BootSector::getStartClusterOfRDET() const
+uint32_t BootSector::getStartSectorOfRDET() const
 {
-    return startClusterOfRDET;
+    return startSectorOfRDET;
+}
+
+uint32_t BootSector::getStartSectorOfFAT1() const
+{
+    return startSectorOfFAT1;
+}
+
+uint32_t BootSector::getStartSectorOfDATA() const
+{
+    return startSectorOfDATA;
 }
 
 uint32_t BootSector::getNumberSectorOfRDET() const

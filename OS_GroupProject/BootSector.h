@@ -20,8 +20,9 @@ public:
 
     uint16_t getBytePerSector() const;
     uint8_t getSectorPerCluster() const;
-    uint32_t getStartClusterOfRDET() const;
-
+    uint32_t getStartSectorOfRDET() const;
+    uint32_t getStartSectorOfFAT1() const;
+    uint32_t getStartSectorOfDATA() const;
     uint32_t getNumberSectorOfRDET() const;
     int ClusterToSector(uint16_t) const;
     int GetSectorPerFat() const;
@@ -42,8 +43,8 @@ private:
     uint32_t sectorVolume;
     uint32_t sectorRDET;
     uint16_t bytePerSector;
-    uint32_t startClusterOfFAT1;
-    uint32_t startClusterOfRDET;
-    uint32_t startClusterOfDATA;
+    uint32_t startSectorOfFAT1;
+    uint32_t startSectorOfRDET;
+    uint32_t startSectorOfDATA;
     HANDLE device = INVALID_HANDLE_VALUE;
 };

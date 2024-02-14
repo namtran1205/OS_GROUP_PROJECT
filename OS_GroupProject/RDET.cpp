@@ -3,9 +3,10 @@
 RDET::RDET(shared_ptr<FAT> fatTable)
 {
     this->fatTable = fatTable;
-    this->startCluster = fatTable->getBootSector()->getStartClusterOfRDET();
+    this->startSector = fatTable->getBootSector()->getStartSectorOfRDET();
     this->numberOfSector = fatTable->getBootSector()->getNumberSectorOfRDET();
     this->size = numberOfSector * fatTable->getBootSector()->getBytePerSector();
+    handleAllEntries();
 }
 
 int RDET::getSize() const
@@ -18,9 +19,9 @@ int RDET::getNumberOfSector() const
     return this->numberOfSector;
 }
 
-int RDET::getStartCluster() const
+int RDET::getStartSector() const
 {
-    return this->startCluster;
+    return this->startSector;
 }
 
 shared_ptr<FAT> RDET::getFatTable() const
@@ -31,6 +32,15 @@ shared_ptr<FAT> RDET::getFatTable() const
 vector<shared_ptr<MainEntry>> RDET::getMainEntries() const
 {
     return this->entries;
+}
+
+void RDET::handleAllEntries()
+{
+    int numberOfEntries = size / StaticVariable::BYTES_PER_ENTRY;
+
+    for(int i = 0; i < numberOfEntries; ++i)
+    {
+    }
 }
 
 void RDET::readDirectory(int level)

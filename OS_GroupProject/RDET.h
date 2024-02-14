@@ -17,16 +17,19 @@ public:
     //The size of RDET is stored as number of "BYTE" unit.
     int getSize() const;
     int getNumberOfSector() const;
-    int getStartCluster() const;
+    int getStartSector() const;
     shared_ptr<FAT> getFatTable() const;
     vector<shared_ptr<MainEntry>> getMainEntries() const;
+
+public:
+    void handleAllEntries();
 
 public:
     virtual void readDirectory(int level = 0);
 protected:
     shared_ptr<FAT> fatTable;
     uint16_t size;
-	uint16_t startCluster;
+	uint16_t startSector;
     uint16_t numberOfSector;   
     std::vector<shared_ptr<MainEntry>> entries;
 };
