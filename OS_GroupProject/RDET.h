@@ -12,6 +12,41 @@ class RDET
 public:
     RDET(shared_ptr<FAT>);
 
+
+public:
+    //The size of RDET is stored as number of "BYTE" unit.
+    int getSize() const;
+    int getNumberOfSector() const;
+    int getStartSector() const;
+    shared_ptr<FAT> getFatTable() const;
+    vector<shared_ptr<MainEntry>> getMainEntries() const;
+    
+public:
+    void handleAllEntries();
+
+public:
+    virtual void readDirectory(int level = 0);
+    bool findEntry(int, MainEntry&) const;
+protected:
+    shared_ptr<FAT> fatTable;
+    uint16_t size;
+	uint16_t startSector;
+    uint16_t numberOfSector;   
+    std::vector<shared_ptr<MainEntry>> entries;
+};
+
+class SDET : public RDET
+{
+public:
+    SDET(shared_ptr<FAT>);
+
+public:
+    void readDirectory(int level = 0) override;
+};
+
+
+
+
     // std::vector<Entry> getActiveEntry() const { return entries; }
     // bool findEntry(int,Entry&) const;
     // //std::vector<std::string> Parse_path(std::string path);
@@ -23,30 +58,3 @@ public:
     // {
     //     return StartCluster;
     // }
-public:
-    int getSize() const;
-    int getStartCluster() const;
-    shared_ptr<FAT> getFAT() const;
-    vector<shared_ptr<MainEntry>> getMainEntries() const;
-    
-public:
-    virtual void readDirectory(int level = 0);
-    bool findEntry(int, MainEntry&) const;
-protected:
-    shared_ptr<FAT> fatTable;
-    uint16_t size;
-	uint16_t startCluster;
-    uint16_t clusterNumber;   
-    std::vector<shared_ptr<MainEntry>> entries;
-};
-
-class SDET : public RDET
-{
-public:
-    SDET(shared_ptr<FAT>);
-
-public:
-    void readDirectory(int level = 0) override;
-
-
-};

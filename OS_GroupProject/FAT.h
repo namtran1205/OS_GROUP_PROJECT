@@ -10,7 +10,8 @@ public:
 
 public:
 	void readFatTable();
-	vector<uint32_t> GetFatTable();
+	shared_ptr<BootSector> getBootSector() const;
+	vector<uint32_t> GetFatTable() const;
 
 private:
 	shared_ptr<BootSector> bootSector;
