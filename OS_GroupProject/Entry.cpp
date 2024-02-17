@@ -43,9 +43,10 @@ Entry::Entry()
 {
 }
 
-Entry::Entry(std::vector<BYTE> datas) : Entry()
+Entry::Entry(vector<BYTE> bytesData) : Entry()
 {
-    this->datas = datas;
+    this->datas = bytesData;
+    //BYTE index11 = *(startByte.get() + 3);
 }
 
 
@@ -56,7 +57,7 @@ MainEntry::MainEntry() : Entry()
 }
 
 
-MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> datas) : Entry(datas)
+MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes)
 {
     this->fatTable = fatTable;
 
@@ -78,12 +79,31 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> datas) : Entry(datas
 
     if(attributes->isDirectory())
     {
-        subDirectory = make_shared<SDET>(fatTable);
+        uint16_t startByte = this->getFatTable()->getBootSector()->ClusterToSector(startCluster) * this->getFatTable()->getBootSector()->getBytePerSector();
+        subDirectory = make_shared<SDET>(fatTable, startByte);
     }
     else
         subDirectory = nullptr;
 
 }
+
+void MainEntry::addSubEntry(vector<shared_ptr<SubEntry>> subEntries)
+{
+    this->subEntries = subEntries;
+    wstring fullNameOfMainEntry;
+    //After adding list SubEntries, then convert these entries to the main name.
+    //Traversing the vector<BYTE> from the last->first
+    for(int i = subEntries.size(); i >= 0; --i)
+    {
+        fullNameOfMainEntry += subEntries[i]->getFullName();
+    }
+    this->fullName = fullNameOfMainEntry;
+}
+
+// bool Entry::isActiveEntry() const
+// {
+//     return !(iSh || isEmpty || isLabel || isSystem);
+// }
 
 
 std::string MainEntry::getMainName() const
@@ -99,6 +119,7 @@ int MainEntry::getStartCluster() const
 {
     return this->startCluster;
 }
+
 
 int MainEntry::getSize() const
 {
@@ -120,35 +141,39 @@ shared_ptr<FAT> MainEntry::getFatTable() const
     return this->fatTable;
 }
 
-string MainEntry::getFullName() const
+wstring MainEntry::getFullName() const
 {
 
     //This function which included logical implementation returns the full name of file/folders
-    return string();
+    return this->fullName;
 }
 
-string MainEntry::toString(int level) const
+wstring MainEntry::toString(int level) const
 {
-    string res = "";
+    wstring res = L"";
     for(int i = 0; i < level; ++i)
-        res += "\t";
+        res += L"\t";
     res += this->getFullName();
     return res;
 }
 
-bool MainEntry::isActiveEntry() const
-{
-    return !(isDeleted || isEmpty || attributes->isVollabel() || attributes->isSystem());
-}
+// bool MainEntry::isActiveEntry() const
+// {
+//     return !(isDeleted || isEmpty || attributes->isVollabel() || attributes->isSystem());
+// }
 
 SubEntry::SubEntry() : Entry()
 {
 }
 
-SubEntry::SubEntry(vector<BYTE> datas) : Entry(datas)
+SubEntry::SubEntry(vector<BYTE> bytesData) : Entry(bytesData)
 {
     seq = int(Utils::Convert2LitleEndian(datas.begin(), 1));
     unicode = wstring(datas.begin() + 1, datas.begin() + 10);
+    extend1 = wstring(datas.begin() +  0xE, datas.begin() + 0x19);
+    extend1 = wstring(datas.begin() +  0x1C, datas.end());
+
+    fullName = unicode + extend1 + extend2;
 }
 
 
@@ -173,14 +198,18 @@ wstring SubEntry::getExtend2() const
     return this->extend2;
 }
 
-string SubEntry::toString(int level) const
+wstring SubEntry::getFullName() const
 {
-    //for(int i = 0; i < this->.size(); ++i)
-    //{
-    //    weak_ptr<Entry> entry = entries[i];
-    //    entry.lock()->toString(0);
-    //}
-    return "SubEntry";
+    return this->fullName;
+}
+
+wstring SubEntry::toString(int level) const
+{
+    wstring res = L"";
+    for(int i = 0; i < level; ++i)
+        res += L"\t";
+    res += this->getFullName();
+    return res;
 }
 
 

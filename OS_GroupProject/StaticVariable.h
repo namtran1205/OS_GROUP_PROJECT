@@ -8,7 +8,10 @@
 #include <sstream>
 #include <memory>
 #include <fstream>
+#include <codecvt>
 #include <windows.h>
+#include <fcntl.h>
+
 
 // #include "FileManagementSystem.h"
 // #include "VolumeBootRecord.h"
@@ -37,4 +40,6 @@ namespace StaticVariable
 namespace Utils
 {
     uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
+    wstring convertUTF8ToWstring(const std::vector<BYTE>& bytes);
+
 }

@@ -37,10 +37,12 @@ public:
     Entry(std::vector<BYTE>);
 
 public:
-    virtual string toString(int level) const = 0;
+    virtual wstring getFullName() const = 0;
+    virtual wstring toString(int level) const = 0;
 
 protected:
     vector<BYTE> datas;
+    wstring fullName;
 };
 
 class MainEntry : public Entry
@@ -50,6 +52,9 @@ public:
     MainEntry(shared_ptr<FAT>,vector<BYTE>);
 
 public:
+    void addSubEntry(vector<shared_ptr<SubEntry>>);
+
+public:
     // bool is_Folder() const;
 
     std::string getMainName() const;
@@ -57,24 +62,27 @@ public:
     int getStartCluster() const;
     int getSize() const;
  
-     int getID() const;
+    //  int getID() const;
 
     shared_ptr<Attribute> getAttribute() const;
     shared_ptr<SDET> getSubDirectory() const;
     shared_ptr<FAT> getFatTable() const;
 
 public:
-    string getFullName() const;
+    wstring getFullName() const override;
 
 public:
-    string toString(int level) const override;
+    wstring toString(int level) const override;
 
 public:
-     bool isActiveEntry() const;
+    //  bool isActiveEntry() const;
 protected:
     int startCluster;
     int sizeData;
 private:
+    //This name must be read within sub-entries.
+
+    //These are the attributes of Main Entry.
     char reserved;
     std::string mainName;
     std::string extendedName;
@@ -96,14 +104,6 @@ private:
 };
 
 
-    // int ID; // create ID for entry
-
-    // bool isFolder;
-    // bool isEmpty;
-    // bool isLabel;
-    // bool isSystem;
-    // bool isDeleted;
-
 
 class SubEntry : public Entry
 {
@@ -117,8 +117,10 @@ public:
     wstring getExtend1() const;
     wstring getExtend2() const;
 
+    wstring getFullName() const override;
+
 public:
-    string toString(int level) const override;
+    wstring toString(int level) const override;
 
 private:
     int seq;
@@ -126,5 +128,14 @@ private:
     wstring extend1;
     wstring extend2;
 
-    string name;
 };
+
+
+
+    // int ID; // create ID for entry
+
+    // bool isFolder;
+    // bool isEmpty;
+    // bool isLabel;
+    // bool isSystem;
+    // bool isDeleted;

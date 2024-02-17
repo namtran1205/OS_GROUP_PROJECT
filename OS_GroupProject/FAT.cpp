@@ -9,7 +9,7 @@ void FAT::readFatTable()
 {
 	numberOfFat = bootSector->GetNumberOfFat();
 	int FatSize = numberOfFat * bootSector->GetSectorPerFat();
-	int64_t ReadPoint = bootSector->getBytePerSector() * bootSector->GetSectorPerBootsector();
+	int64_t ReadPoint = bootSector->getStartSectorOfFAT1() *  bootSector->getBytePerSector();
 	std::vector<BYTE> FatSector = bootSector->getSectorReader()->ReadSector(ReadPoint, FatSize);
 	for (int i = 0; i < FatSize; i++)
 	{

@@ -26,20 +26,21 @@ public:
 
 public:
     virtual void readDirectory(int level = 0);
-    bool findEntry(int, MainEntry&) const;
+    // bool findEntry(int, MainEntry&) const;
 protected:
     shared_ptr<FAT> fatTable;
-    uint16_t size;
-	uint16_t startSector;
-    uint16_t numberOfSector;   
     std::vector<shared_ptr<MainEntry>> entries;
+    uint16_t size; //The size is calculated as "BYTE" unit.
+
+	uint16_t startSector;
+    uint16_t numberOfSector;
+    uint16_t startByte;   
 };
 
 class SDET : public RDET
 {
 public:
-    SDET(shared_ptr<FAT>);
-
+    SDET(shared_ptr<FAT>, uint16_t);
 public:
     void readDirectory(int level = 0) override;
 };

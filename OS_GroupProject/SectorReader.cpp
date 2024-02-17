@@ -29,7 +29,7 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
     HANDLE device = NULL;
 
     // Open the specified drive with GENERIC_READ access
-     device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
         // Failed to open the drive
@@ -56,6 +56,42 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
 
     return resultSector;
     
+}
+
+vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const
+{
+    HANDLE device = NULL;
+
+    // Open the specified drive with GENERIC_READ access
+    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+
+    if (device == INVALID_HANDLE_VALUE) {
+        // Failed to open the drive
+        // vector's size == 0
+        return std::vector<BYTE>();
+    }
+    SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
+
+    std::vector<BYTE> resultSector;
+    BYTE tmpBuffer[32]; 
+
+    while (true) {
+        DWORD bytesRead;
+        if (!ReadFile(device, tmpBuffer, sizeof(tmpBuffer), &bytesRead, NULL)) {
+            CloseHandle(device);
+            return resultSector;
+        }
+
+        resultSector.insert(resultSector.end(), tmpBuffer, tmpBuffer + bytesRead);
+
+        if (bytesRead == 0 || tmpBuffer[0] == 0x00) {
+            break;
+        }
+    }
+
+    CloseHandle(device);
+    
+    return resultSector;
 }
 
 void SectorReader::SetByteOfSector(int ByteOfSector)
