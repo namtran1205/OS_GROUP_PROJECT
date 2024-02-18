@@ -1,4 +1,4 @@
-#include "SectorReader.h"
+﻿#include "SectorReader.h"
 
 SectorReader::SectorReader()
 {
@@ -23,7 +23,6 @@ void SectorReader::SetDirve(LPCWSTR drive)
 
 std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
 {
-    
     int retCode = 0;
     DWORD bytesRead;
     HANDLE device = NULL;
@@ -58,40 +57,40 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
     
 }
 
-vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const
+vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const 
 {
+    DWORD bytesRead;
     HANDLE device = NULL;
 
-    // Open the specified drive with GENERIC_READ access
+    // // Open the specified drive with GENERIC_READ access
     device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
-        // Failed to open the drive
-        // vector's size == 0
         return std::vector<BYTE>();
     }
-    SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
 
     std::vector<BYTE> resultSector;
-    BYTE tmpBuffer[32]; 
+    BYTE* tmpBuffer = new BYTE[512];
 
-    while (true) {
-        DWORD bytesRead;
-        if (!ReadFile(device, tmpBuffer, sizeof(tmpBuffer), &bytesRead, NULL)) {
-            CloseHandle(device);
-            return resultSector;
+    while(true)
+    {
+        SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
+        ReadFile(device, tmpBuffer, 512, &bytesRead, NULL);
+        for(int i = 0; i < 512; ++i)
+        {
+            if(i % 32 == 0 && tmpBuffer[i] == 0x0)
+            {
+                delete[] tmpBuffer;
+                tmpBuffer = nullptr;
+                return resultSector;
+            }
+            resultSector.push_back(tmpBuffer[i]);
         }
-
-        resultSector.insert(resultSector.end(), tmpBuffer, tmpBuffer + bytesRead);
-
-        if (bytesRead == 0 || tmpBuffer[0] == 0x00) {
-            break;
-        }
+        readPoint += 512;
     }
-
-    CloseHandle(device);
-    
-    return resultSector;
+    delete[] tmpBuffer;
+    tmpBuffer = nullptr;
+    return vector<BYTE>();
 }
 
 void SectorReader::SetByteOfSector(int ByteOfSector)

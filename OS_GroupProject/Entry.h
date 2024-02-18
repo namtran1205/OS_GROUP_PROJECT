@@ -37,12 +37,12 @@ public:
     Entry(std::vector<BYTE>);
 
 public:
-    virtual wstring getFullName() const = 0;
-    virtual wstring toString(int level) const = 0;
+    virtual string getFullName() const = 0;
+    virtual string toString(int level) const = 0;
 
 protected:
     vector<BYTE> datas;
-    wstring fullName;
+    string fullName;
 };
 
 class MainEntry : public Entry
@@ -69,10 +69,10 @@ public:
     shared_ptr<FAT> getFatTable() const;
 
 public:
-    wstring getFullName() const override;
+    string getFullName() const override;
 
 public:
-    wstring toString(int level) const override;
+    string toString(int level) const override;
 
 public:
     //  bool isActiveEntry() const;
@@ -113,20 +113,20 @@ public:
 
 public:
     int getSeq() const;
-    wstring getUnicode() const;
-    wstring getExtend1() const;
-    wstring getExtend2() const;
+    string getUnicode() const;
+    string getExtend1() const;
+    string getExtend2() const;
 
-    wstring getFullName() const override;
+    string getFullName() const override;
 
 public:
-    wstring toString(int level) const override;
+    string toString(int level) const override;
 
 private:
     int seq;
-    wstring unicode;
-    wstring extend1;
-    wstring extend2;
+    string unicode;
+    string extend1;
+    string extend2;
 
 };
 

@@ -36,6 +36,10 @@ int main()
     // std::vector<Entry*> testEntries = volume.ReadDirectory(startCluster); // Test reading directory entries
     // std::cout << "Number of entries: " << testEntries.size() << std::endl; // Debug statement
     // PrintDirectoryTree(volume, startCluster); // Print the directory tree starting from the root
+    
+
+    //_setmode(_fileno(stdout), _O_U16TEXT);
+    //cout << "Xin Chào Việt Nam\n";
     shared_ptr<FAT32> fat32 = make_shared<FAT32>(L"\\\\.\\F:");
     fat32->readVolume();
     return   0;

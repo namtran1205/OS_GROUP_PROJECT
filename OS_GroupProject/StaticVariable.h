@@ -9,19 +9,11 @@
 #include <memory>
 #include <fstream>
 #include <codecvt>
+#include <cstdint>
 #include <windows.h>
-#include <fcntl.h>
+#include <Windows.h>
 
 
-// #include "FileManagementSystem.h"
-// #include "VolumeBootRecord.h"
-// #include "SectorReader.h"
-// #include "FAT32.h"
-// #include "NTFS.h"
-// #include "FAT32/BootSector.h"
-// #include "FAT32/Entry.h"
-// #include "FAT32/FAT.h"
-// #include "FAT32/RDET.h"
 
 
 using namespace std;

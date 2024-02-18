@@ -1,5 +1,9 @@
 #include "RDET.h"
 
+RDET::RDET()
+{
+}
+
 RDET::RDET(shared_ptr<FAT> fatTable)
 {
     this->fatTable = fatTable;
@@ -37,39 +41,43 @@ vector<shared_ptr<MainEntry>> RDET::getMainEntries() const
 
 void RDET::handleAllEntries()
 {
+
     if (fatTable != nullptr)
     {
 
-        int numberOfEntries = size / StaticVariable::BYTES_PER_ENTRY;
         int64_t startBytesRDET = this->fatTable->getBootSector()->getStartSectorOfRDET() * this->fatTable->getBootSector()->getBytePerSector();
         // int bytePerSector = StaticVariable::BYTES_PER_ENTRY / fatTable->getBootSector()->getBytePerSector();
 
-        SectorReader sectorReader;
-        vector<BYTE> vectorBytesOfDirectory = sectorReader.ReadSector(startBytesRDET, numberOfSector);
+        SectorReader read = *(this->getFatTable()->getBootSector()->getSectorReader());
+        vector<BYTE> vectorBytesOfDirectory = read.collectBytesUntilNull(startBytesRDET);
+        int numberOfEntries = vectorBytesOfDirectory.size() / StaticVariable::BYTES_PER_ENTRY;
+
         //Ignore the first entry of RDET because it's store the detailed of disk.
         for (int i = 1; i < numberOfEntries; ++i)
         {
             //Get the vector bytes at this offset.
-            vector<BYTE> vectorBytes = vector<BYTE>((vectorBytesOfDirectory[32 * i],vectorBytesOfDirectory[32 * i] + 31));
+            vector<BYTE> vectorBytes(vectorBytesOfDirectory.begin() + (32 * i), vectorBytesOfDirectory.begin() + (32 * i) + 32);
 
-            //When we read the empty entry, it means we dont need to read anymore.
-            if(vectorBytes[0] == 0x00)
+            // //When we read the empty entry, it means we dont need to read anymore.
+            if (vectorBytes[0] == 0x00)
+            {
                 return;
+            }
 
-            //If the entry is deleted, go to the next entry
+            // //If the entry is deleted, go to the next entry
             if(vectorBytes[0] == 0xE5)
                 continue;
 
-            //Get the subEntry of MainEntry if the name is LFN
-            if(vectorBytes[0xB] == 0x0F)
+            // //Get the subEntry of MainEntry if the name is LFN
+            if (vectorBytes[0xB] == 0x0F)
             {
                 vector<shared_ptr<SubEntry>> listSubEntries;
-                while(vectorBytes[0xB] == 0x0F)
+                while (vectorBytes[0xB] == 0x0F)
                 {
                     shared_ptr<SubEntry> subEntry = make_shared<SubEntry>(vectorBytes);
                     listSubEntries.push_back(subEntry);
                     ++i;
-                    vectorBytes = vector<BYTE>((vectorBytesOfDirectory[32 * i],vectorBytesOfDirectory[32 * i] + 31));
+                    vectorBytes = vector<BYTE>(vectorBytesOfDirectory.begin() + (32 * i), vectorBytesOfDirectory.begin() + (32 * i) + 32);
                 }
                 shared_ptr<MainEntry> mainEntry = make_shared<MainEntry>(fatTable, vectorBytes);
                 mainEntry->addSubEntry(listSubEntries);
@@ -79,8 +87,10 @@ void RDET::handleAllEntries()
             {
                 this->entries.push_back(make_shared<MainEntry>(fatTable, vectorBytes));
             }
+
         }
     }
+    // entries.erase(entries.begin());
 }
 
 void RDET::readDirectory(int level)
@@ -88,11 +98,12 @@ void RDET::readDirectory(int level)
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
-        wcout << entry.lock()->toString(0);
-        //If an entry contains folder, display it
-        if(entry.lock()->getSubDirectory() != nullptr)
-            entry.lock()->getSubDirectory()->readDirectory(1);
+        cout << entry.lock()->toString(0);
         cout << endl;
+
+        //If an entry contains folder, display it
+         if(entry.lock()->getSubDirectory() != nullptr)
+             entry.lock()->getSubDirectory()->readDirectory(1);
     }
 }
 
@@ -104,8 +115,14 @@ void RDET::readDirectory(int level)
 //     return false;
 // }
 
-SDET::SDET(shared_ptr<FAT> fatTable, uint16_t startByte) : RDET(fatTable)
+SDET::SDET() : RDET()
 {
+
+}
+
+SDET::SDET(shared_ptr<FAT> fatTable, int startByte) : SDET()
+{
+    this->fatTable = fatTable;
     this->startByte = startByte;
     if (fatTable != nullptr)
     {
@@ -118,7 +135,7 @@ SDET::SDET(shared_ptr<FAT> fatTable, uint16_t startByte) : RDET(fatTable)
         for (int i = 2; i < numberOfEntries; ++i)
         {
             //Get the vector bytes at this offset.
-            vector<BYTE> vectorBytes = vector<BYTE>((vectorBytesOfDirectory[32 * i],vectorBytesOfDirectory[32 * i] + 31));
+            vector<BYTE> vectorBytes(vectorBytesOfDirectory.begin() + (32 * i), vectorBytesOfDirectory.begin() + (32 * i) + 32);
 
             //When we read the empty entry, it means we dont need to read anymore.
             if(vectorBytes[0] == 0x00)
@@ -137,7 +154,7 @@ SDET::SDET(shared_ptr<FAT> fatTable, uint16_t startByte) : RDET(fatTable)
                     shared_ptr<SubEntry> subEntry = make_shared<SubEntry>(vectorBytes);
                     listSubEntries.push_back(subEntry);
                     ++i;
-                    vectorBytes = vector<BYTE>((vectorBytesOfDirectory[32 * i],vectorBytesOfDirectory[32 * i] + 31));
+                    vectorBytes = vector<BYTE>(vectorBytesOfDirectory.begin() + (32 * i), vectorBytesOfDirectory.begin() + (32 * i) + 32);
                 }
                 shared_ptr<MainEntry> mainEntry = make_shared<MainEntry>(fatTable, vectorBytes);
                 mainEntry->addSubEntry(listSubEntries);
@@ -156,10 +173,13 @@ void SDET::readDirectory(int level)
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
-        wcout << entry.lock()->toString(level);
+        cout << entry.lock()->toString(level);
+        cout << endl;
         //If an entry contains folder, display it
-        if(entry.lock()->getSubDirectory() != nullptr)
-            entry.lock()->getSubDirectory()->readDirectory(level+1);
+         if(entry.lock()->getSubDirectory() != nullptr)
+             entry.lock()->getSubDirectory()->readDirectory(level+1);
+         //string s;
+         //cin >> s;
         cout << endl;
     }
 }

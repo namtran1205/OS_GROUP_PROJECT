@@ -10,6 +10,7 @@ class MainEntry;
 class RDET
 {
 public:
+    RDET();
     RDET(shared_ptr<FAT>);
 
 
@@ -34,13 +35,14 @@ protected:
 
 	uint16_t startSector;
     uint16_t numberOfSector;
-    uint16_t startByte;   
+    int startByte;   
 };
 
 class SDET : public RDET
 {
 public:
-    SDET(shared_ptr<FAT>, uint16_t);
+    SDET();
+    SDET(shared_ptr<FAT>, int);
 public:
     void readDirectory(int level = 0) override;
 };
