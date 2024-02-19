@@ -12,8 +12,7 @@
 #include <cstdint>
 #include <windows.h>
 #include <Windows.h>
-
-
+#include <stdio.h>
 
 
 using namespace std;
@@ -21,9 +20,9 @@ using namespace std;
 typedef std::vector<BYTE>::iterator byteArrayPointer;
 
 
+//This place contains global variable
 namespace StaticVariable
 {
-    //This place contains global variable
     extern int BYTES_PER_CLUSTER;
     extern int BYTES_PER_ENTRY;
 }
@@ -33,5 +32,8 @@ namespace Utils
 {
     uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
     wstring convertUTF8ToWstring(const std::vector<BYTE>& bytes);
+    
+
+    string fixSpace(string name);
 
 }

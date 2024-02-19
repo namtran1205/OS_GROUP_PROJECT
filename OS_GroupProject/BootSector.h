@@ -18,13 +18,13 @@ public:
 public:
     shared_ptr<SectorReader> getSectorReader() const;
 
-    uint16_t getBytePerSector() const;
+    uint64_t getBytePerSector() const;
     uint8_t getSectorPerCluster() const;
     uint32_t getStartSectorOfRDET() const;
     uint32_t getStartSectorOfFAT1() const;
     uint32_t getStartSectorOfDATA() const;
     uint32_t getNumberSectorOfRDET() const;
-    int ClusterToSector(uint16_t) const;
+    uint64_t ClusterToSector(uint64_t) const;
     int GetSectorPerFat() const;
     int GetSectorPerBootsector() const;
     int GetNumberOfFat() const;
@@ -42,7 +42,7 @@ private:
     uint16_t sectorPerBootsector;
     uint32_t sectorVolume;
     uint32_t sectorRDET;
-    uint16_t bytePerSector;
+    uint64_t bytePerSector;
     uint32_t startSectorOfFAT1;
     uint32_t startSectorOfRDET;
     uint32_t startSectorOfDATA;

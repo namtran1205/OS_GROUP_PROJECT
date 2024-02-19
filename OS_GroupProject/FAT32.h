@@ -13,7 +13,7 @@ class RDET;
 
 
 
-class FAT32 : public FileManagementSystem
+class FAT32 : public IFileManagementSystem
 {
 
 public:

@@ -2,7 +2,6 @@
 
 namespace StaticVariable
 {
-    //This place contains global variable
     int BYTES_PER_CLUSTER = 4;
     int BYTES_PER_ENTRY = 32;
 }
@@ -27,15 +26,21 @@ uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
 
 std::wstring Utils::convertUTF8ToWstring(const std::vector<BYTE>& bytes)
 {
-    // Tạo một đối tượng wstring_convert với facet codecvt_utf8
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-
-    // Chuyển đổi vector<BYTE> thành một chuỗi std::string
-    std::string utf8_string(bytes.begin(), bytes.end());
-
-    // Chuyển đổi std::string thành một wstring
-    std::wstring wstr = converter.from_bytes(utf8_string);
-
-    // Trả về kết quả
+    wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    string utf8_string(bytes.begin(), bytes.end());
+    wstring wstr = converter.from_bytes(utf8_string);
     return wstr;
+}
+
+string Utils::fixSpace(string name)
+{
+    string res;
+    for (int i = 0; i < name.size(); ++i)
+    {
+        if (name[i] == ' ')
+            break;
+        res += name[i];
+
+    }
+    return res;
 }

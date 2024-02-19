@@ -24,7 +24,7 @@ int RDET::getNumberOfSector() const
     return this->numberOfSector;
 }
 
-int RDET::getStartSector() const
+uint64_t RDET::getStartSector() const
 {
     return this->startSector;
 }
@@ -46,8 +46,6 @@ void RDET::handleAllEntries()
     {
 
         int64_t startBytesRDET = this->fatTable->getBootSector()->getStartSectorOfRDET() * this->fatTable->getBootSector()->getBytePerSector();
-        // int bytePerSector = StaticVariable::BYTES_PER_ENTRY / fatTable->getBootSector()->getBytePerSector();
-
         SectorReader read = *(this->getFatTable()->getBootSector()->getSectorReader());
         vector<BYTE> vectorBytesOfDirectory = read.collectBytesUntilNull(startBytesRDET);
         int numberOfEntries = vectorBytesOfDirectory.size() / StaticVariable::BYTES_PER_ENTRY;
@@ -107,20 +105,13 @@ void RDET::readDirectory(int level)
     }
 }
 
-// bool RDET::findEntry(int id, MainEntry& a) const
-// {
-//     for (int i = 0; i < entries.size(); i++)
-//        if (entries[i]->isActiveEntry() && entries[i]->getID() == id)
-//             return true;
-//     return false;
-// }
 
 SDET::SDET() : RDET()
 {
 
 }
 
-SDET::SDET(shared_ptr<FAT> fatTable, int startByte) : SDET()
+SDET::SDET(shared_ptr<FAT> fatTable, uint64_t startByte) : SDET()
 {
     this->fatTable = fatTable;
     this->startByte = startByte;
@@ -129,7 +120,6 @@ SDET::SDET(shared_ptr<FAT> fatTable, int startByte) : SDET()
         SectorReader read = *(this->getFatTable()->getBootSector()->getSectorReader());
         vector<BYTE> vectorBytesOfDirectory = read.collectBytesUntilNull(startByte);
         int numberOfEntries = vectorBytesOfDirectory.size() / StaticVariable::BYTES_PER_ENTRY;
-
 
         //Ignore the first two entry of SDET because it's store the detailed of current disk and its father's disk
         for (int i = 2; i < numberOfEntries; ++i)
@@ -177,9 +167,11 @@ void SDET::readDirectory(int level)
         cout << endl;
         //If an entry contains folder, display it
          if(entry.lock()->getSubDirectory() != nullptr)
+         {
              entry.lock()->getSubDirectory()->readDirectory(level+1);
-         //string s;
-         //cin >> s;
+         }
+        //  string s;
+        //  cin >> s;
         cout << endl;
     }
 }

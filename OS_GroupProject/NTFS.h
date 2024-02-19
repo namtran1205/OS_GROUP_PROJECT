@@ -25,7 +25,7 @@ using namespace std;
 
 // };
 
-class NTFS : public FileManagementSystem
+class NTFS : public IFileManagementSystem
 {
 public:
     NTFS();

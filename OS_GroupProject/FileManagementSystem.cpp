@@ -1,5 +1,5 @@
 #include "FileManagementSystem.h"
 
-FileManagementSystem::FileManagementSystem()
+IFileManagementSystem::IFileManagementSystem()
 {
 }

@@ -31,13 +31,15 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
     device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
-        // Failed to open the drive
-        // vector's size == 0
+        CloseHandle(device);
         return std::vector<BYTE>();
     }
 
+    LARGE_INTEGER filePointer;
+    filePointer.QuadPart = readPoint;
     // Set the file pointer to the specified read point
-    SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
+    SetFilePointerEx(device, filePointer, NULL, FILE_BEGIN);
+
 
     BYTE* tmpSector = new BYTE[byteOfSector * sector];
     std::vector<BYTE> resultSector(1, 0);
@@ -66,15 +68,17 @@ vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const
     device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
+        CloseHandle(device);
         return std::vector<BYTE>();
     }
 
     std::vector<BYTE> resultSector;
     BYTE* tmpBuffer = new BYTE[512];
-
+    LARGE_INTEGER filePointer;
     while(true)
     {
-        SetFilePointer(device, readPoint, NULL, FILE_BEGIN);
+        filePointer.QuadPart = readPoint;
+        SetFilePointerEx(device, filePointer, NULL, FILE_BEGIN);
         ReadFile(device, tmpBuffer, 512, &bytesRead, NULL);
         for(int i = 0; i < 512; ++i)
         {
@@ -82,6 +86,7 @@ vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const
             {
                 delete[] tmpBuffer;
                 tmpBuffer = nullptr;
+                CloseHandle(device);
                 return resultSector;
             }
             resultSector.push_back(tmpBuffer[i]);
@@ -90,6 +95,7 @@ vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const
     }
     delete[] tmpBuffer;
     tmpBuffer = nullptr;
+    CloseHandle(device);
     return vector<BYTE>();
 }
 

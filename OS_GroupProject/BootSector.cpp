@@ -31,7 +31,7 @@ shared_ptr<SectorReader> BootSector::getSectorReader() const
     return this->sectorReader;
 }
 
-uint16_t BootSector::getBytePerSector() const
+uint64_t BootSector::getBytePerSector() const
 {
     return bytePerSector;
 }
@@ -97,7 +97,7 @@ uint32_t BootSector::getNumberSectorOfRDET() const
     return this->sectorRDET;
 }
 
-int BootSector::ClusterToSector(uint16_t k) const
+uint64_t BootSector::ClusterToSector(uint64_t k) const
 {
     int i = sectorPerBootsector + sectorPerFat * numberOfFat + (k - 2) * sectorPerCluster;
     return i;
