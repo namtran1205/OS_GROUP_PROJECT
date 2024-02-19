@@ -23,7 +23,9 @@
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="FAT.cpp" />
     <ClCompile Include="FAT32.cpp" />
+    <ClCompile Include="FileManagementFactory.cpp" />
     <ClCompile Include="FileManagementSystem.cpp" />
+    <ClCompile Include="IParsable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NTFS.cpp" />
     <ClCompile Include="RDET.cpp" />
@@ -36,7 +38,9 @@
     <ClInclude Include="Entry.h" />
     <ClInclude Include="FAT.h" />
     <ClInclude Include="FAT32.h" />
+    <ClInclude Include="FileManagementFactory.h" />
     <ClInclude Include="FileManagementSystem.h" />
+    <ClInclude Include="IParsable.h" />
     <ClInclude Include="NTFS.h" />
     <ClInclude Include="RDET.h" />
     <ClInclude Include="SectorReader.h" />

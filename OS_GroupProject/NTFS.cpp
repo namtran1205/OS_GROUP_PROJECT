@@ -1,8 +1,8 @@
 #include "NTFS.h"
 
-NTFS::NTFS()
-{
 
+NTFS::NTFS(LPCWSTR drive) 
+{
 }
 NTFS::~NTFS()
 {

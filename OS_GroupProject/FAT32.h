@@ -13,7 +13,7 @@ class RDET;
 
 
 
-class FAT32 : public IFileManagementSystem
+class FAT32 : public FileManagementSystem
 {
 
 public:
@@ -25,7 +25,6 @@ public:
 
 public:
     string toString() const override;
-    
     void readVolume() override;
    
 private:

@@ -1,13 +1,20 @@
 ﻿#include "StaticVariable.h"
-#include "FAT32.h"
-
+#include "FileManagementFactory.h"
+#include "IParsable.h"
 
 int main()
 {
     //_setmode(_fileno(stdout), _O_U16TEXT);
     //cout << "Xin Chào Việt Nam\n";
-    shared_ptr<FAT32> fat32 = make_shared<FAT32>(L"\\\\.\\F:");
-    fat32->readVolume();
+    LPCWSTR drive = L"\\\\.\\F:"; //User input this
+    FileManagementFactory myFactory(drive);
+    myFactory.registerWith(make_shared<FAT32Parser>());
+    myFactory.registerWith(make_shared<NTFSParser>());
+
+
+    string tokens = "FAT32";  //User input this
+    shared_ptr<IParsable> fileSystem = myFactory.createObject(tokens);
+    fileSystem->parse()->readVolume();
     return 0;
 }
 

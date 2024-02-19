@@ -3,10 +3,10 @@
 
 using namespace std;
 
-class IFileManagementSystem
+class FileManagementSystem
 {
 public:
-    IFileManagementSystem();
+    FileManagementSystem();
 public:
     virtual void readVolume() = 0;
     virtual string toString() const = 0;

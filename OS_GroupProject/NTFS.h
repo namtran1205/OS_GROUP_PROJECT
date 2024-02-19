@@ -25,21 +25,14 @@ using namespace std;
 
 // };
 
-class NTFS : public IFileManagementSystem
+class NTFS : public FileManagementSystem
 {
 public:
-    NTFS();
+    NTFS(LPCWSTR);
     ~NTFS();
 public:
-
-
-
-
-public:
-    // NTFSVolume(const std::wstring &drive);
+    string toString() const override;
     void readVolume() override;
-    string toString() const ;
-
 private:
     std:: wstring driveName;
     uint32_t BytePerSector;    // 0xB 2 byte

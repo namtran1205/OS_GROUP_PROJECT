@@ -32,7 +32,6 @@ void FAT32::readVolume()
     rootDirectory->readDirectory();
 }
 
-
 string FAT32::toString() const
 {
     return "FAT32";
