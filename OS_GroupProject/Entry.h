@@ -2,7 +2,7 @@
 #include "StaticVariable.h"
 #include "FAT.h"
 #include "RDET.h"
-
+#include "Content.h"
 
 class Attribute;
 class Entry;
@@ -35,11 +35,9 @@ class Entry
 public:
     Entry();
     Entry(std::vector<BYTE>);
-
 public:
     virtual string getFullName() const = 0;
     virtual string toString(int level) const = 0;
-
 protected:
     vector<BYTE> datas;
     string fullName;
@@ -55,34 +53,21 @@ public:
     void addSubEntry(vector<shared_ptr<SubEntry>>);
 
 public:
-    // bool is_Folder() const;
-
     std::string getMainName() const;
     std::string getExtendedName() const;
     int getStartCluster() const;
     int getSize() const;
- 
-    //  int getID() const;
-
     shared_ptr<Attribute> getAttribute() const;
     shared_ptr<SDET> getSubDirectory() const;
     shared_ptr<FAT> getFatTable() const;
-
 public:
     string getFullName() const override;
-
 public:
     string toString(int level) const override;
-
-public:
-    //  bool isActiveEntry() const;
 protected:
     int startCluster;
     int sizeData;
 private:
-    //This name must be read within sub-entries.
-
-    //These are the attributes of Main Entry.
     char reserved;
     std::string mainName;
     std::string extendedName;
@@ -90,19 +75,15 @@ private:
     std::chrono::system_clock::time_point dateCreated;
     std::chrono::system_clock::time_point lastAccess;
     std::chrono::system_clock::time_point datedUpdated;
-
+private:
+    shared_ptr<Content> content; //If the entry represents for a File, then get it contents.
+    shared_ptr<SDET> subDirectory;
+    shared_ptr<FAT> fatTable;
     //If the file/folder's name is too long:
     //then the LFN Entry (Long Files Name) will be created to store these names without changing Main Entry's format
     //LFN Entry is the other name of SubEntry.
     std::vector<shared_ptr<SubEntry>> subEntries;
-
-
-private:
-    shared_ptr<SDET> subDirectory;
-    shared_ptr<FAT> fatTable;
-
 };
-
 
 
 class SubEntry : public Entry
@@ -131,11 +112,3 @@ private:
 };
 
 
-
-    // int ID; // create ID for entry
-
-    // bool isFolder;
-    // bool isEmpty;
-    // bool isLabel;
-    // bool isSystem;
-    // bool isDeleted;

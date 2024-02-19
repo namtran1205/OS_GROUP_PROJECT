@@ -79,11 +79,15 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
     {
         fullName = Utils::fixSpace(mainName) + Utils::fixSpace(extendedName);
         uint64_t startByte = this->getFatTable()->getBootSector()->ClusterToSector(startCluster) * this->getFatTable()->getBootSector()->getBytePerSector();
-        // cout << startCluster << " " << this->getFatTable()->getBootSector()->ClusterToSector(startCluster) << " " <<  startByte << endl;
         subDirectory = make_shared<SDET>(fatTable, startByte);
+        content = nullptr;
     }
     else
+    {
         subDirectory = nullptr;
+        string extendedName = Utils::parseExtendedFileName(fullName);
+        content = make_shared<Content>(extendedName,startCluster, fatTable);
+    }
 
 }
 

@@ -6,12 +6,8 @@
 #include "FAT.h"
 #include "SectorReader.h"
 
-
 class Entry;
-
 class RDET;
-
-
 
 class FAT32 : public FileManagementSystem
 {

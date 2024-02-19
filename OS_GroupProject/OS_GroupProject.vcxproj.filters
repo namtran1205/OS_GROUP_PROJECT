@@ -50,6 +50,9 @@
     <ClCompile Include="IParsable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Content.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BootSector.h">
@@ -88,6 +91,7 @@
     <ClInclude Include="IParsable.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Content.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodingConvention.txt">

@@ -44,3 +44,12 @@ string Utils::fixSpace(string name)
     }
     return res;
 }
+
+string Utils::parseExtendedFileName(string fileName)
+{
+    string extendedName;
+    int dotPos = fileName.find_last_of('.');
+    if(dotPos !=  string::npos)
+        return fileName.substr(dotPos+1);
+    return string();
+}
