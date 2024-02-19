@@ -29,6 +29,10 @@ void FAT32::readVolume()
 {
     bootSector->readVolumeBootRecord();
     fileAllocationTable->readFatTable();
+}
+
+void FAT32::readDirectory()
+{
     rootDirectory->readDirectory();
 }
 

@@ -14,6 +14,11 @@ void NTFS::readVolume()
 {
     cout << 1;
 }
+
+void NTFS::readDirectory()
+{
+    cout << 2;
+}
 string NTFS::toString() const
 {
     return "NTFS";

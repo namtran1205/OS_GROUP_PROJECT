@@ -33,6 +33,7 @@ public:
 public:
     string toString() const override;
     void readVolume() override;
+    void readDirectory() override;
 private:
     std:: wstring driveName;
     uint32_t BytePerSector;    // 0xB 2 byte
