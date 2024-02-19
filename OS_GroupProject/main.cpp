@@ -92,7 +92,14 @@ int main()
     getline(cin, tokens);
     shared_ptr<IParsable> fileSystem = myFactory.createObject(tokens);
     
-    fileSystem->parse()->readVolume();
+
+    if(fileSystem != nullptr)
+        fileSystem->parse()->readVolume();
+    else
+    {
+        cout << "INVALID ERRORS";
+        return 0;   
+    }
     std::cout << std::endl;
     std::cout << "PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
     _getch();
