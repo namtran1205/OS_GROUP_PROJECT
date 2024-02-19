@@ -170,9 +170,8 @@ void SDET::readDirectory(int level)
          {
              entry.lock()->getSubDirectory()->readDirectory(level+1);
          }
-        //  string s;
-        //  cin >> s;
-        cout << endl;
+          //string s;
+          //cin >> s;
     }
 }
 

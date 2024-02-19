@@ -143,10 +143,11 @@ string MainEntry::getFullName() const
 
 string MainEntry::toString(int level) const
 {
+    cout << "||";
     string res = "";
     for(int i = 0; i < level; ++i)
         res += "\t";
-    res += this->getFullName();
+    res += "|---" + this->getFullName();
     return res;
 }
 
