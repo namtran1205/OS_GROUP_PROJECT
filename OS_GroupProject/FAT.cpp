@@ -10,12 +10,31 @@ void FAT::readFatTable()
 	numberOfFat = bootSector->GetNumberOfFat();
 	int fatSize = numberOfFat * bootSector->GetSectorPerFat();
 	int64_t ReadPoint = bootSector->getStartSectorOfFAT1() *  bootSector->getBytePerSector();
-	std::vector<BYTE> fatBytes = bootSector->getSectorReader()->ReadSector(ReadPoint, fatSize);
-
-	for(int i = 0; i < fatBytes.size(); i += 2)
+	std::vector<BYTE> fatElement = bootSector->getSectorReader()->ReadSector(ReadPoint, fatSize);
+	for (int i = 0; i < fatSize; i++)
 	{
-		datas.push_back(make_pair(fatBytes[i], fatBytes[i+1]));
+		uint64_t res = Utils::Convert2LitleEndian(fatElement.begin() + 4 * i, 4);
+		fatTable.push_back(res);
 	}
+}
+
+map<uint64_t,uint64_t> FAT::findPath(uint64_t startCluster) const
+{
+	bool isEnd = false;
+	map<uint64_t, uint64_t> res;
+	uint64_t endCluster = startCluster; 
+	res.insert(make_pair(startCluster, endCluster));
+	while(isEnd == true)
+	{
+		if(fatTable[endCluster] == 0xFFFFFFF || fatTable[endCluster] == 0xFFFFFF7)
+			isEnd =  true;
+		else
+		{
+			res.insert(make_pair(endCluster, fatTable[endCluster]));
+			endCluster = fatTable[endCluster];
+		}
+	}
+	return res;
 }
 
 shared_ptr<BootSector> FAT::getBootSector() const

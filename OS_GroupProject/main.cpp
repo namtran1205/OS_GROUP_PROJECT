@@ -10,7 +10,6 @@
 int main()
 {
     _setmode(_fileno(stdout), _O_U16TEXT);
-    
     wcout << L"Xin chào Việt Nam" << endl;
     wstring partition;
     const char* colon = ":";
@@ -42,7 +41,7 @@ int main()
     wcout << endl;
     wcout << L"PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
     _getch();
-    cmdEnvironment.accessEnvironment(fileSystem, Utils::convertWStringToChar(partition));
+    cmdEnvironment.accessEnvironment(fileSystem->parse(),Utils::convertWStringToChar(partition));
     return 0;
 }
 

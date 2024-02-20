@@ -19,9 +19,9 @@ void PseudoShell::printShellTable()
     std::wcout << L"=============================================================" << endl;
 }
 
-void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<IParsable> fileSystem,const char* partition) {
+void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<FileManagementSystem> fileSystem,const char* partition) {
     if (userInput == "root") {
-        fileSystem->parse()->readDirectory();
+        fileSystem->readDirectory();
         std::wcout << std::endl;
     }
     else if (userInput == "cls") {
@@ -36,7 +36,7 @@ void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<IParsa
     }
 }
 
-void PseudoShell::accessEnvironment(shared_ptr<IParsable> fileSystem, const char* partition) {
+void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, const char* partition) {
     std::string userInput;
 
     std::wcout << std::endl;

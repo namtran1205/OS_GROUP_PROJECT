@@ -11,9 +11,13 @@
 #include <fstream>
 #include <codecvt>
 #include <cstdint>
+#include <io.h>
 #include <windows.h>
 #include <Windows.h>
 #include <stdio.h>
+#include <conio.h>
+#include <fcntl.h>
+
 
 
 using namespace std;

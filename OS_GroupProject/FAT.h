@@ -7,11 +7,12 @@ class FAT
 {
 public:
 	FAT(shared_ptr<BootSector>);
-
 public:
-	void readFatTable();
 	shared_ptr<BootSector> getBootSector() const;
 	vector<uint64_t> GetFatTable() const;
+public:
+	void readFatTable();
+	map<uint64_t,uint64_t> findPath(uint64_t) const;
 
 private:
 	shared_ptr<BootSector> bootSector;

@@ -68,9 +68,7 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
     */
     
     mainName = wstring(datas.begin(), datas.begin() + 7);
-
     extendedName = wstring(datas.begin() + 8, datas.begin() + 11);
-
     fullName = Utils::fixSpaceWString(mainName) + L"." + Utils::fixSpaceWString(extendedName);
 
     attributes = make_shared<Attribute>(datas[0xB]);
