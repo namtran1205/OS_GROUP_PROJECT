@@ -32,6 +32,11 @@ std::wstring Utils::convertUTF8ToWstring(const std::vector<BYTE>& bytes)
     return wstr;
 }
 
+std::wstring Utils::convertCharToWString(const char* input) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    return converter.from_bytes(input);
+}
+
 string Utils::fixSpace(string name)
 {
     string res;

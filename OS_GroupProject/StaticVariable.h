@@ -33,6 +33,7 @@ namespace Utils
 {
     uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
     wstring convertUTF8ToWstring(const std::vector<BYTE>& bytes);
+    wstring convertCharToWString(const char* input);
     //HELLO   . TXT --> HELLO.TXT
     string fixSpace(string name);
     string parseExtendedFileName(string fileName);

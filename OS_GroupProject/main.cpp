@@ -4,10 +4,6 @@
 #include <algorithm>
 #include <conio.h>
 
-std::wstring convertToWString(const char* input) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(input);
-}
 
 // Hàm pseudo shell
 vector<std::string> TABLE_OF_COMMANDS = { "root",
@@ -75,12 +71,12 @@ int main()
 {
     //_setmode(_fileno(stdout), _O_U16TEXT);
     //cout << "Xin Chào Việt Nam\n";
-    std::wstring partition;
+    wstring partition;
     const char* expression = ":";
-    std::wcout << L"Enter the drive or partition name: ";
-    std::wcin >> partition;
-    std::wstring fullPath = L"\\\\.\\";
-    fullPath += partition + convertToWString(expression);
+    wcout << L"Enter the drive or partition name: ";
+    wcin >> partition;
+    wstring fullPath = L"\\\\.\\";
+    fullPath += partition + Utils::convertCharToWString(expression);
     //LPCWSTR drive = fullPath; //User input this
     FileManagementFactory myFactory(fullPath.c_str());
     myFactory.registerWith(make_shared<FAT32Parser>());
@@ -100,8 +96,8 @@ int main()
         cout << "INVALID ERRORS";
         return 0;   
     }
-    std::cout << std::endl;
-    std::cout << "PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
+    cout << endl;
+    cout << "PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
     _getch();
     pseudoShell(fileSystem, 'F');
     return 0;
