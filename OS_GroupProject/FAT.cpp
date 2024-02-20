@@ -8,13 +8,13 @@ FAT::FAT(shared_ptr<BootSector> bootSector)
 void FAT::readFatTable()
 {
 	numberOfFat = bootSector->GetNumberOfFat();
-	int FatSize = numberOfFat * bootSector->GetSectorPerFat();
+	int fatSize = numberOfFat * bootSector->GetSectorPerFat();
 	int64_t ReadPoint = bootSector->getStartSectorOfFAT1() *  bootSector->getBytePerSector();
-	std::vector<BYTE> FatSector = bootSector->getSectorReader()->ReadSector(ReadPoint, FatSize);
-	for (int i = 0; i < FatSize; i++)
+	std::vector<BYTE> fatBytes = bootSector->getSectorReader()->ReadSector(ReadPoint, fatSize);
+
+	for(int i = 0; i < fatBytes.size(); i += 2)
 	{
-		uint32_t res = Utils::Convert2LitleEndian(FatSector.begin() + 4 * i, 4);
-		fatTable.push_back(res);
+		datas.push_back(make_pair(fatBytes[i], fatBytes[i+1]));
 	}
 }
 
@@ -23,7 +23,7 @@ shared_ptr<BootSector> FAT::getBootSector() const
     return this->bootSector;
 }
 
-vector<uint32_t> FAT::GetFatTable() const
+vector<uint64_t> FAT::GetFatTable() const
 {
 	return fatTable;
 }

@@ -4,7 +4,7 @@ Content::Content(wstring extendedName, uint64_t startCluster, shared_ptr<FAT> fa
 {
     extendFileName = extendedName;
 
-    //Implement logic for reading datas 
+    //Implement logic for reading datas
 }
 
 wstring Content::getContent() const

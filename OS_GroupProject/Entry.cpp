@@ -189,9 +189,7 @@ SubEntry::SubEntry() : Entry()
 SubEntry::SubEntry(vector<BYTE> bytesData) : Entry(bytesData)
 {
     seq = int(Utils::Convert2LitleEndian(datas.begin(), 1));
-    //wstr(reinterpret_cast<wchar_t*>(value), size/sizeof(wchar_t))
-    unicode = wstring(reinterpret_cast<wchar_t*>(vector<BYTE>(datas.begin() + 1, datas.begin() + 10), vector<BYTE>(datas.begin() + 1, datas.begin() + 10).size() / sizeof(wchar_t)));
-    wcout << unicode << endl;
+    unicode = wstring(datas.begin() + 1, datas.begin() + 10);
     extend1 = wstring(datas.begin() +  0xE, datas.begin() + 0x19);
     extend2 = wstring(datas.begin() +  0x1C, datas.end());
     fullName = unicode + extend1 + extend2;
