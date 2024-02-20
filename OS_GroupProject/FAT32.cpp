@@ -24,7 +24,7 @@ void FAT32::readDirectory()
     rootDirectory->readDirectory();
 }
 
-string FAT32::toString() const
+wstring FAT32::toString() const
 {
-    return "FAT32";
+    return L"FAT32";
 }

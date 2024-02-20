@@ -96,8 +96,8 @@ void RDET::readDirectory(int level)
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
-        cout << entry.lock()->toString(0);
-        cout << endl;
+        wcout << entry.lock()->toString(0);
+        wcout << endl;
 
         //If an entry contains folder, display it
          if(entry.lock()->getSubDirectory() != nullptr)
@@ -163,8 +163,8 @@ void SDET::readDirectory(int level)
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
-        cout << entry.lock()->toString(level);
-        cout << endl;
+        wcout << entry.lock()->toString(level);
+        wcout << endl;
         //If an entry contains folder, display it
          if(entry.lock()->getSubDirectory() != nullptr)
          {

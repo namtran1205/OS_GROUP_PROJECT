@@ -1,4 +1,4 @@
-#include "Entry.h"
+﻿#include "Entry.h"
 
 Attribute::Attribute()
 {
@@ -61,10 +61,18 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
 {
     this->fatTable = fatTable;
 
-    mainName = std::string(datas.begin(), datas.begin() + 7);
+    /*mainName = std::string(datas.begin(), datas.begin() + 7);
 
     extendedName = std::string(datas.begin() + 8, datas.begin() + 11);
     fullName = Utils::fixSpace(mainName) + "." + Utils::fixSpace(extendedName);
+    */
+    
+    mainName = wstring(datas.begin(), datas.begin() + 7);
+
+    extendedName = wstring(datas.begin() + 8, datas.begin() + 11);
+
+    fullName = Utils::fixSpaceWString(mainName) + L"." + Utils::fixSpaceWString(extendedName);
+
     attributes = make_shared<Attribute>(datas[0xB]);
 
     reserved = datas[0xC];
@@ -77,7 +85,7 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
 
     if(attributes->isDirectory())
     {
-        fullName = Utils::fixSpace(mainName) + Utils::fixSpace(extendedName);
+        fullName = Utils::fixSpaceWString(mainName) + Utils::fixSpaceWString(extendedName);
         uint64_t startByte = this->getFatTable()->getBootSector()->ClusterToSector(startCluster) * this->getFatTable()->getBootSector()->getBytePerSector();
         subDirectory = make_shared<SDET>(fatTable, startByte);
         content = nullptr;
@@ -85,7 +93,7 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
     else
     {
         subDirectory = nullptr;
-        string extendedName = Utils::parseExtendedFileName(fullName);
+        wstring extendedName = Utils::parseExtendedFileNameWString(fullName);
         content = make_shared<Content>(extendedName,startCluster, fatTable);
     }
 
@@ -94,22 +102,23 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
 void MainEntry::addSubEntry(vector<shared_ptr<SubEntry>> subEntries)
 {
     this->subEntries = subEntries;    
-    string fullNameOfMainEntry;
+    wstring fullNameOfMainEntry;
 
     //After adding list SubEntries, then convert these entries to the main name.
     //Traversing the vector<BYTE> from the last->first
     for(int i = subEntries.size() - 1; i >= 0; --i)
     {
         fullNameOfMainEntry += subEntries[i]->getFullName();
+        
     }
-    this->fullName = fullNameOfMainEntry;
+    this->fullName = Utils::fixSpecialCharacter(fullNameOfMainEntry);
 }
 
-std::string MainEntry::getMainName() const
+std::wstring MainEntry::getMainName() const
 {
     return mainName;
 }
-std::string MainEntry::getExtendedName() const
+std::wstring MainEntry::getExtendedName() const
 {
     return extendedName;
 }
@@ -140,11 +149,12 @@ shared_ptr<FAT> MainEntry::getFatTable() const
     return this->fatTable;
 }
 
-string MainEntry::getFullName() const
+wstring MainEntry::getFullName() const
 {
     return this->fullName;
 }
 
+/*
 string MainEntry::toString(int level) const
 {
     cout << "||";
@@ -154,6 +164,18 @@ string MainEntry::toString(int level) const
     res += "|---" + this->getFullName();
     return res;
 }
+*/
+
+wstring MainEntry::toString(int level) const
+{
+    wcout << L"||";
+    wstring res;
+    for (int i = 0; i < level; ++i)
+        res += L"\t";
+    res += L"|---" + this->getFullName();
+    return res;
+}
+
 
 // bool MainEntry::isActiveEntry() const
 // {
@@ -167,10 +189,13 @@ SubEntry::SubEntry() : Entry()
 SubEntry::SubEntry(vector<BYTE> bytesData) : Entry(bytesData)
 {
     seq = int(Utils::Convert2LitleEndian(datas.begin(), 1));
-    unicode = string(datas.begin() + 1, datas.begin() + 10);
-    extend1 = string(datas.begin() +  0xE, datas.begin() + 0x19);
-    extend2 = string(datas.begin() +  0x1C, datas.end());
+    //wstr(reinterpret_cast<wchar_t*>(value), size/sizeof(wchar_t))
+    unicode = wstring(reinterpret_cast<wchar_t*>(vector<BYTE>(datas.begin() + 1, datas.begin() + 10), vector<BYTE>(datas.begin() + 1, datas.begin() + 10).size() / sizeof(wchar_t)));
+    wcout << unicode << endl;
+    extend1 = wstring(datas.begin() +  0xE, datas.begin() + 0x19);
+    extend2 = wstring(datas.begin() +  0x1C, datas.end());
     fullName = unicode + extend1 + extend2;
+    
 }
 
 
@@ -180,31 +205,42 @@ int SubEntry::getSeq() const
     return this->seq;
 }
 
-string SubEntry::getUnicode() const
+wstring SubEntry::getUnicode() const
 {
     return this->unicode;
 }
 
-string SubEntry::getExtend1() const
+wstring SubEntry::getExtend1() const
 {
     return this->extend1;
 }
 
-string SubEntry::getExtend2() const
+wstring SubEntry::getExtend2() const
 {
     return this->extend2;
 }
 
-string SubEntry::getFullName() const
+wstring SubEntry::getFullName() const
 {
     return this->fullName;
 }
 
+/*
 string SubEntry::toString(int level) const
 {
     string res = "";
     for(int i = 0; i < level; ++i)
         res += "\t";
+    res += this->getFullName();
+    return res;
+}
+*/
+
+wstring SubEntry::toString(int level) const
+{
+    wstring res;
+    for (int i = 0; i < level; ++i)
+        res += L"\t";
     res += this->getFullName();
     return res;
 }

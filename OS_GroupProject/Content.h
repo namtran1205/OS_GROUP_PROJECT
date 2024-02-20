@@ -5,10 +5,10 @@
 class Content
 {
 public:
-    Content(string, uint64_t, shared_ptr<FAT>);
+    Content(wstring, uint64_t, shared_ptr<FAT>);
 public:
-    string getContent() const;
+    wstring getContent() const;
 private:
-    string extendFileName;
-    string content;
+    wstring extendFileName;
+    wstring content;
 };

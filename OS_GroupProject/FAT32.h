@@ -20,7 +20,7 @@ public:
     
 
 public:
-    string toString() const override;
+    wstring toString() const override;
     void readVolume() override;
     void readDirectory() override;
    

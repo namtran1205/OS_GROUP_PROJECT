@@ -10,6 +10,6 @@ public:
 public:
     virtual void readVolume() = 0;
     virtual void readDirectory() = 0;
-    virtual string toString() const = 0;
+    virtual wstring toString() const = 0;
 private:
 };

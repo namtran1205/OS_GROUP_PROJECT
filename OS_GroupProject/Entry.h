@@ -36,11 +36,11 @@ public:
     Entry();
     Entry(std::vector<BYTE>);
 public:
-    virtual string getFullName() const = 0;
-    virtual string toString(int level) const = 0;
+    virtual wstring getFullName() const = 0;
+    virtual wstring toString(int level) const = 0;
 protected:
     vector<BYTE> datas;
-    string fullName;
+    wstring fullName;
 };
 
 class MainEntry : public Entry
@@ -53,24 +53,24 @@ public:
     void addSubEntry(vector<shared_ptr<SubEntry>>);
 
 public:
-    std::string getMainName() const;
-    std::string getExtendedName() const;
+    std::wstring getMainName() const;
+    std::wstring getExtendedName() const;
     int getStartCluster() const;
     int getSize() const;
     shared_ptr<Attribute> getAttribute() const;
     shared_ptr<SDET> getSubDirectory() const;
     shared_ptr<FAT> getFatTable() const;
 public:
-    string getFullName() const override;
+    wstring getFullName() const override;
 public:
-    string toString(int level) const override;
+    wstring toString(int level) const override;
 protected:
     int startCluster;
     int sizeData;
 private:
     char reserved;
-    std::string mainName;
-    std::string extendedName;
+    std::wstring mainName;
+    std::wstring extendedName;
     shared_ptr<Attribute> attributes;
     std::chrono::system_clock::time_point dateCreated;
     std::chrono::system_clock::time_point lastAccess;
@@ -94,20 +94,20 @@ public:
 
 public:
     int getSeq() const;
-    string getUnicode() const;
-    string getExtend1() const;
-    string getExtend2() const;
+    wstring getUnicode() const;
+    wstring getExtend1() const;
+    wstring getExtend2() const;
 
-    string getFullName() const override;
+    wstring getFullName() const override;
 
 public:
-    string toString(int level) const override;
+    wstring toString(int level) const override;
 
 private:
     int seq;
-    string unicode;
-    string extend1;
-    string extend2;
+    wstring unicode;
+    wstring extend1;
+    wstring extend2;
 
 };
 

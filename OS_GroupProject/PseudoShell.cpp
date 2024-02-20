@@ -12,50 +12,50 @@ bool PseudoShell::isValidCommand(std::string command) const
 
 void PseudoShell::printShellTable()
 {
-    std::cout << "===================== SHELL ENVIRONMENT =====================" << endl;
-    std::cout << "| --root:  print root directory tree                         " << endl;
-    std::cout << "| --cls:   clear the screen                                  " << endl;
-    std::cout << "| --exit:  exit SHELL ENVIRONMENT                            " << endl;
-    std::cout << "=============================================================" << endl;
+    std::wcout << L"===================== SHELL ENVIRONMENT =====================" << endl;
+    std::wcout << L"| --root:  print root directory tree                         " << endl;
+    std::wcout << L"| --cls:   clear the screen                                  " << endl;
+    std::wcout << L"| --exit:  exit SHELL ENVIRONMENT                            " << endl;
+    std::wcout << L"=============================================================" << endl;
 }
 
-void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<IParsable> fileSystem, char partition) {
+void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<IParsable> fileSystem,const char* partition) {
     if (userInput == "root") {
         fileSystem->parse()->readDirectory();
-        std::cout << std::endl;
+        std::wcout << std::endl;
     }
     else if (userInput == "cls") {
         system("cls");
         printShellTable();
-        std::cout << std::endl;
+        std::wcout << std::endl;
     }
     else if (userInput == "exit") {
-        std::cout << "Exit!" << std::endl;
+        std::wcout << L"Exit!" << std::endl;
         std::cin;
         return;
     }
 }
 
-void PseudoShell::accessEnvironment(shared_ptr<IParsable> fileSystem, char partition) {
+void PseudoShell::accessEnvironment(shared_ptr<IParsable> fileSystem, const char* partition) {
     std::string userInput;
 
-    std::cout << std::endl;
+    std::wcout << std::endl;
     printShellTable();
 
-    std::cout << partition << ":>";
+    std::wcout << partition << ":>";
     getline(std::cin, userInput);
 
     while (!userInput.empty()) {
         if (!isValidCommand(userInput)) {
-            std::cout << "You typed an invalid command. Please type again." << std::endl;
-            std::cout << partition << ":>";
+            std::wcout << L"You typed an invalid command. Please type again." << std::endl;
+            std::wcout << partition << L":>";
             getline(std::cin, userInput);
             continue;
         }
 
         executeCommand(userInput, fileSystem, partition);
         if (userInput == "exit") return;
-        std::cout << partition << ":>";
+        std::wcout << Utils::convertCharToWString(partition) << L":>";
         getline(std::cin, userInput);
     }
 }

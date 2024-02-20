@@ -3,12 +3,15 @@
 #include "IParsable.h"
 #include "PseudoShell.h"
 #include <conio.h>
+#include <io.h>
+#include <fcntl.h>
 
 
 int main()
 {
-    //_setmode(_fileno(stdout), _O_U16TEXT);
-    //cout << "Xin Chào Việt Nam\n";
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    
+    wcout << L"Xin chào Việt Nam" << endl;
     wstring partition;
     const char* colon = ":";
     wcout << L"Enter the drive or partition name: ";
@@ -22,7 +25,7 @@ int main()
 
     cin.ignore();
     string tokens;  //User input this
-    cout << "Enter your file system: ";
+    wcout << L"Enter your file system: ";
     getline(cin, tokens);
     shared_ptr<IParsable> fileSystem = myFactory.createObject(tokens);
     
@@ -36,10 +39,10 @@ int main()
     }
 
     PseudoShell cmdEnvironment;
-    cout << endl;
-    cout << "PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
+    wcout << endl;
+    wcout << L"PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
     _getch();
-    cmdEnvironment.accessEnvironment(fileSystem, 'F');
+    cmdEnvironment.accessEnvironment(fileSystem, Utils::convertWStringToChar(partition));
     return 0;
 }
 

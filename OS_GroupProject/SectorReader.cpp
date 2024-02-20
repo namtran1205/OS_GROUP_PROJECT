@@ -28,7 +28,8 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
     HANDLE device = NULL;
 
     // Open the specified drive with GENERIC_READ access
-    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    std::string strDrive(drive, drive + wcslen(drive));
+    device = CreateFile(strDrive.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
         CloseHandle(device);
@@ -65,7 +66,8 @@ vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const
     HANDLE device = NULL;
 
     // // Open the specified drive with GENERIC_READ access
-    device = CreateFile(drive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    std::string strDrive(drive, drive + wcslen(drive));
+    device = CreateFileA(strDrive.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     if (device == INVALID_HANDLE_VALUE) {
         CloseHandle(device);

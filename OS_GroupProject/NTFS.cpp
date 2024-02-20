@@ -19,9 +19,9 @@ void NTFS::readDirectory()
 {
     cout << 2;
 }
-string NTFS::toString() const
+wstring NTFS::toString() const
 {
-    return "NTFS";
+    return L"NTFS";
 }
 
 

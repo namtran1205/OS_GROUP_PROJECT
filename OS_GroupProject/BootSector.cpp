@@ -42,12 +42,12 @@ uint8_t BootSector::getSectorPerCluster() const
 
 void BootSector::readVolumeBootRecord()
 {
-    std::cout << "Number of FAT Table - Nf = " << (int)numberOfFat << std::endl;
-    std::cout << "Sectors per FAT Table - Sf = " << sectorPerFat << std::endl;
-    std::cout << "Sectors per cluster - Sc = " << (int)sectorPerCluster << std::endl;
-    std::cout << "Sectors of Boot Sector Sb = " << sectorPerBootsector << std::endl;
-    std::cout << "Sector of Volume - Sv = " << sectorVolume << std::endl;
-    std::cout << "Bytes per Sectors - BytePerSector = " << bytePerSector << std::endl;
+    std::wcout << L"Number of FAT Table - Nf = " << (int)numberOfFat << std::endl;
+    std::wcout << L"Sectors per FAT Table - Sf = " << sectorPerFat << std::endl;
+    std::wcout << L"Sectors per cluster - Sc = " << (int)sectorPerCluster << std::endl;
+    std::wcout << L"Sectors of Boot Sector Sb = " << sectorPerBootsector << std::endl;
+    std::wcout << L"Sector of Volume - Sv = " << sectorVolume << std::endl;
+    std::wcout << L"Bytes per Sectors - BytePerSector = " << bytePerSector << std::endl;
 }
 
 void BootSector::setNumberOfFat(uint8_t num)

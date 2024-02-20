@@ -37,6 +37,25 @@ std::wstring Utils::convertCharToWString(const char* input) {
     return converter.from_bytes(input);
 }
 
+const char* Utils::convertWStringToChar(const std::wstring& wstr)
+{
+    size_t size = wcstombs(nullptr, wstr.c_str(), 0);
+    if (size == static_cast<size_t>(-1)) {
+        std::wcerr << L"Error converting wstring to multibyte string" << std::endl;
+        return nullptr;
+    }
+
+    char* result = new char[size + 1];
+
+    if (wcstombs(result, wstr.c_str(), size + 1) == static_cast<size_t>(-1)) {
+        std::wcerr << L"Error converting wstring to multibyte string" << std::endl;
+        delete[] result;
+        return nullptr;
+    }
+
+    return result;
+}
+
 string Utils::fixSpace(string name)
 {
     string res;
@@ -50,6 +69,30 @@ string Utils::fixSpace(string name)
     return res;
 }
 
+wstring Utils::fixSpaceWString(wstring name)
+{
+    wstring res;
+    for (size_t i = 0; i < name.size(); ++i)
+    {
+        if (name[i] == L' ')
+            break;
+        res += name[i];
+    }
+    return res;
+}
+
+wstring Utils::fixSpecialCharacter(wstring name)
+{
+    wstring res;
+    for (size_t i = 0; i < name.size(); ++i)
+    {
+        if (name[i] == L'ÿ')
+            break;
+        res += name[i];
+    }
+    return res;
+}
+
 string Utils::parseExtendedFileName(string fileName)
 {
     string extendedName;
@@ -57,4 +100,13 @@ string Utils::parseExtendedFileName(string fileName)
     if(dotPos !=  string::npos)
         return fileName.substr(dotPos+1);
     return string();
+}
+
+wstring Utils::parseExtendedFileNameWString(const wstring& fileName)
+{
+    wstring extendedName;
+    size_t dotPos = fileName.find_last_of(L'.');
+    if (dotPos != wstring::npos)
+        return fileName.substr(dotPos + 1);
+    return wstring();
 }
