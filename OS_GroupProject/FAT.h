@@ -11,10 +11,11 @@ public:
 public:
 	void readFatTable();
 	shared_ptr<BootSector> getBootSector() const;
-	vector<uint32_t> GetFatTable() const;
+	vector<uint64_t> GetFatTable() const;
 
 private:
 	shared_ptr<BootSector> bootSector;
-	std::vector<uint32_t> fatTable;
+	std::vector<uint64_t> fatTable;
 	uint32_t numberOfFat;
+	vector<pair<BYTE, BYTE>> datas;
 };

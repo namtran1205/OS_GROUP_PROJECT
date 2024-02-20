@@ -39,7 +39,7 @@ int main()
     cout << endl;
     cout << "PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
     _getch();
-    cmdEnvironment.accessEnvironment(fileSystem, 'F');
+    cmdEnvironment.accessEnvironment(fileSystem->parse(), 'F');
     return 0;
 }
 

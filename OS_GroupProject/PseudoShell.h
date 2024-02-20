@@ -8,10 +8,10 @@
 class PseudoShell
 {
 public:
-	void accessEnvironment(shared_ptr<IParsable> fileSystem, char partition);
+	void accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, char partition);
 
 private:
-	void executeCommand(const std::string& userInput, shared_ptr<IParsable> fileSystem, char partition);
+	void executeCommand(const std::string& userInput, shared_ptr<FileManagementSystem> fileSystem, char partition);
 	void printShellTable();
 	bool isValidCommand(std::string command) const;
 };
