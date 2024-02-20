@@ -29,6 +29,7 @@
     <ClCompile Include="IParsable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NTFS.cpp" />
+    <ClCompile Include="PseudoShell.cpp" />
     <ClCompile Include="RDET.cpp" />
     <ClCompile Include="SectorReader.cpp" />
     <ClCompile Include="StaticVariable.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="FileManagementSystem.h" />
     <ClInclude Include="IParsable.h" />
     <ClInclude Include="NTFS.h" />
+    <ClInclude Include="PseudoShell.h" />
     <ClInclude Include="RDET.h" />
     <ClInclude Include="SectorReader.h" />
     <ClInclude Include="StaticVariable.h" />
