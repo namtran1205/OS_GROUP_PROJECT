@@ -5,6 +5,7 @@
 class Content
 {
 public:
+    Content();
     Content(wstring, uint64_t, shared_ptr<FAT>);
 public:
     wstring getContent() const;
