@@ -19,7 +19,7 @@ void PseudoShell::printShellTable()
     std::wcout << L"=============================================================" << endl;
 }
 
-void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<FileManagementSystem> fileSystem,const char* partition) {
+void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<FileManagementSystem> fileSystem, const wstring& partition) {
     if (userInput == "root") {
         fileSystem->readDirectory();
         std::wcout << std::endl;
@@ -36,7 +36,7 @@ void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<FileMa
     }
 }
 
-void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, const char* partition) {
+void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, const wstring& partition) {
     std::string userInput;
 
     std::wcout << std::endl;
@@ -55,7 +55,7 @@ void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem,
 
         executeCommand(userInput, fileSystem, partition);
         if (userInput == "exit") return;
-        std::wcout << Utils::convertCharToWString(partition) << L":>";
+        std::wcout << partition << L":>";
         getline(std::cin, userInput);
     }
 }
