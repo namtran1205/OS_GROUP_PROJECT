@@ -7,6 +7,24 @@ namespace StaticVariable
 }
 
 
+vector<string> TABLE_OF_EXTENSIONS = { ".txt",
+                                       ".docx",
+                                       ".xlsx",
+                                       ".pptx",
+                                       ".pdf",
+                                       ".jpg",
+                                       ".mp3",
+                                       ".mp4",
+                                       ".zip"  };
+
+vector<wstring> TABLE_OF_APPS = { L"Notepad",
+                                  L"Word",
+                                  L"Excel",
+                                  L"PowerPoint",
+                                  L"Foxit Reader",
+                                  L"Photos",
+                                  L"Media Player",
+                                  L"7-Zip"         };
 
 
 uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
@@ -139,4 +157,17 @@ wstring Utils::parseExtendedFileNameWString(const wstring& fileName)
     if (dotPos != wstring::npos)
         return fileName.substr(dotPos + 1);
     return wstring();
+}
+
+wstring Utils::AppToOpen(const string& fileExtension)
+{
+    auto it = find(TABLE_OF_EXTENSIONS.begin(), TABLE_OF_EXTENSIONS.end(), fileExtension);
+    if (it == TABLE_OF_EXTENSIONS.end())
+    {
+        wcout << L"Failed to determine what application used to open this file." << endl;
+        return L"";
+    }
+
+    size_t index = distance(TABLE_OF_EXTENSIONS.begin(), it);
+    return TABLE_OF_APPS[index];
 }

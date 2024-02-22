@@ -49,4 +49,5 @@ namespace Utils
     wstring fixSpecialCharacter(wstring name);
     string parseExtendedFileName(string fileName);
     wstring parseExtendedFileNameWString(const wstring& fileName);
+    wstring AppToOpen(const string& fileExtension);
 }
