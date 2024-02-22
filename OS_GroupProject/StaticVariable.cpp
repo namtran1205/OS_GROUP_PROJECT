@@ -56,6 +56,17 @@ const char* Utils::convertWStringToChar(const std::wstring& wstr)
     return result;
 }
 
+wstring Utils::convertBYTEToWstring( std::vector<BYTE>& byte)
+{
+    std::wstring WCHAR = L"";
+    for (int i = 0; i < byte.size(); i+=2)
+    {
+        uint64_t tmp = Utils::Convert2LitleEndian(byte.begin() + i, 2);
+        WCHAR += static_cast<wchar_t> (tmp) ;
+    }
+    return WCHAR;
+}
+
 string Utils::fixSpace(string name)
 {
     string res;

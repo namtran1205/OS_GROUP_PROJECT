@@ -39,6 +39,7 @@ namespace Utils
     wstring convertUTF8ToWstring(const std::vector<BYTE>& bytes);
     wstring convertCharToWString(const char* input);
     const char* convertWStringToChar(const std::wstring& wstr);
+    wstring convertBYTEToWstring( std::vector<BYTE>& byte);
     //HELLO   . TXT --> HELLO.TXT
     string fixSpace(string name);
     wstring fixSpaceWString(wstring name);
