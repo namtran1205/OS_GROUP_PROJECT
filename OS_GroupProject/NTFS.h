@@ -47,6 +47,7 @@ public:
 
 private:
     shared_ptr<BPB> bootSector;
+    shared_ptr<SectorReader> sectorReader;
     // std::vector<Record> ListRecord;
 
 
