@@ -3,6 +3,8 @@
 
 NTFS::NTFS(LPCWSTR drive) 
 {
+    sectorReader = make_shared<SectorReader>(drive);
+    bootSector = make_shared<BPB>(sectorReader);
 }
 NTFS::~NTFS()
 {
@@ -11,6 +13,7 @@ NTFS::~NTFS()
 
 void NTFS::readVolumeBootRecord()
 {
+    bootSector->readVolumeBootRecord();
 }
 
 void NTFS::readDirectory()
