@@ -68,6 +68,8 @@ wstring Utils::convertBYTEToWstring( std::vector<BYTE>& byte)
             break;
         }
         tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 2);
+        if (bytes[i] == 0xFF  bytes[i + 1] == 0xFF  tmp == 0)
+            break;
         WCHAR += static_cast<wchar_t> (tmp);
     }
     return WCHAR;
