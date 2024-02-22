@@ -56,6 +56,9 @@
     <ClCompile Include="PseudoShell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BPB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BootSector.h">
@@ -96,6 +99,7 @@
     </ClInclude>
     <ClInclude Include="Content.h" />
     <ClInclude Include="PseudoShell.h" />
+    <ClInclude Include="BPB.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodingConvention.txt">

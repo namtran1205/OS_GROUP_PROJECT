@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BootSector.cpp" />
+    <ClCompile Include="BPB.cpp" />
     <ClCompile Include="Content.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="FAT.cpp" />
@@ -37,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BootSector.h" />
+    <ClInclude Include="BPB.h" />
     <ClInclude Include="Content.h" />
     <ClInclude Include="Entry.h" />
     <ClInclude Include="FAT.h" />
