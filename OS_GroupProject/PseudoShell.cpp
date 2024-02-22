@@ -1,4 +1,4 @@
-#include "PseudoShell.h"
+﻿#include "PseudoShell.h"
 #include <algorithm>
 
 vector<std::wstring> TABLE_OF_COMMANDS = {
@@ -17,15 +17,16 @@ bool PseudoShell::isValidCommand(std::wstring command) const
 
 void PseudoShell::printShellTable()
 {
-    std::wcout << L"===================== SHELL ENVIRONMENT ======================" << endl;
-    std::wcout << L"| --show:   show boot record                                  " << endl;
-    std::wcout << L"| --dir:   print directories                                 " << endl;
-    std::wcout << L"| --open:   open a file                                       " << endl;
-    std::wcout << L"| --cd:     change directory                                  " << endl;
-    std::wcout << L"| --return: return to previous directory                      " << endl;
-    std::wcout << L"| --cls:    clear the screen                                  " << endl;
-    std::wcout << L"| --exit:   exit SHELL ENVIRONMENT                            " << endl;
-    std::wcout << L"=============================================================" << endl;
+    std::wcout << L"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬《 SHELL ENVIRONMENT 》▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
+    std::wcout << L"▎                                                                   ▎" << endl;
+    std::wcout << L"▎                     ◈ show:   show boot record                    ▎" << endl;
+    std::wcout << L"▎                     ◈ dir:    print directories                   ▎" << endl;
+    std::wcout << L"▎                     ◈ open:   open a file                         ▎" << endl;
+    std::wcout << L"▎                     ◈ cd:     change directory                    ▎" << endl;
+    std::wcout << L"▎                     ◈ return: return to previous directory        ▎" << endl;
+    std::wcout << L"▎                     ◈ cls:    clear the screen                    ▎" << endl;
+    std::wcout << L"▎                     ◈ exit:   exit SHELL ENVIRONMENT              ▎" << endl;
+    std::wcout << L"────────────────────────────────────────────────────────────────────" << endl;
 }
 
 void PseudoShell::executeCommand(const std::wstring &userInput, shared_ptr<FileManagementSystem> fileSystem, wstring& partition)
