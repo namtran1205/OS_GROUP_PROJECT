@@ -6,7 +6,7 @@ class IParsable
 {
 public:
     virtual shared_ptr<FileManagementSystem> parse() = 0;
-    virtual string parseObjectName() const = 0;
+    virtual wstring parseObjectName() const = 0;
 public: 
     void setDrive(LPCWSTR);
 protected:
@@ -18,7 +18,7 @@ class FAT32Parser : public IParsable
 {
 public:
     shared_ptr<FileManagementSystem> parse() override;
-    string parseObjectName() const override;
+    wstring parseObjectName() const override;
 };
 
 
@@ -26,5 +26,5 @@ class NTFSParser : public IParsable
 {
 public:
     shared_ptr<FileManagementSystem> parse() override;
-    string parseObjectName() const override;
+    wstring parseObjectName() const override;
 };

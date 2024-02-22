@@ -1,61 +1,101 @@
 #include "PseudoShell.h"
 #include <algorithm>
 
-vector<std::string> TABLE_OF_COMMANDS = { "root",
-                                          "cls",
-                                          "exit" };
+vector<std::wstring> TABLE_OF_COMMANDS = {
+                                          L"show",
+                                          L"dir",
+                                          L"open",
+                                          L"cd",
+                                          L"return",
+                                          L"cls",
+                                          L"exit" };
 
-bool PseudoShell::isValidCommand(std::string command) const
+bool PseudoShell::isValidCommand(std::wstring command) const
 {
     return std::find(TABLE_OF_COMMANDS.begin(), TABLE_OF_COMMANDS.end(), command) != TABLE_OF_COMMANDS.end();
 }
 
 void PseudoShell::printShellTable()
 {
-    std::wcout << L"===================== SHELL ENVIRONMENT =====================" << endl;
-    std::wcout << L"| --root:  print root directory tree                         " << endl;
-    std::wcout << L"| --cls:   clear the screen                                  " << endl;
-    std::wcout << L"| --exit:  exit SHELL ENVIRONMENT                            " << endl;
+    std::wcout << L"===================== SHELL ENVIRONMENT ======================" << endl;
+    std::wcout << L"| --show:   show boot record                                  " << endl;
+    std::wcout << L"| --dir:   print directories                                 " << endl;
+    std::wcout << L"| --open:   open a file                                       " << endl;
+    std::wcout << L"| --cd:     change directory                                  " << endl;
+    std::wcout << L"| --return: return to previous directory                      " << endl;
+    std::wcout << L"| --cls:    clear the screen                                  " << endl;
+    std::wcout << L"| --exit:   exit SHELL ENVIRONMENT                            " << endl;
     std::wcout << L"=============================================================" << endl;
 }
 
-void PseudoShell::executeCommand(const std::string& userInput, shared_ptr<FileManagementSystem> fileSystem, const wstring& partition) {
-    if (userInput == "root") {
-        fileSystem->readDirectory();
+void PseudoShell::executeCommand(const std::wstring &userInput, shared_ptr<FileManagementSystem> fileSystem, wstring& partition)
+{
+    if(userInput == L"show")
+    {
+        fileSystem->readVolumeBootRecord();
         std::wcout << std::endl;
     }
-    else if (userInput == "cls") {
+    else if (userInput == L"dir")
+    {
+        fileSystem->readDirectory();
+    }
+    else if (userInput.substr(0,4) == L"open")
+    {   
+        wstring fileName = userInput.substr(5);
+        fileSystem->accessFile(fileName);
+    }
+    else if (userInput.substr(0,2) == L"cd")
+    {
+        wstring tokens = userInput.substr(3);
+        if(fileSystem->changeDirectory(tokens))
+            partition += L"\\" + tokens;
+    }
+    else if (userInput == L"return")
+    {
+        if(fileSystem->returnPreviousDirectory())
+        {
+            int pos = partition.find_last_of('\\');
+            partition = partition.substr(0, pos);
+        }
+        else
+        {
+            wcout << "No history founded";
+        }
+        wcout << endl;
+    }
+    else if (userInput == L"cls")
+    {
         system("cls");
         printShellTable();
         std::wcout << std::endl;
     }
-    else if (userInput == "exit") {
+    else if (userInput == L"exit")
+    {
         std::wcout << L"Exit!" << std::endl;
         std::cin;
         return;
     }
 }
 
-void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, const wstring& partition) {
-    std::string userInput;
-
-    std::wcout << std::endl;
+void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, wstring& partition) {
+    std::wstring userInput;
     printShellTable();
 
     std::wcout << partition << ":>";
-    getline(std::cin, userInput);
+    getline(std::wcin, userInput);
 
     while (!userInput.empty()) {
-        if (!isValidCommand(userInput)) {
-            std::wcout << L"You typed an invalid command. Please type again." << std::endl;
-            std::wcout << partition << L":>";
-            getline(std::cin, userInput);
-            continue;
-        }
+        //if (!isValidCommand(userInput)) {
+        //    std::wcout << L"You typed an invalid command. Please type again." << std::endl;
+        //    std::wcout << partition << L":>";
+        //    getline(std::wcin, userInput);
+        //    continue;
+        //}
 
         executeCommand(userInput, fileSystem, partition);
-        if (userInput == "exit") return;
+        if (userInput == L"exit") return;
         std::wcout << partition << L":>";
-        getline(std::cin, userInput);
+        getline(std::wcin, userInput);
+
     }
 }

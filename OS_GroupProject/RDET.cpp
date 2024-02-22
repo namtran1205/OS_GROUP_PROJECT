@@ -93,15 +93,15 @@ void RDET::handleAllEntries()
 
 void RDET::readDirectory(int level)
 {
+    wcout << endl;
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
         wcout << entry.lock()->toString(0);
         wcout << endl;
-
-        //If an entry contains folder, display it
-         if(entry.lock()->getSubDirectory() != nullptr)
-             entry.lock()->getSubDirectory()->readDirectory(1);
+        // //If an entry contains folder, display it
+        //  if(entry.lock()->getSubDirectory() != nullptr)
+        //      entry.lock()->getSubDirectory()->readDirectory(1);
     }
 }
 
@@ -160,16 +160,17 @@ SDET::SDET(shared_ptr<FAT> fatTable, uint64_t startByte) : SDET()
 
 void SDET::readDirectory(int level)
 {
+    wcout << endl;
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
         wcout << entry.lock()->toString(level);
         wcout << endl;
         //If an entry contains folder, display it
-         if(entry.lock()->getSubDirectory() != nullptr)
-         {
-             entry.lock()->getSubDirectory()->readDirectory(level+1);
-         }
+        //  if(entry.lock()->getSubDirectory() != nullptr)
+        //  {
+        //      entry.lock()->getSubDirectory()->readDirectory(level+1);
+        //  }
           //string s;
           //cin >> s;
     }

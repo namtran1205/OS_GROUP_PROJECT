@@ -22,25 +22,19 @@ int main()
     myFactory.registerWith(make_shared<FAT32Parser>());
     myFactory.registerWith(make_shared<NTFSParser>());
 
-    cin.ignore();
-    string tokens;  //User input this
+    wcin.ignore();
+    wstring tokens;  //User input this
     wcout << L"Enter your file system: ";
-    getline(cin, tokens);
+    getline(wcin, tokens);
     shared_ptr<IParsable> fileSystem = myFactory.createObject(tokens);
-    
 
-    if(fileSystem != nullptr)
-        fileSystem->parse()->readVolume();
-    else
+    if(!fileSystem)
     {
-        cout << "INVALID ERRORS";
+        wcout << "INVALID ERRORS";
         return 0;   
     }
 
     PseudoShell cmdEnvironment;
-    wcout << endl;
-    wcout << L"PRESS ENTER TO ACCESS COMMAND ENVIRONMENT";
-    _getch();
     cmdEnvironment.accessEnvironment(fileSystem->parse(), partition);
     return 0;
 }

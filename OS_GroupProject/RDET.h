@@ -31,7 +31,6 @@ protected:
     shared_ptr<FAT> fatTable;
     std::vector<shared_ptr<MainEntry>> entries;
     uint16_t size; //The size is calculated as "BYTE" unit.
-
 	uint64_t startSector;
     uint16_t numberOfSector;
     uint64_t startByte;

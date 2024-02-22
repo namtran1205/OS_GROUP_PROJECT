@@ -24,12 +24,23 @@ uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
 }
 
 
-std::wstring Utils::convertUTF8ToWstring(const std::vector<BYTE>& bytes)
+std::wstring Utils::convertBytesToWstring( std::vector<BYTE> bytes)
 {
-    wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    string utf8_string(bytes.begin(), bytes.end());
-    wstring wstr = converter.from_bytes(utf8_string);
-    return wstr;
+    std::wstring WCHAR = L"";
+    for (int i = 0; i < bytes.size(); i += 2)
+    {
+        uint64_t tmp;
+        if(i == bytes.size() - 1)
+        {
+            tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 1);
+            break;
+        }
+        tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 2);
+        if(bytes[i] == 0xFF || bytes[i+1] == 0xFF || tmp == 0)
+            break;
+        WCHAR += static_cast<wchar_t> (tmp);
+    }
+    return WCHAR;
 }
 
 std::wstring Utils::convertCharToWString(const char* input) {
@@ -56,7 +67,7 @@ const char* Utils::convertWStringToChar(const std::wstring& wstr)
     return result;
 }
 
-wstring Utils::convertBYTEToWstring( std::vector<BYTE>& byte)
+wstring Utils::convertBYTEToWstring( std::vector<BYTE>& bytes)
 {
     std::wstring WCHAR = L"";
     for (int i = 0; i < bytes.size(); i += 2)
@@ -68,7 +79,7 @@ wstring Utils::convertBYTEToWstring( std::vector<BYTE>& byte)
             break;
         }
         tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 2);
-        if (bytes[i] == 0xFF  bytes[i + 1] == 0xFF  tmp == 0)
+        if (bytes[i] == 0xFF || bytes[i + 1] == 0xFF || tmp == 0)
             break;
         WCHAR += static_cast<wchar_t> (tmp);
     }
@@ -105,7 +116,7 @@ wstring Utils::fixSpecialCharacter(wstring name)
     wstring res;
     for (size_t i = 0; i < name.size(); ++i)
     {
-        if (name[i] == L'ÿ')
+        if (name[i] == L'ï¿½')
             break;
         res += name[i];
     }

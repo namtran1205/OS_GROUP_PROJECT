@@ -12,16 +12,14 @@ Content::Content(wstring extendedName, uint64_t startCluster, shared_ptr<FAT> fa
     int numberOfSectorToRead = (fatTable->findPath(startCluster)[startCluster] - startCluster) + 1;
     uint64_t readPoint = fatTable->getBootSector()->ClusterToSector(startCluster) * fatTable->getBootSector()->getBytePerSector();
     vector<BYTE> dataContents = fatTable->getBootSector()->getSectorReader()->ReadSector(readPoint, numberOfSectorToRead);
-    content = wstring(dataContents.begin(), dataContents.end());
+    content = Utils::convertBytesToWstring(vector<BYTE>(dataContents.begin() + 2, dataContents.end()));
 }
 
 wstring Content::getContent() const
 {
-    if(extendFileName == Utils::convertCharToWString("TXT") || extendFileName == Utils::convertCharToWString("txt"))
+    if(extendFileName == L"TXT" || extendFileName == L"txt")
     {
-        return this->content;
+        return this->content ;
     }
-    
-    wstring temp1 = L"";
-    return temp1;
+    return L"App to open this file: ";
 }

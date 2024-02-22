@@ -13,9 +13,9 @@ shared_ptr<FileManagementSystem> FAT32Parser::parse()
     return make_shared<FAT32>(drive);
 }
 
-string FAT32Parser::parseObjectName() const
+wstring FAT32Parser::parseObjectName() const
 {
-    return "FAT32";
+    return L"FAT32";
 }
 
 shared_ptr<FileManagementSystem> NTFSParser::parse()
@@ -23,9 +23,9 @@ shared_ptr<FileManagementSystem> NTFSParser::parse()
     return make_shared<NTFS>(drive);
 }
 
-string NTFSParser::parseObjectName() const
+wstring NTFSParser::parseObjectName() const
 {
-    return "NTFS";
+    return L"NTFS";
 }
 
 

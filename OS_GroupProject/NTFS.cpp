@@ -9,20 +9,35 @@ NTFS::~NTFS()
 
 }
 
-
-void NTFS::readVolume()
+void NTFS::readVolumeBootRecord()
 {
-    cout << 1;
 }
 
 void NTFS::readDirectory()
 {
     cout << 2;
 }
+
+bool NTFS::changeDirectory(wstring folderName)
+{
+    return true;
+}
+
+bool NTFS::accessFile(wstring fileName)
+{
+    return true;
+}
+
+bool NTFS::returnPreviousDirectory()
+{
+    return false;
+}
+
 wstring NTFS::toString() const
 {
     return L"NTFS";
 }
+
 
 
 // std::vector<BYTE> ReadData(LPCWSTR drive, int readPoint, int numBytes) {

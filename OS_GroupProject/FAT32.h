@@ -11,26 +11,26 @@ class RDET;
 
 class FAT32 : public FileManagementSystem
 {
-
 public:
-    //FAT32();
     FAT32(LPCWSTR drive);
-    ~FAT32() ;
-public:
-    
-
+    ~FAT32();
 public:
     wstring toString() const override;
-    void readVolume() override;
+public:
+    void readVolumeBootRecord() override;
+
     void readDirectory() override;
-   
+
+    bool changeDirectory(wstring folderName) override;
+
+    bool accessFile(wstring fileName) override;
+
+    bool returnPreviousDirectory() override;
 private:
-
-    shared_ptr<BootSector> bootSector;
-    shared_ptr<RDET> rootDirectory;
-    shared_ptr<FAT> fileAllocationTable;
     shared_ptr<SectorReader> sectorReader;
+    shared_ptr<BootSector> bootSector;
+    shared_ptr<FAT> fileAllocationTable;
+    shared_ptr<RDET> rootDirectory;
+private:
+    stack<weak_ptr<RDET>> currentDirectory;
 };
-
-
-

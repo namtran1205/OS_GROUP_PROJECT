@@ -32,8 +32,17 @@ public:
     ~NTFS();
 public:
     wstring toString() const override;
-    void readVolume() override;
+public:
+    void readVolumeBootRecord() override;
+
     void readDirectory() override;
+
+    bool changeDirectory(wstring folderName) override;
+
+    bool accessFile(wstring fileName) override;
+    
+    bool returnPreviousDirectory() override;
+
 private:
     std:: wstring driveName;
     uint32_t BytePerSector;    // 0xB 2 byte

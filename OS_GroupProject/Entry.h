@@ -12,8 +12,6 @@ class SDET;
 
 class Attribute 
 {
-
-
 public:
     Attribute();
     Attribute(BYTE);
@@ -25,7 +23,8 @@ public:
     bool isVollabel() const;
     bool isDirectory() const;
     bool isArchive() const;
-
+public:
+    wstring toString() const;
 private:
     BYTE data;
 };
@@ -43,7 +42,7 @@ protected:
     wstring fullName;
 };
 
-class MainEntry : public Entry
+class MainEntry : public Entry, public enable_shared_from_this<MainEntry>
 {
 public:
     MainEntry();
@@ -51,7 +50,6 @@ public:
 
 public:
     void addSubEntry(vector<shared_ptr<SubEntry>>);
-
 public:
     std::wstring getMainName() const;
     std::wstring getExtendedName() const;
@@ -60,7 +58,7 @@ public:
     shared_ptr<Attribute> getAttribute() const;
     shared_ptr<SDET> getSubDirectory() const;
     shared_ptr<FAT> getFatTable() const;
-public:
+    shared_ptr<Content> getContent() const;
     wstring getFullName() const override;
 public:
     wstring toString(int level) const override;

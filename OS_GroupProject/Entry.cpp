@@ -39,6 +39,36 @@ bool Attribute::isArchive() const
     return  ((data & 0x20) != 0);
 }
 
+wstring Attribute::toString() const
+{
+    wstring res;
+    if(this->isArchive())
+    {
+        res += L"A";
+    }
+    if(this->isDirectory())
+    {
+        res += L"D";
+    }
+    if(this->isVollabel())
+    {
+        res += L"V";
+    }
+    if(this->isHidden())
+    {
+        res += L"H";
+    }
+    if(this->isSystem())
+    {
+        res += L"S";
+    }
+    if(this->isReadOnly())
+    {
+        res += L"R";
+    }
+    return res;
+}
+
 Entry::Entry()
 {
 }
@@ -60,12 +90,6 @@ MainEntry::MainEntry() : Entry()
 MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes)
 {
     this->fatTable = fatTable;
-
-    /*mainName = std::string(datas.begin(), datas.begin() + 7);
-
-    extendedName = std::string(datas.begin() + 8, datas.begin() + 11);
-    fullName = Utils::fixSpace(mainName) + "." + Utils::fixSpace(extendedName);
-    */
     
     mainName = wstring(datas.begin(), datas.begin() + 7);
     extendedName = wstring(datas.begin() + 8, datas.begin() + 11);
@@ -109,7 +133,7 @@ void MainEntry::addSubEntry(vector<shared_ptr<SubEntry>> subEntries)
         fullNameOfMainEntry += subEntries[i]->getFullName();
         
     }
-    this->fullName = Utils::fixSpecialCharacter(fullNameOfMainEntry);
+    this->fullName = fullNameOfMainEntry;
 }
 
 std::wstring MainEntry::getMainName() const
@@ -147,6 +171,11 @@ shared_ptr<FAT> MainEntry::getFatTable() const
     return this->fatTable;
 }
 
+shared_ptr<Content> MainEntry::getContent() const
+{
+    return this->content;
+}
+
 wstring MainEntry::getFullName() const
 {
     return this->fullName;
@@ -166,11 +195,10 @@ string MainEntry::toString(int level) const
 
 wstring MainEntry::toString(int level) const
 {
-    wcout << L"||";
     wstring res;
     for (int i = 0; i < level; ++i)
         res += L"\t";
-    res += L"|---" + this->getFullName();
+    res += this->getFullName();
     return res;
 }
 
@@ -187,11 +215,10 @@ SubEntry::SubEntry() : Entry()
 SubEntry::SubEntry(vector<BYTE> bytesData) : Entry(bytesData)
 {
     seq = int(Utils::Convert2LitleEndian(datas.begin(), 1));
-    unicode = wstring(datas.begin() + 1, datas.begin() + 10);
-    extend1 = wstring(datas.begin() +  0xE, datas.begin() + 0x19);
-    extend2 = wstring(datas.begin() +  0x1C, datas.end());
+    unicode =  Utils::convertBytesToWstring(vector<BYTE>(datas.begin() + 1, datas.begin() + 11));
+    extend1 = Utils::convertBytesToWstring(vector<BYTE>(datas.begin() +  0xE, datas.begin() + 0xE + 0xC));
+    extend2 = Utils::convertBytesToWstring(vector<BYTE>(datas.begin() +  0x1C, datas.end()));
     fullName = unicode + extend1 + extend2;
-    
 }
 
 

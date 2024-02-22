@@ -3,10 +3,6 @@
 FAT::FAT(shared_ptr<BootSector> bootSector)
 {
 	this->bootSector = bootSector;
-}
-
-void FAT::readFatTable()
-{
 	numberOfFat = bootSector->GetNumberOfFat();
 	int fatSize = numberOfFat * bootSector->GetSectorPerFat();
 	int64_t ReadPoint = bootSector->getStartSectorOfFAT1() *  bootSector->getBytePerSector();

@@ -21,7 +21,7 @@ void FileManagementFactory::registerWith(shared_ptr<IParsable> parser)
     );
 }
 
-shared_ptr<IParsable> FileManagementFactory::createObject(string typeObject)
+shared_ptr<IParsable> FileManagementFactory::createObject(wstring typeObject)
 {
     return container[typeObject];
 }   

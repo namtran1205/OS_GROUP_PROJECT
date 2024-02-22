@@ -14,6 +14,9 @@
 #include <io.h>
 #include <windows.h>
 #include <Windows.h>
+#include <stack>
+#include <queue>
+#include <limits>
 #include <stdio.h>
 #include <conio.h>
 #include <fcntl.h>
@@ -36,7 +39,7 @@ namespace StaticVariable
 namespace Utils
 {
     uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
-    wstring convertUTF8ToWstring(const std::vector<BYTE>& bytes);
+    wstring convertBytesToWstring( std::vector<BYTE> bytes);
     wstring convertCharToWString(const char* input);
     const char* convertWStringToChar(const std::wstring& wstr);
     wstring convertBYTEToWstring( std::vector<BYTE>& byte);
