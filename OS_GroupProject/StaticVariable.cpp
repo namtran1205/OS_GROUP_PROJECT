@@ -1,25 +1,37 @@
 #include "StaticVariable.h"
-#include <map>
 
 namespace StaticVariable
 {
     int BYTES_PER_CLUSTER = 4;
     int BYTES_PER_ENTRY = 32;
+    vector<wstring> TABLE_OF_COMMANDS = {
+        L"show",
+        L"dir",
+        L"open",
+        L"cd",
+        L"return",
+        L"cls",
+        L"exit" 
+    };
+    
+    map<wstring, wstring> MAPPING_FILENAME_APPS = {
+        { L".txt", L"Notepad" },
+        { L".docx", L"Word" },
+        { L".xlsx", L"Excel" },
+        { L".pptx", L"PowerPoint" },
+        { L".pdf", L"Foxit Reader" },
+        { L".jpg", L"Photos" },
+        { L".mp3", L"Media Player" },
+        { L".mp4", L"Media Player" },
+        { L".zip", L"7-Zip" }
+    };
 }
 
-map<string, wstring> Extension_App = {
-    {".txt" , L"Notepad"},
-    {".docx", L"Word"},
-    {".xlsx", L"Excel"},
-    {".pdf" , L"Foxit Reader"},
-    {".jpg" , L"Photos"},
-    {".mp3" , L"Media Player"},
-    {".mp4" , L"Media Player"},
-    {".zip" , L"7-Zip"}
-};
 
 
-uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
+
+
+uint64_t Utils::MyINTEGER::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
 {
     if (numBytes <= 0 || numBytes > 8)
         return 0;
@@ -34,7 +46,7 @@ uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
 }
 
 
-std::wstring Utils::convertBytesToWstring( std::vector<BYTE> bytes)
+std::wstring Utils::MySTRING::convertBytesToWstring( std::vector<BYTE> bytes)
 {
     std::wstring WCHAR = L"";
     for (int i = 0; i < bytes.size(); i += 2)
@@ -42,10 +54,10 @@ std::wstring Utils::convertBytesToWstring( std::vector<BYTE> bytes)
         uint64_t tmp;
         if(i == bytes.size() - 1)
         {
-            tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 1);
+            tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 1);
             break;
         }
-        tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 2);
+        tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 2);
         if(bytes[i] == 0xFF || bytes[i+1] == 0xFF || tmp == 0)
             break;
         WCHAR += static_cast<wchar_t> (tmp);
@@ -53,12 +65,12 @@ std::wstring Utils::convertBytesToWstring( std::vector<BYTE> bytes)
     return WCHAR;
 }
 
-std::wstring Utils::convertCharToWString(const char* input) {
+std::wstring Utils::MySTRING::convertCharToWString(const char* input) {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     return converter.from_bytes(input);
 }
 
-const char* Utils::convertWStringToChar(const std::wstring& wstr)
+const char* Utils::MySTRING::convertWStringToChar(const std::wstring& wstr)
 {
     size_t size = wcstombs(nullptr, wstr.c_str(), 0);
     if (size == static_cast<size_t>(-1)) {
@@ -77,7 +89,7 @@ const char* Utils::convertWStringToChar(const std::wstring& wstr)
     return result;
 }
 
-wstring Utils::convertBYTEToWstring( std::vector<BYTE>& bytes)
+wstring Utils::MySTRING::convertBYTEToWstring( std::vector<BYTE>& bytes)
 {
     std::wstring WCHAR = L"";
     for (int i = 0; i < bytes.size(); i += 2)
@@ -85,10 +97,10 @@ wstring Utils::convertBYTEToWstring( std::vector<BYTE>& bytes)
         uint64_t tmp;
         if (i == bytes.size() - 1)
         {
-            tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 1);
+            tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 1);
             break;
         }
-        tmp = Utils::Convert2LitleEndian(bytes.begin() + i, 2);
+        tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 2);
         if (bytes[i] == 0xFF || bytes[i + 1] == 0xFF || tmp == 0)
             break;
         WCHAR += static_cast<wchar_t> (tmp);
@@ -96,7 +108,7 @@ wstring Utils::convertBYTEToWstring( std::vector<BYTE>& bytes)
     return WCHAR;
 }
 
-string Utils::fixSpace(string name)
+string Utils::MySTRING::fixSpace(string name)
 {
     string res;
     for (int i = 0; i < name.size(); ++i)
@@ -109,7 +121,7 @@ string Utils::fixSpace(string name)
     return res;
 }
 
-wstring Utils::fixSpaceWString(wstring name)
+wstring Utils::MySTRING::fixSpaceWString(wstring name)
 {
     wstring res;
     for (size_t i = 0; i < name.size(); ++i)
@@ -121,7 +133,7 @@ wstring Utils::fixSpaceWString(wstring name)
     return res;
 }
 
-wstring Utils::fixSpecialCharacter(wstring name)
+wstring Utils::MySTRING::fixSpecialCharacter(wstring name)
 {
     wstring res;
     for (size_t i = 0; i < name.size(); ++i)
@@ -133,7 +145,7 @@ wstring Utils::fixSpecialCharacter(wstring name)
     return res;
 }
 
-string Utils::parseExtendedFileName(string fileName)
+string Utils::MySTRING::parseExtendedFileName(string fileName)
 {
     string extendedName;
     int dotPos = fileName.find_last_of('.');
@@ -142,7 +154,7 @@ string Utils::parseExtendedFileName(string fileName)
     return string();
 }
 
-wstring Utils::parseExtendedFileNameWString(const wstring& fileName)
+wstring Utils::MySTRING::parseExtendedFileNameWString(const wstring& fileName)
 {
     wstring extendedName;
     size_t dotPos = fileName.find_last_of(L'.');
@@ -151,13 +163,28 @@ wstring Utils::parseExtendedFileNameWString(const wstring& fileName)
     return wstring();
 }
 
-wstring Utils::AppToOpen(const string& fileExtension)
+wstring Utils::MySTRING::splitUserInput(wstring& userInput)
 {
-    auto it = Extension_App.find(fileExtension);
-    if (it == Extension_App.end())
+    wstring res;
+    int spacePos = userInput.find_first_of(L' ');
+    if(spacePos != wstring::npos)
     {
-        wcout << L"Failed to determine what application used to open this file." << endl;
-        return L"";
+        res = userInput.substr(spacePos + 1); 
+        userInput = userInput.substr(0, spacePos);
+        return res;
     }
-    return it->second;
+    return res;
 }
+
+//wstring Utils::AppToOpen(const wstring& fileExtension)
+//{
+//    auto it = find(TABLE_OF_EXTENSIONS.begin(), TABLE_OF_EXTENSIONS.end(), fileExtension);
+//    if (it == TABLE_OF_EXTENSIONS.end())
+//    {
+//        wcout << L"Failed to determine what application used to open this file." << endl;
+//        return L"";
+//    }
+//
+//    size_t index = distance(TABLE_OF_EXTENSIONS.begin(), it);
+//    return TABLE_OF_APPS[index];
+//}

@@ -6,15 +6,15 @@ BootSector::BootSector(shared_ptr<SectorReader> sectorReader)
     this->sectorReader = sectorReader;
     std::vector<BYTE> bootSector = sectorReader->ReadSector(0, 1);
     this->numberOfFat = (uint8_t)(*(bootSector.begin() + 0x10));
-    this->numberEntriesOfRDET = Utils::Convert2LitleEndian(bootSector.begin() + 0x11, 4);
-    this->sectorPerFat = Utils::Convert2LitleEndian(bootSector.begin() + 0x24, 4);
+    this->numberEntriesOfRDET = Utils::MyINTEGER::Convert2LitleEndian(bootSector.begin() + 0x11, 4);
+    this->sectorPerFat = Utils::MyINTEGER::Convert2LitleEndian(bootSector.begin() + 0x24, 4);
     this->sectorPerCluster = (uint8_t)(*(bootSector.begin() + 0xD));
-    this->sectorPerBootsector = Utils::Convert2LitleEndian(bootSector.begin() + 0xE, 2);
+    this->sectorPerBootsector = Utils::MyINTEGER::Convert2LitleEndian(bootSector.begin() + 0xE, 2);
     this->sectorRDET = this->numberEntriesOfRDET * 32 / this->bytePerSector;
-    this->sectorVolume = Utils::Convert2LitleEndian(bootSector.begin() + 0x20, 4);
-    this->bytePerSector = Utils::Convert2LitleEndian(bootSector.begin() + 0xB, 2);
+    this->sectorVolume = Utils::MyINTEGER::Convert2LitleEndian(bootSector.begin() + 0x20, 4);
+    this->bytePerSector = Utils::MyINTEGER::Convert2LitleEndian(bootSector.begin() + 0xB, 2);
     this->startSectorOfFAT1 = this->sectorPerBootsector;
-    this->startSectorOfRDET = ClusterToSector((int)Utils::Convert2LitleEndian(bootSector.begin() + 0x2C, 4));
+    this->startSectorOfRDET = ClusterToSector((int)Utils::MyINTEGER::Convert2LitleEndian(bootSector.begin() + 0x2C, 4));
     this->startSectorOfDATA = this->startSectorOfRDET + sectorRDET;
     sectorReader->SetByteOfSector(bytePerSector);
 }
