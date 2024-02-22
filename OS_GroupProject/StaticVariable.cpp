@@ -1,4 +1,5 @@
 #include "StaticVariable.h"
+#include <map>
 
 namespace StaticVariable
 {
@@ -6,25 +7,16 @@ namespace StaticVariable
     int BYTES_PER_ENTRY = 32;
 }
 
-
-vector<string> TABLE_OF_EXTENSIONS = { ".txt",
-                                       ".docx",
-                                       ".xlsx",
-                                       ".pptx",
-                                       ".pdf",
-                                       ".jpg",
-                                       ".mp3",
-                                       ".mp4",
-                                       ".zip"  };
-
-vector<wstring> TABLE_OF_APPS = { L"Notepad",
-                                  L"Word",
-                                  L"Excel",
-                                  L"PowerPoint",
-                                  L"Foxit Reader",
-                                  L"Photos",
-                                  L"Media Player",
-                                  L"7-Zip"         };
+map<string, wstring> Extension_App = {
+    {".txt" , L"Notepad"},
+    {".docx", L"Word"},
+    {".xlsx", L"Excel"},
+    {".pdf" , L"Foxit Reader"},
+    {".jpg" , L"Photos"},
+    {".mp3" , L"Media Player"},
+    {".mp4" , L"Media Player"},
+    {".zip" , L"7-Zip"}
+};
 
 
 uint64_t Utils::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
@@ -161,13 +153,11 @@ wstring Utils::parseExtendedFileNameWString(const wstring& fileName)
 
 wstring Utils::AppToOpen(const string& fileExtension)
 {
-    auto it = find(TABLE_OF_EXTENSIONS.begin(), TABLE_OF_EXTENSIONS.end(), fileExtension);
-    if (it == TABLE_OF_EXTENSIONS.end())
+    auto it = Extension_App.find(fileExtension);
+    if (it == Extension_App.end())
     {
         wcout << L"Failed to determine what application used to open this file." << endl;
         return L"";
     }
-
-    size_t index = distance(TABLE_OF_EXTENSIONS.begin(), it);
-    return TABLE_OF_APPS[index];
+    return it->second;
 }

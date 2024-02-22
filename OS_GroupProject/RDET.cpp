@@ -93,7 +93,6 @@ void RDET::handleAllEntries()
 
 void RDET::readDirectory(int level)
 {
-    wcout << endl;
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];

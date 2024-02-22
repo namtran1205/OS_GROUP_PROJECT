@@ -35,7 +35,7 @@ int main()
     }
 
     PseudoShell cmdEnvironment;
-    cmdEnvironment.accessEnvironment(fileSystem->parse(), partition);
+    cmdEnvironment.accessEnvironment(fileSystem->parse(), partition, tokens);
     return 0;
 }
 
