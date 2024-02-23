@@ -97,5 +97,3 @@ private:
 
 
 
-
-// std::vector<BYTE> ReadData(LPCWSTR drive, int readPoint, int numBytes); 
