@@ -1,17 +1,24 @@
 ﻿#include "PseudoShell.h"
+#include <algorithm>
+#include <iomanip>
 
-
-
+vector<std::wstring> TABLE_OF_COMMANDS = {
+                                          L"show",
+                                          L"dir",
+                                          L"open",
+                                          L"cd",
+                                          L"return",
+                                          L"cls",
+                                          L"exit" };
 
 bool PseudoShell::isValidCommand(std::wstring command) const
 {
-    return std::find(StaticVariable::TABLE_OF_COMMANDS.begin(), StaticVariable::TABLE_OF_COMMANDS.end(), command) != StaticVariable::TABLE_OF_COMMANDS.end();
+    return std::find(TABLE_OF_COMMANDS.begin(), TABLE_OF_COMMANDS.end(), command) != TABLE_OF_COMMANDS.end();
 }
 
 void PseudoShell::printShellTable(const wstring& partition, const wstring& tokens)
 {
     std::wcout << L"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬《 SHELL ENVIRONMENT 》▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
-    std::wcout << L"▎                                                                   ▎" << endl;
     std::wcout << L"▎                                                                   ▎" << endl;
     std::wcout << L"▎                           ";
     std::wcout << setw(40) << left <<             L"(" + partition + L":) - " + tokens << L"▎" << endl;
@@ -26,28 +33,28 @@ void PseudoShell::printShellTable(const wstring& partition, const wstring& token
     std::wcout << L"────────────────────────────────────────────────────────────────────" << endl;
 }
 
- void PseudoShell::executeCommand(const std::wstring &userInput,wstring fileName, shared_ptr<FileManagementSystem> fileSystem, wstring& partition, const wstring& tokens)
+void PseudoShell::executeCommand(const std::wstring &userInput, shared_ptr<FileManagementSystem> fileSystem, wstring& partition, const wstring& tokens)
 {
     if(userInput == L"show")
     {
         fileSystem->readVolumeBootRecord();
+        std::wcout << std::endl;
     }
     else if (userInput == L"dir")
     {
         fileSystem->readDirectory();
+        std::wcout << std::endl;
     }
-    else if (userInput == L"open")
+    else if (userInput.substr(0,4) == L"open")
     {   
+        wstring fileName = userInput.substr(5);
         fileSystem->accessFile(fileName);
     }
-    else if (userInput == L"cd")
+    else if (userInput.substr(0,2) == L"cd")
     {
-        if(fileSystem->changeDirectory(fileName))
-            partition += L"\\" + fileName;
-        else
-        {
-            wcout << L"The folder is not existed" << endl;
-        }
+        wstring tokens = userInput.substr(3);
+        if(fileSystem->changeDirectory(tokens))
+            partition += L"\\" + tokens;
     }
     else if (userInput == L"return")
     {
@@ -58,13 +65,15 @@ void PseudoShell::printShellTable(const wstring& partition, const wstring& token
         }
         else
         {
-            wcout << "No history founded" << endl;
+            wcout << "No history founded";
         }
+        wcout << endl;
     }
     else if (userInput == L"cls")
     {
         system("cls");
         printShellTable(partition, tokens);
+        std::wcout << std::endl;
     }
     else if (userInput == L"exit")
     {
@@ -76,33 +85,25 @@ void PseudoShell::printShellTable(const wstring& partition, const wstring& token
 
 void PseudoShell::accessEnvironment(shared_ptr<FileManagementSystem> fileSystem, wstring& partition, const wstring& tokens) {
     system("cls");
+
+    std::wstring userInput;
     printShellTable(partition, tokens);
-    while(true)
-    {
-        std::wcout << partition << ":>";
-        std::wstring userInput;
+
+    std::wcout << partition << ":>";
+    getline(std::wcin, userInput);
+
+    while (!userInput.empty()) {
+        //if (!isValidCommand(userInput)) {
+        //    std::wcout << L"You typed an invalid command. Please type again." << std::endl;
+        //    std::wcout << partition << L":>";
+        //    getline(std::wcin, userInput);
+        //    continue;
+        //}
+
+        executeCommand(userInput, fileSystem, partition, tokens);
+        if (userInput == L"exit") return;
+        std::wcout << partition << L":>";
         getline(std::wcin, userInput);
-        wstring fileName = Utils::MySTRING::splitUserInput(userInput);
-        if (!isValidCommand(userInput))
-        {
-            wcout << L"Invalid Command. Please type again." << endl;
-            continue;
-        }
-        executeCommand(userInput, fileName, fileSystem, partition, tokens);
+
     }
-
-    // while (!userInput.empty()) {
-    //     if (!isValidCommand(userInput)) {
-    //        std::wcout << L"Invalid Command. Please type again." << std::endl;
-    //        std::wcout << partition << L":>";
-    //        getline(std::wcin, userInput);
-    //        continue;
-    //     }
-    //     wstring fileName = Utils::MySTRING::splitUserInput(userInput);
-    //     executeCommand(userInput, fileName, fileSystem, partition);
-    //     if (userInput == L"exit") return;
-    //     std::wcout << partition << L":>";
-    //     getline(std::wcin, userInput);
-
-    // }
 }

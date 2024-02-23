@@ -42,27 +42,31 @@ bool Attribute::isArchive() const
 wstring Attribute::toString() const
 {
     wstring res;
-    if (this->isDirectory()) res += L"D";
-    else res += L"-";
-    
-    if (this->isArchive()) res += L"A";
-    else res += L"-";
-    
-    if (this->isReadOnly()) res += L"R";
-    else res += L"-";
-    
-    if (this->isHidden()) res += L"H";
-    else res += L"-";
-    
-    if (this->isSystem()) res += L"S";
-    else res += L"-";
-    
-    if (this->isVollabel()) res += L"L";
-    else res += L"-";
-
+    if(this->isArchive())
+    {
+        res += L"A";
+    }
+    if(this->isDirectory())
+    {
+        res += L"D";
+    }
+    if(this->isVollabel())
+    {
+        res += L"V";
+    }
+    if(this->isHidden())
+    {
+        res += L"H";
+    }
+    if(this->isSystem())
+    {
+        res += L"S";
+    }
+    if(this->isReadOnly())
+    {
+        res += L"R";
+    }
     return res;
-
-
 }
 
 Entry::Entry()
@@ -89,21 +93,21 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
     
     mainName = wstring(datas.begin(), datas.begin() + 7);
     extendedName = wstring(datas.begin() + 8, datas.begin() + 11);
-    fullName = Utils::MySTRING::fixSpaceWString(mainName) + L"." + Utils::MySTRING::fixSpaceWString(extendedName);
+    fullName = Utils::fixSpaceWString(mainName) + L"." + Utils::fixSpaceWString(extendedName);
 
     attributes = make_shared<Attribute>(datas[0xB]);
 
     reserved = datas[0xC];
 
-    int highWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x14, 2));
-    int lowWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1A,2));
+    int highWord = int(Utils::Convert2LitleEndian(datas.begin() + 0x14,2));
+    int lowWord = int(Utils::Convert2LitleEndian(datas.begin() + 0x1A,2));
     startCluster = (highWord << 16) + lowWord;
     
-    sizeData = (Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1C, 4));
+    sizeData = (Utils::Convert2LitleEndian(datas.begin() + 0x1C, 4));
 
     if(attributes->isDirectory())
     {
-        fullName = Utils::MySTRING::fixSpaceWString(mainName) + Utils::MySTRING::fixSpaceWString(extendedName);
+        fullName = Utils::fixSpaceWString(mainName) + Utils::fixSpaceWString(extendedName);
         uint64_t startByte = this->getFatTable()->getBootSector()->ClusterToSector(startCluster) * this->getFatTable()->getBootSector()->getBytePerSector();
         subDirectory = make_shared<SDET>(fatTable, startByte);
         content = nullptr;
@@ -111,7 +115,7 @@ MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(byte
     else
     {
         subDirectory = nullptr;
-        wstring extendedName = Utils::MySTRING::parseExtendedFileNameWString(fullName);
+        wstring extendedName = Utils::parseExtendedFileNameWString(fullName);
         content = make_shared<Content>(extendedName,startCluster, fatTable);
     }
 
@@ -146,10 +150,6 @@ int MainEntry::getStartCluster() const
     return this->startCluster;
 }
 
-uint64_t MainEntry::getStartSector() const
-{
-    return fatTable->getBootSector()->ClusterToSector(startCluster);
-}
 
 int MainEntry::getSize() const
 {
@@ -179,11 +179,6 @@ shared_ptr<Content> MainEntry::getContent() const
 wstring MainEntry::getFullName() const
 {
     return this->fullName;
-}
-
-wstring MainEntry::getLastAccess() const
-{
-    return wstring();
 }
 
 /*
@@ -219,10 +214,10 @@ SubEntry::SubEntry() : Entry()
 
 SubEntry::SubEntry(vector<BYTE> bytesData) : Entry(bytesData)
 {
-    seq = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin(), 1));
-    unicode =  Utils::MySTRING::convertBytesToWstring(vector<BYTE>(datas.begin() + 1, datas.begin() + 11));
-    extend1 = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(datas.begin() +  0xE, datas.begin() + 0xE + 0xC));
-    extend2 = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(datas.begin() +  0x1C, datas.end()));
+    seq = int(Utils::Convert2LitleEndian(datas.begin(), 1));
+    unicode =  Utils::convertBytesToWstring(vector<BYTE>(datas.begin() + 1, datas.begin() + 11));
+    extend1 = Utils::convertBytesToWstring(vector<BYTE>(datas.begin() +  0xE, datas.begin() + 0xE + 0xC));
+    extend2 = Utils::convertBytesToWstring(vector<BYTE>(datas.begin() +  0x1C, datas.end()));
     fullName = unicode + extend1 + extend2;
 }
 

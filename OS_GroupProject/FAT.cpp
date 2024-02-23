@@ -9,7 +9,7 @@ FAT::FAT(shared_ptr<BootSector> bootSector)
 	std::vector<BYTE> fatElement = bootSector->getSectorReader()->ReadSector(ReadPoint, fatSize);
 	for (int i = 0; i < fatSize; i++)
 	{
-		uint64_t res = Utils::MyINTEGER::Convert2LitleEndian(fatElement.begin() + 4 * i, 4);
+		uint64_t res = Utils::Convert2LitleEndian(fatElement.begin() + 4 * i, 4);
 		fatTable.push_back(res);
 	}
 }

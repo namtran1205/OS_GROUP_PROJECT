@@ -12,7 +12,7 @@ Content::Content(wstring extendedName, uint64_t startCluster, shared_ptr<FAT> fa
     int numberOfSectorToRead = (fatTable->findPath(startCluster)[startCluster] - startCluster) + 1;
     uint64_t readPoint = fatTable->getBootSector()->ClusterToSector(startCluster) * fatTable->getBootSector()->getBytePerSector();
     vector<BYTE> dataContents = fatTable->getBootSector()->getSectorReader()->ReadSector(readPoint, numberOfSectorToRead);
-    content = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(dataContents.begin() + 2, dataContents.end()));
+    content = Utils::convertBytesToWstring(vector<BYTE>(dataContents.begin() + 2, dataContents.end()));
 }
 
 wstring Content::getContent() const

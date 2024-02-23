@@ -16,7 +16,7 @@ int main()
     wcout << L"Enter the drive or partition name: ";
     wcin >> partition;
     wstring fullPath = L"\\\\.\\";
-    fullPath += partition + Utils::MySTRING::convertCharToWString(colon);
+    fullPath += partition + Utils::convertCharToWString(colon);
     //LPCWSTR drive = fullPath; //User input this
     FileManagementFactory myFactory(fullPath.c_str());
     myFactory.registerWith(make_shared<FAT32Parser>());
