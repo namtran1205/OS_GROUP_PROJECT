@@ -6,8 +6,8 @@
 using namespace std;
 
 
-
-
+class Record;
+class AttributeNTFS;
 
 class NTFS : public FileManagementSystem
 {

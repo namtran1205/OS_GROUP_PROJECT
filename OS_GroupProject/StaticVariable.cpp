@@ -5,6 +5,7 @@ namespace StaticVariable
     int BYTES_PER_CLUSTER = 4;
     int BYTES_PER_ENTRY = 32;
     vector<wstring> TABLE_OF_COMMANDS = {
+        L"help",
         L"show",
         L"dir",
         L"open",
