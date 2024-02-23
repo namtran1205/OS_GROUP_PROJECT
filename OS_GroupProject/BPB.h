@@ -18,7 +18,7 @@ private:
     uint64_t SectorVolume;     // 0x28->0x2F
     uint64_t StartMFTCluster;  // 0x30->0x37
     shared_ptr<SectorReader> sectorReader;
-    HANDLE device = INVALID_HANDLE_VALUE;
+    
 
 };
 
