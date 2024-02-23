@@ -4,13 +4,13 @@ BPB::BPB(shared_ptr<SectorReader> sectorReader)
 {
 	this->sectorReader = sectorReader;
 	std::vector<BYTE> memory = sectorReader->ReadSector(0, 1);
-	uint64_t BPB_Address = Utils::Convert2LitleEndian(memory.begin() + 0xC6, 4); // take the address of BPB
+	uint64_t BPB_Address = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0xC6, 4); // take the address of BPB
 	memory = sectorReader->ReadSector(BPB_Address, 1);                           // reset the memory with start index at the address of BPB  
-	BytePerSector = Utils::Convert2LitleEndian(memory.begin() + 0xB, 2);       // 0xB 2 byte
-	SectorPerCluster = Utils::Convert2LitleEndian(memory.begin() + 0xD, 1);    // 0xD->0xD
-	MFTsize = Utils::Convert2LitleEndian(memory.begin() + 0x40, 1);            // 0x40->0x40  the true size is 2^abs(MFTsize)
-	SectorVolume = Utils::Convert2LitleEndian(memory.begin() + 0x28, 8);       // 0x28->0x2F
-	StartMFTCluster = Utils::Convert2LitleEndian(memory.begin() + 0x30, 8);    // 0x30->0x37
+	BytePerSector = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0xB, 2);       // 0xB 2 byte
+	SectorPerCluster = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0xD, 1);    // 0xD->0xD
+	MFTsize = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0x40, 1);            // 0x40->0x40  the true size is 2^abs(MFTsize)
+	SectorVolume = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0x28, 8);       // 0x28->0x2F
+	StartMFTCluster = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0x30, 8);    // 0x30->0x37
 	sectorReader->SetByteOfSector(BytePerSector);
 
 }

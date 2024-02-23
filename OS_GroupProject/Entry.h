@@ -54,12 +54,15 @@ public:
     std::wstring getMainName() const;
     std::wstring getExtendedName() const;
     int getStartCluster() const;
+    uint64_t getStartSector() const;
     int getSize() const;
     shared_ptr<Attribute> getAttribute() const;
     shared_ptr<SDET> getSubDirectory() const;
     shared_ptr<FAT> getFatTable() const;
     shared_ptr<Content> getContent() const;
     wstring getFullName() const override;
+
+    wstring getLastAccess() const;
 public:
     wstring toString(int level) const override;
 protected:

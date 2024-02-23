@@ -93,14 +93,21 @@ void RDET::handleAllEntries()
 
 void RDET::readDirectory(int level)
 {
+    wcout << L"Mode                 LastWriteTime         StartSector         Length            Name" << endl;
+    wcout << L"----                ---------------       -------------       --------           ----" << endl;
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
-        wcout << entry.lock()->toString(0);
+        wcout << setw(23) << entry.lock()->getAttribute()->toString(); 
+
+        //TESTING...
+        wcout << setw(20) << "2/22/2024"; 
+        // wcout << setw(30) << entry.lock()->getLastAccess(); 
+
+        wcout << setw(19) << entry.lock()->getStartSector(); 
+        wcout << setw(19) << entry.lock()->getSize(); 
+        wcout << setw(20) << entry.lock()->getFullName(); 
         wcout << endl;
-        // //If an entry contains folder, display it
-        //  if(entry.lock()->getSubDirectory() != nullptr)
-        //      entry.lock()->getSubDirectory()->readDirectory(1);
     }
 }
 
@@ -159,19 +166,21 @@ SDET::SDET(shared_ptr<FAT> fatTable, uint64_t startByte) : SDET()
 
 void SDET::readDirectory(int level)
 {
-    wcout << endl;
+    wcout << L"Mode                 LastWriteTime         StartSector         Length            Name" << endl;
+    wcout << L"----                ---------------       -------------       --------           ----" << endl;
     for(int i = 0; i < entries.size(); ++i)
     {
         weak_ptr<MainEntry> entry = entries[i];
-        wcout << entry.lock()->toString(level);
+        wcout << setw(23) << entry.lock()->getAttribute()->toString(); 
+
+        //TESTING...
+        wcout << setw(20) << "2/22/2024"; 
+        // wcout << setw(30) << entry.lock()->getLastAccess(); 
+
+        wcout << setw(19) << entry.lock()->getStartSector(); 
+        wcout << setw(19) << entry.lock()->getSize(); 
+        wcout << setw(20) << entry.lock()->getFullName(); 
         wcout << endl;
-        //If an entry contains folder, display it
-        //  if(entry.lock()->getSubDirectory() != nullptr)
-        //  {
-        //      entry.lock()->getSubDirectory()->readDirectory(level+1);
-        //  }
-          //string s;
-          //cin >> s;
     }
 }
 
