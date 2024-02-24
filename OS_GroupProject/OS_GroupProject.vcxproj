@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AttributeNTFS.cpp" />
     <ClCompile Include="BootSector.cpp" />
     <ClCompile Include="BPB.cpp" />
     <ClCompile Include="Content.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="VolumeBootRecord.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttributeNTFS.h" />
     <ClInclude Include="BootSector.h" />
     <ClInclude Include="BPB.h" />
     <ClInclude Include="Content.h" />
@@ -49,6 +51,7 @@
     <ClInclude Include="NTFS.h" />
     <ClInclude Include="PseudoShell.h" />
     <ClInclude Include="RDET.h" />
+    <ClInclude Include="Record.h" />
     <ClInclude Include="SectorReader.h" />
     <ClInclude Include="StaticVariable.h" />
     <ClInclude Include="VolumeBootRecord.h" />

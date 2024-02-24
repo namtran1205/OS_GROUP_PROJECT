@@ -59,6 +59,9 @@
     <ClCompile Include="BPB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AttributeNTFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BootSector.h">
@@ -100,6 +103,8 @@
     <ClInclude Include="Content.h" />
     <ClInclude Include="PseudoShell.h" />
     <ClInclude Include="BPB.h" />
+    <ClInclude Include="AttributeNTFS.h" />
+    <ClInclude Include="Record.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodingConvention.txt">
