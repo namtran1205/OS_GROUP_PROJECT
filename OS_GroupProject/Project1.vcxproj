@@ -18,52 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="AttributeNTFS.cpp" />
-    <ClCompile Include="BootSector.cpp" />
-    <ClCompile Include="BPB.cpp" />
-    <ClCompile Include="Content.cpp" />
-    <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="FAT.cpp" />
-    <ClCompile Include="FAT32.cpp" />
-    <ClCompile Include="FileManagementFactory.cpp" />
-    <ClCompile Include="FileManagementSystem.cpp" />
-    <ClCompile Include="IParsable.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="NTFS.cpp" />
-    <ClCompile Include="PseudoShell.cpp" />
-    <ClCompile Include="RDET.cpp" />
-    <ClCompile Include="SectorReader.cpp" />
-    <ClCompile Include="StaticVariable.cpp" />
-    <ClCompile Include="VolumeBootRecord.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AttributeNTFS.h" />
-    <ClInclude Include="BootSector.h" />
-    <ClInclude Include="BPB.h" />
-    <ClInclude Include="Content.h" />
-    <ClInclude Include="Entry.h" />
-    <ClInclude Include="FAT.h" />
-    <ClInclude Include="FAT32.h" />
-    <ClInclude Include="FileManagementFactory.h" />
-    <ClInclude Include="FileManagementSystem.h" />
-    <ClInclude Include="IParsable.h" />
-    <ClInclude Include="NTFS.h" />
-    <ClInclude Include="PseudoShell.h" />
-    <ClInclude Include="RDET.h" />
-    <ClInclude Include="Record.h" />
-    <ClInclude Include="SectorReader.h" />
-    <ClInclude Include="StaticVariable.h" />
-    <ClInclude Include="VolumeBootRecord.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="CodingConvention.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
+    <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{45408e9c-5e86-4670-a4bd-f0c79a32c8d0}</ProjectGuid>
-    <RootNamespace>OSGroupProject</RootNamespace>
+    <ProjectGuid>{4933ec0c-a263-4466-b673-17ac803b28eb}</ProjectGuid>
+    <RootNamespace>Project1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -143,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -157,7 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -167,6 +126,45 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="AttributeNTFS.h" />
+    <ClInclude Include="BootSector.h" />
+    <ClInclude Include="BPB.h" />
+    <ClInclude Include="Content.h" />
+    <ClInclude Include="Entry.h" />
+    <ClInclude Include="FAT.h" />
+    <ClInclude Include="FAT32.h" />
+    <ClInclude Include="FileManagementFactory.h" />
+    <ClInclude Include="FileManagementSystem.h" />
+    <ClInclude Include="IParsable.h" />
+    <ClInclude Include="NTFS.h" />
+    <ClInclude Include="PseudoShell.h" />
+    <ClInclude Include="RDET.h" />
+    <ClInclude Include="Record.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SectorReader.h" />
+    <ClInclude Include="StaticVariable.h" />
+    <ClInclude Include="VolumeBootRecord.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AttributeNTFS.cpp" />
+    <ClCompile Include="BootSector.cpp" />
+    <ClCompile Include="BPB.cpp" />
+    <ClCompile Include="Content.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="FAT.cpp" />
+    <ClCompile Include="FAT32.cpp" />
+    <ClCompile Include="FileManagementFactory.cpp" />
+    <ClCompile Include="FileManagementSystem.cpp" />
+    <ClCompile Include="IParsable.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="NTFS.cpp" />
+    <ClCompile Include="PseudoShell.cpp" />
+    <ClCompile Include="RDET.cpp" />
+    <ClCompile Include="SectorReader.cpp" />
+    <ClCompile Include="StaticVariable.cpp" />
+    <ClCompile Include="VolumeBootRecord.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
