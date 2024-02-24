@@ -93,22 +93,13 @@ void RDET::handleAllEntries()
 
 void RDET::readDirectory(int level)
 {
-    wcout << L"Mode                 LastWriteTime         StartSector         Length            Name" << endl;
-    wcout << L"----                ---------------       -------------       --------           ----" << endl;
-    for(int i = 0; i < entries.size(); ++i)
+    vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>> lines;
+    for (const auto& entry : entries)
     {
-        weak_ptr<MainEntry> entry = entries[i];
-        wcout << setw(23) << entry.lock()->getAttribute()->toString(); 
-
-        //TESTING...
-        wcout << setw(20) << "2/22/2024"; 
-        // wcout << setw(30) << entry.lock()->getLastAccess(); 
-
-        wcout << setw(19) << entry.lock()->getStartSector(); 
-        wcout << setw(19) << entry.lock()->getSize(); 
-        wcout << setw(20) << entry.lock()->getFullName(); 
-        wcout << endl;
+        auto line = make_tuple(entry->getAttribute()->toString(), L"2/22/2024", entry->getStartSector(), entry->getSize(), entry->getFullName());
+        lines.push_back(line);
     }
+    Utils::MyTABLE::display(lines);
 }
 
 
@@ -166,21 +157,12 @@ SDET::SDET(shared_ptr<FAT> fatTable, uint64_t startByte) : SDET()
 
 void SDET::readDirectory(int level)
 {
-    wcout << L"Mode                 LastWriteTime         StartSector         Length            Name" << endl;
-    wcout << L"----                ---------------       -------------       --------           ----" << endl;
-    for(int i = 0; i < entries.size(); ++i)
+    vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>> lines;
+    for (const auto& entry : entries)
     {
-        weak_ptr<MainEntry> entry = entries[i];
-        wcout << setw(23) << entry.lock()->getAttribute()->toString(); 
-
-        //TESTING...
-        wcout << setw(20) << "2/22/2024"; 
-        // wcout << setw(30) << entry.lock()->getLastAccess(); 
-
-        wcout << setw(19) << entry.lock()->getStartSector(); 
-        wcout << setw(19) << entry.lock()->getSize(); 
-        wcout << setw(20) << entry.lock()->getFullName(); 
-        wcout << endl;
+        auto line = make_tuple(entry->getAttribute()->toString(), L"2/22/2024", entry->getStartSector(), entry->getSize(), entry->getFullName());
+        lines.push_back(line);
     }
+    Utils::MyTABLE::display(lines);
 }
 

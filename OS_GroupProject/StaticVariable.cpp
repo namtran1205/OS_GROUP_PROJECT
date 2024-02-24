@@ -189,3 +189,21 @@ wstring Utils::MySTRING::splitUserInput(wstring& userInput)
 //    size_t index = distance(TABLE_OF_EXTENSIONS.begin(), it);
 //    return TABLE_OF_APPS[index];
 //}
+
+void Utils::MyTABLE::display(const vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>> lines)
+{
+    wcout << L"Mode                 LastWriteTime         StartSector         Length            Name" << endl;
+    wcout << L"----                ---------------       -------------       --------           ----" << endl;
+    for (const auto& line : lines)
+    {
+        wcout << setw(23) << get<0>(line);
+
+        //TESTING...
+        wcout << setw(20) << L"2/22/2024";
+        // wcout << setw(20) << get<1>(line); 
+        wcout << setw(19) << get<2>(line);
+        wcout << setw(19) << get<3>(line);
+        wcout << setw(20) << get<4>(line);
+        wcout << endl;
+    }
+}

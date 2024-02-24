@@ -83,7 +83,7 @@ MainEntry::MainEntry() : Entry()
 }
 
 
-MainEntry:: MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes)
+MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes)
 {
     this->fatTable = fatTable;
     

@@ -24,6 +24,7 @@
 #include <fcntl.h>
 #include <algorithm>
 #include <iomanip>
+#include <tuple>
 
 
 using namespace std;
@@ -64,5 +65,11 @@ namespace Utils
     {
         public:
             static uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
+    };
+
+    class MyTABLE
+    {
+        public:
+            static void display(const vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>>);
     };
 }
