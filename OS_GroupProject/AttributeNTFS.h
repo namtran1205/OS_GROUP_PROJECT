@@ -3,7 +3,7 @@
 class HeaderAttribute
 {
 public:
-    void readHeaderAttribute(uint64_t Address);
+    HeaderAttribute(uint64_t Address);
 private:
     uint64_t ID;      // 0x0->0x3 
     uint64_t Size;    // 0x4->0x7
