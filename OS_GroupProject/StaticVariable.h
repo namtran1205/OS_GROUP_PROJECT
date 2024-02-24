@@ -70,6 +70,25 @@ namespace Utils
     class MyTABLE
     {
         public:
-            static void display(const vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>>);
+            static void display(const vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>>);
+    };
+    class MyDATE
+    {
+    public:
+        static wstring toString(vector<BYTE>);
+    private:
+        //int day = 0;
+        //int month = 0;
+        //int year = 0;
+    };
+
+    class MyTIME
+    {
+    public:
+        static wstring toString(vector<BYTE>);
+    private:
+        //int second = 0;
+        //int minute = 0;
+        //int hour = 0;
     };
 }

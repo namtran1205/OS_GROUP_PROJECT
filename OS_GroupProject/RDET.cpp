@@ -93,13 +93,16 @@ void RDET::handleAllEntries()
 
 void RDET::readDirectory(int level)
 {
-    vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>> lines;
+    
+    vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>> lines;
     for (const auto& entry : entries)
     {
-        auto line = make_tuple(entry->getAttribute()->toString(), L"2/22/2024", entry->getStartSector(), entry->getSize(), entry->getFullName());
+        auto line = make_tuple(entry->getAttribute()->toString(), entry->getLastWriteDate(),entry->getLastWriteTime(), entry->getStartSector(), entry->getSize(), entry->getFullName());
         lines.push_back(line);
     }
+    wcout << endl;
     Utils::MyTABLE::display(lines);
+    wcout << endl;
 }
 
 
@@ -157,10 +160,10 @@ SDET::SDET(shared_ptr<FAT> fatTable, uint64_t startByte) : SDET()
 
 void SDET::readDirectory(int level)
 {
-    vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>> lines;
+    vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>> lines;
     for (const auto& entry : entries)
     {
-        auto line = make_tuple(entry->getAttribute()->toString(), L"2/22/2024", entry->getStartSector(), entry->getSize(), entry->getFullName());
+        auto line = make_tuple(entry->getAttribute()->toString(), entry->getLastWriteDate(),entry->getLastWriteTime(), entry->getStartSector(), entry->getSize(), entry->getFullName());
         lines.push_back(line);
     }
     Utils::MyTABLE::display(lines);

@@ -99,8 +99,11 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes
     int lowWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1A,2));
     startCluster = (highWord << 16) + lowWord;
     
-    sizeData = (Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1C, 4));
+    lastWriteTime = Utils::MyTIME::toString(vector<BYTE>(datas.begin() + 0x16, datas.begin() + 0x16 + 2));
+    lastWriteDate = Utils::MyDATE::toString(vector<BYTE>(datas.begin() + 0x18, datas.begin() + 0x18 + 2));
 
+
+    sizeData = (Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1C, 4));
     if(attributes->isDirectory())
     {
         fullName = Utils::MySTRING::fixSpaceWString(mainName) + Utils::MySTRING::fixSpaceWString(extendedName);
@@ -181,10 +184,16 @@ wstring MainEntry::getFullName() const
     return this->fullName;
 }
 
-wstring MainEntry::getLastAccess() const
+wstring MainEntry::getLastWriteDate() const
 {
-    return wstring();
+    return lastWriteDate;
 }
+
+wstring MainEntry::getLastWriteTime() const
+{
+    return lastWriteTime;
+}
+
 
 /*
 string MainEntry::toString(int level) const

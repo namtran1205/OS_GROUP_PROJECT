@@ -190,20 +190,49 @@ wstring Utils::MySTRING::splitUserInput(wstring& userInput)
 //    return TABLE_OF_APPS[index];
 //}
 
-void Utils::MyTABLE::display(const vector<tuple<wstring, wstring, uint64_t, uint64_t, wstring>> lines)
+void Utils::MyTABLE::display(const vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>> lines)
 {
-    wcout << L"Mode                 LastWriteTime         StartSector         Length            Name" << endl;
-    wcout << L"----                ---------------       -------------       --------           ----" << endl;
+    wcout << L"Mode            LastWriteTime       StartSector          Length     Name" << endl;
+    wcout << L"----           ---------------      ----------          -------     ----" << endl;
     for (const auto& line : lines)
     {
-        wcout << setw(23) << get<0>(line);
-
+        wcout << setw(10) << left << get<0>(line);
         //TESTING...
-        wcout << setw(20) << L"2/22/2024";
+        wcout << setw(13) << right << get<1>(line);
         // wcout << setw(20) << get<1>(line); 
-        wcout << setw(19) << get<2>(line);
-        wcout << setw(19) << get<3>(line);
-        wcout << setw(20) << get<4>(line);
+        wcout << setw(8) << right << get<2>(line);
+        wcout << setw(15) << right << get<3>(line) ;
+        wcout << setw(17) << right << get<4>(line);
+        wcout << L"     ";
+        wcout << setw(20) << left  << get<5>(line);
         wcout << endl;
     }
+}
+
+wstring Utils::MyDATE::toString(vector<BYTE> bytes)
+{
+    uint16_t data = (bytes[1] << 8) | bytes[0];
+    wstring res = L"";
+    uint16_t year = ((data >> 9) & 0x7F) + 1980;
+    uint16_t month = (data >> 5) & 0x0F; 
+    uint16_t day = data & 0x1F;
+    
+    res += to_wstring(month) + L"/" + to_wstring(day) + L"/" + to_wstring(year);
+    // wcout << res;
+    // string s;
+    // cin >> s;
+    return res;
+}
+
+wstring Utils::MyTIME::toString(vector<BYTE> bytes)
+{
+    uint16_t data = (bytes[1] << 8) | bytes[0];
+    wstring res = L"";
+    uint16_t hour = (data >> 11) & 0x1F;
+    uint16_t minute = (data >> 5) & 0x3F;
+    if(minute < 10)
+        res = to_wstring(hour) + L":0" + to_wstring(minute);
+    else
+        res = to_wstring(hour) + L":" + to_wstring(minute);
+    return res;
 }

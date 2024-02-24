@@ -61,8 +61,9 @@ public:
     shared_ptr<FAT> getFatTable() const;
     shared_ptr<Content> getContent() const;
     wstring getFullName() const override;
-
-    wstring getLastAccess() const;
+    wstring getLastWriteDate() const;
+    wstring getLastWriteTime() const;
+public:
 public:
     wstring toString(int level) const override;
 protected:
@@ -73,9 +74,8 @@ private:
     std::wstring mainName;
     std::wstring extendedName;
     shared_ptr<Attribute> attributes;
-    std::chrono::system_clock::time_point dateCreated;
-    std::chrono::system_clock::time_point lastAccess;
-    std::chrono::system_clock::time_point datedUpdated;
+    wstring lastWriteDate;
+    wstring lastWriteTime;
 private:
     shared_ptr<Content> content; //If the entry represents for a File, then get it contents.
     shared_ptr<SDET> subDirectory;
