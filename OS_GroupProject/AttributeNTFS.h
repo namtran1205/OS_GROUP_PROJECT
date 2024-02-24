@@ -50,6 +50,8 @@ class Data : public AttributeNTFS
 {
     uint32_t type; //0x8 : if value = 0 -> resident
 public:
+    Data(shared_ptr<HeaderAttribute>, uint64_t AttributeAddress);
+public:
     void ReadBasicInfo();
 
 };
