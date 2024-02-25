@@ -204,7 +204,7 @@ void Utils::MyTABLE::display(const vector<tuple<wstring, wstring, wstring, uint6
         wcout << setw(15) << right << get<3>(line) ;
         wcout << setw(17) << right << get<4>(line);
         wcout << L"     ";
-        wcout << setw(20) << left  << get<5>(line);
+        wcout << setw(25) << left  << get<5>(line);
         wcout << endl;
     }
 }

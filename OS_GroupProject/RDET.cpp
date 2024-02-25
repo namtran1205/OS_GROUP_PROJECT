@@ -51,7 +51,7 @@ void RDET::handleAllEntries()
         int numberOfEntries = vectorBytesOfDirectory.size() / StaticVariable::BYTES_PER_ENTRY;
 
         //Ignore the first entry of RDET because it's store the detailed of disk.
-        for (int i = 1; i < numberOfEntries; ++i)
+        for (int i = 0; i < numberOfEntries; ++i)
         {
             //Get the vector bytes at this offset.
             vector<BYTE> vectorBytes(vectorBytesOfDirectory.begin() + (32 * i), vectorBytesOfDirectory.begin() + (32 * i) + 32);
