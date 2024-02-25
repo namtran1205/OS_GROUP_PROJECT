@@ -60,6 +60,44 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, uint64_t sector) 
     
 }
 
+vector<BYTE> SectorReader::ReadBytes(int64_t readPoint, uint64_t numberByte) const
+{
+    int retCode = 0;
+    DWORD bytesRead;
+    HANDLE device = NULL;
+
+    // Open the specified drive with GENERIC_READ access
+    std::string strDrive(drive, drive + wcslen(drive));
+    device = CreateFileA(strDrive.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+
+    if (device == INVALID_HANDLE_VALUE) {
+        CloseHandle(device);
+        return std::vector<BYTE>();
+    }
+
+    LARGE_INTEGER filePointer;
+    filePointer.QuadPart = readPoint;
+    // Set the file pointer to the specified read point
+    SetFilePointerEx(device, filePointer, NULL, FILE_BEGIN);
+
+
+    BYTE* tmpSector = new BYTE[numberByte];
+    std::vector<BYTE> resultSector(1, 0);
+    // Read 512 bytes from the specified position
+    if (ReadFile(device, tmpSector, numberByte, &bytesRead, NULL))
+    {
+        resultSector.resize(numberByte, 0);
+        for (int i = 0; i < numberByte; i++) resultSector[i] = tmpSector[i];
+    }
+    delete[] tmpSector;
+    tmpSector = NULL;
+
+    // Close the file handle
+    CloseHandle(device);
+
+    return resultSector;
+}
+
 vector<BYTE> SectorReader::collectBytesUntilNull(int64_t readPoint) const 
 {
     DWORD bytesRead;

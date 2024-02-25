@@ -28,3 +28,8 @@ void BPB::readVolumeBootRecord()
 	std::wcout << L"Bytes per Sectors - BytePerSector = " << BytePerSector << std::endl;
 	std::wcout << L"Start cluster of MFT = " << StartMFTCluster << std::endl;
 }
+
+shared_ptr<SectorReader> BPB::GetSectorReader() const
+{
+	return sectorReader;
+}

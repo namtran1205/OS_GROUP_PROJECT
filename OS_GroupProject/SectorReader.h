@@ -10,6 +10,7 @@ public:
 
 public:
     vector<BYTE> ReadSector(int64_t readPoint, uint64_t sector) const;
+    vector<BYTE> ReadBytes(int64_t readPoint, uint64_t numberByte) const;
     vector<BYTE> collectBytesUntilNull(int64_t readPoint) const;
 public:
     void SetDirve(LPCWSTR);

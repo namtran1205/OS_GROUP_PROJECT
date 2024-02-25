@@ -9,6 +9,8 @@ public:
     ~BPB();
 public:
     void readVolumeBootRecord() override;
+public:
+    shared_ptr<SectorReader> GetSectorReader() const;
 
 private:
     std::wstring driveName;
