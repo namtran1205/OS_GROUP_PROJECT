@@ -25,30 +25,33 @@ void FAT32::readDirectory()
 }
 
 bool FAT32::changeDirectory(wstring folderName)
-    {
-    
-        for(auto entry : currentDirectory.top().lock()->getMainEntries())
-        {
-            if(entry->getAttribute()->isDirectory() && entry->getFullName() == folderName)
-            {
-                currentDirectory.push(entry->getSubDirectory());
-                return true;
-            }
-        }
-        return false;
-    }
+{
+
+	for (const auto& entry : currentDirectory.top().lock()->getMainEntries())
+	{
+		if (entry->getFullName() == folderName || entry->getFullName() == Utils::MySTRING::toUpperCase(folderName))
+			if (entry->getAttribute()->isDirectory())
+			{
+				currentDirectory.push(entry->getSubDirectory());
+				return true;
+			}
+	}
+	return false;
+}
 
 bool FAT32::accessFile(wstring fileName)
 {
-    for(auto entry : currentDirectory.top().lock()->getMainEntries())
+    for(const auto& entry : currentDirectory.top().lock()->getMainEntries())
     {
-        if(!entry->getAttribute()->isDirectory() && entry->getFullName() == fileName)
+        if (entry->getFullName() == fileName || entry->getFullName() == Utils::MySTRING::toUpperCase(fileName))
         {
-            if(entry->getContent())
+            if(!entry->getAttribute()->isDirectory())
             {
-                wcout << entry->getContent()->getContent();
-                wcout << endl;
-                return true;
+                if(entry->getContent())
+                {
+                    wcout << entry->getContent()->getContent();
+                }
+                    return true;
             }
         }
     }

@@ -15,21 +15,74 @@ namespace StaticVariable
         L"exit" 
     };
     
-    map<wstring, wstring> MAPPING_FILENAME_APPS = {
-        { L".txt", L"Notepad" },
-        { L".docx", L"Word" },
-        { L".xlsx", L"Excel" },
-        { L".pptx", L"PowerPoint" },
-        { L".pdf", L"Foxit Reader" },
-        { L".jpg", L"Photos" },
-        { L".mp3", L"Media Player" },
-        { L".mp4", L"Media Player" },
-        { L".zip", L"7-Zip" }
-    };
+	std::map<std::wstring, std::wstring> MAPPING_FILENAME_APPS = {
+		{ L"TXT", L"Notepad" },                  { L"txt", L"Notepad" },
+
+		{ L"DOCX", L"Word" },{ L"docx", L"Word" },
+
+		{ L"XLSS", L"Excel" },
+		{ L"xlsx", L"Excel" },
+
+		{ L"PPTX", L"PowerPoint" },
+		{ L"pptx", L"PowerPoint" },
+
+		{ L"PPT", L"PowerPoint" },
+		{ L"ppt", L"PowerPoint" },
+
+		{ L"PDF", L"Foxit Reader" },
+		{ L"pdf", L"Foxit Reader" },
+
+		{ L"JPG", L"Photos" },
+		{ L"jpg", L"Photos" },
+
+		{ L"PNG", L"Photos" },
+		{ L"png", L"Photos" },
+
+		{ L"GIF", L"Photos" },
+		{ L"gif", L"Photos" },
+
+		{ L"BMP", L"Photos" },
+		{ L"bmp", L"Photos" },
+
+		{ L"MP3", L"Media Player" },
+		{ L"mp3", L"Media Player" },
+
+		{ L"MP4", L"Media Player" },
+		{ L"mp4", L"Media Player" },
+
+		{ L"AVI", L"Media Player" },
+		{ L"avi", L"Media Player" },
+
+		{ L"FLAC", L"Media Player" },
+		{ L"flac", L"Media Player" },
+
+		{ L"ZIP", L"7-Zip" },
+		{ L"zip", L"7-Zip" },
+        { L"RAR", L"WinRAR" },
+        { L"rar", L"WinRAR" },
+
+        { L"EXE", L"Windows Explorer" },
+        { L"exe", L"Windows Explorer" },
+
+        { L"BAT", L"Command Prompt" },
+        { L"bat", L"Command Prompt" },
+
+        { L"CPP", L"Visual Studio" },
+        { L"cpp", L"Visual Studio" },
+
+        { L"CS", L"Visual Studio" },
+        { L"cs", L"Visual Studio" },
+
+        { L"JAVA", L"Eclipse" },
+        { L"java", L"Eclipse" },
+
+        { L"HTML", L"Web Browser" },
+        { L"html", L"Web Browser" },
+
+        { L"CSS", L"Text Editor" },
+        { L"css", L"Text Editor" }
+	};
 }
-
-
-
 
 
 uint64_t Utils::MyINTEGER::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
@@ -177,18 +230,19 @@ wstring Utils::MySTRING::splitUserInput(wstring& userInput)
     return res;
 }
 
-//wstring Utils::AppToOpen(const wstring& fileExtension)
-//{
-//    auto it = find(TABLE_OF_EXTENSIONS.begin(), TABLE_OF_EXTENSIONS.end(), fileExtension);
-//    if (it == TABLE_OF_EXTENSIONS.end())
-//    {
-//        wcout << L"Failed to determine what application used to open this file." << endl;
-//        return L"";
-//    }
-//
-//    size_t index = distance(TABLE_OF_EXTENSIONS.begin(), it);
-//    return TABLE_OF_APPS[index];
-//}
+wstring Utils::MySTRING::toUpperCase(const wstring& wstr)
+{
+    std::wstring upperStr;
+    for (wchar_t ch : wstr) {
+        upperStr += std::toupper(ch); 
+    }
+    return upperStr;
+}
+
+wstring Utils::MySTRING::AppToOpen(const wstring& fileExtension)
+{
+    return StaticVariable::MAPPING_FILENAME_APPS[fileExtension];
+}
 
 void Utils::MyTABLE::display(const vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>> lines)
 {
