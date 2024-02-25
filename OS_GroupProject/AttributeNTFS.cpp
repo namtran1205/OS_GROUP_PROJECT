@@ -1,4 +1,4 @@
-#include "AttributeNTFS.h"
+﻿#include "AttributeNTFS.h"
 
 HeaderAttribute::HeaderAttribute(uint64_t Address, shared_ptr<BPB> bootSector)
 {
@@ -123,12 +123,12 @@ Data::Data(shared_ptr<HeaderAttribute> header)
 	AttributeNTFS(header);
 	if (!basicHeader->isResident())
 	{
-		// n?u l� non resident ta c?n ??c run list ? byte 64 trong data attribute
-		// c?u tr�c run list g?m 1 header v� 1 content li�n ti?p nhau
-		// - header l� 1 byte 
-		// 1/2 byte th?p cho bik S? BYTE quy ??nh s? cluster ?? l?u d? li?u
-		// 1/2 byte cao cho bik S? BYTE quy ??nh offset c?a cluster ??u ti�n khi l?u tr?
-		// - content l� 1 d�y byte v?i c�c byte ??u l?u tr? s? cluster v� c�c byte sau l?u tr? offset cluster ??u ti�n
+		// nễu là non resident, ta cần đọc run list ở byte 64 trong data attribute
+		// cấu trúc run list gồm 1 header và 1 content liên tiếp nhau
+		// - header là 1 byte 
+		// 1/2 byte thấp cho bik SỐ BYTE quy định số cluster để lưu dữ liệu
+		// 1/2 byte cao cho bik SỐ BYTE quy định offset của cluster đầu tiên khi lưu trữ
+		// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
 		vector<BYTE> memory = basicHeader->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->GetAttributeAddress() + 64, 32);
 		uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
 		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1, (memory[0] | 15)) * bytePerCluster);

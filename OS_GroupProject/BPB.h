@@ -13,7 +13,7 @@ public:
     shared_ptr<SectorReader> GetSectorReader() const;
 public:
     uint64_t getSectorPerCluster() const;
-    uint64_t getSectorPerCluster() const;
+    uint64_t getBytePerSector() const;
 
 private:
     std::wstring driveName;
