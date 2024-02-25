@@ -57,8 +57,9 @@ namespace Utils
             static wstring fixSpecialCharacter(wstring name);
             static string parseExtendedFileName(string fileName);
             static wstring parseExtendedFileNameWString(const wstring& fileName);
-            wstring AppToOpen(const wstring& fileExtension);
+            static wstring AppToOpen(const wstring& fileExtension);
             static wstring splitUserInput(wstring& userInput);
+            static wstring toUpperCase(const wstring& wstr);
     };
 
     class MyINTEGER

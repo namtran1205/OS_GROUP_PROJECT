@@ -48,7 +48,15 @@ void PseudoShell::printShellTable(const wstring& partition, const wstring& token
     }
     else if (userInput == L"open")
     {   
-        fileSystem->accessFile(fileName);
+        if (fileSystem->accessFile(fileName) == false)
+        {
+            wcout << L"The file is not existed" << endl;
+        }
+        else
+        {
+            wcout << endl;
+        }
+        
     }
     else if (userInput == L"cd")
     {
