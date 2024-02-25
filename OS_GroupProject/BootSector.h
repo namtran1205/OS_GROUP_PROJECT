@@ -25,7 +25,7 @@ public:
     uint32_t getStartSectorOfDATA() const;
     uint32_t getNumberSectorOfRDET() const;
     uint64_t ClusterToSector(uint64_t) const;
-    int GetSectorPerFat() const;
+    uint64_t GetSectorPerFat() const;
     int GetSectorPerBootsector() const;
     int GetNumberOfFat() const;
     

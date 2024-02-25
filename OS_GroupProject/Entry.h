@@ -68,7 +68,7 @@ public:
     wstring toString(int level) const override;
 protected:
     int startCluster;
-    int sizeData;
+    uint64_t sizeData;
 private:
     char reserved;
     std::wstring mainName;

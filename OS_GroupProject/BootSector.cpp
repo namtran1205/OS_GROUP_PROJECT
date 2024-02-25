@@ -103,7 +103,7 @@ uint64_t BootSector::ClusterToSector(uint64_t k) const
     return i;
 }
 
-int BootSector::GetSectorPerFat() const
+uint64_t BootSector::GetSectorPerFat() const
 {
     return sectorPerFat;
 }

@@ -21,7 +21,7 @@ void SectorReader::SetDirve(LPCWSTR drive)
     this->drive = drive;
 }
 
-std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, int sector) const
+std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, uint64_t sector) const
 {
     int retCode = 0;
     DWORD bytesRead;

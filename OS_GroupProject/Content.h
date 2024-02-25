@@ -12,4 +12,6 @@ public:
 private:
     wstring extendFileName;
     wstring content;
+    shared_ptr<FAT> fatTable;
+    uint64_t startCluster;
 };

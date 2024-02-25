@@ -97,12 +97,10 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes
 
     int highWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x14, 2));
     int lowWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1A,2));
-    startCluster = (highWord << 16) + lowWord;
+    startCluster = (highWord << 8) + lowWord;
     
     lastWriteTime = Utils::MyTIME::toString(vector<BYTE>(datas.begin() + 0x16, datas.begin() + 0x16 + 2));
     lastWriteDate = Utils::MyDATE::toString(vector<BYTE>(datas.begin() + 0x18, datas.begin() + 0x18 + 2));
-
-
     sizeData = (Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1C, 4));
     if(attributes->isDirectory())
     {
