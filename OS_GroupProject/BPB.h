@@ -11,11 +11,14 @@ public:
     void readVolumeBootRecord() override;
 public:
     shared_ptr<SectorReader> GetSectorReader() const;
+public:
+    uint64_t getSectorPerCluster() const;
+    uint64_t getSectorPerCluster() const;
 
 private:
     std::wstring driveName;
-    uint32_t BytePerSector;    // 0xB 2 byte
-    uint32_t SectorPerCluster; // 0xD->0xE
+    uint64_t BytePerSector;    // 0xB 2 byte
+    uint64_t SectorPerCluster; // 0xD->0xE
     uint32_t MFTsize;           // 0x40->0x40  the true size is 2^abs(MFTsize) 
     uint64_t SectorVolume;     // 0x28->0x2F
     uint64_t StartMFTCluster;  // 0x30->0x37

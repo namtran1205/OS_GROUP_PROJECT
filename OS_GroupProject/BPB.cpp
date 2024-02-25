@@ -33,3 +33,13 @@ shared_ptr<SectorReader> BPB::GetSectorReader() const
 {
 	return sectorReader;
 }
+
+uint64_t BPB::getSectorPerCluster() const
+{
+	return SectorPerCluster;
+}
+
+uint64_t BPB::getBytePerSector() const
+{
+	return BytePerSector;
+}

@@ -6,6 +6,9 @@ class HeaderAttribute
 public:
     HeaderAttribute(uint64_t Address, shared_ptr<BPB>);
 public:
+    void setContentAddress(uint64_t);
+    void setContentSize(uint64_t);
+public:
     shared_ptr<BPB> GetBPB() const;
     uint64_t getSize() const;
     uint64_t getMask() const;

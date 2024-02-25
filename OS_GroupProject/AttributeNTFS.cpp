@@ -16,7 +16,23 @@ HeaderAttribute::HeaderAttribute(uint64_t Address, shared_ptr<BPB> bootSector)
 	    contentSize = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x16, 4);
     	contentAddress = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x20, 2) + Address;
 	}
+	else
+	{
+		contentSize = 0;
+		contentAddress = 0;
+	}
 
+}
+
+void HeaderAttribute::setContentAddress(uint64_t contentAddress)
+{
+	this->contentAddress = contentAddress;
+
+}
+
+void HeaderAttribute::setContentSize(uint64_t contentSize)
+{
+	this->contentSize = contentSize;
 }
 
 shared_ptr<BPB> HeaderAttribute::GetBPB() const
@@ -71,7 +87,14 @@ AttributeNTFS::AttributeNTFS() {}
 AttributeNTFS::AttributeNTFS(shared_ptr<HeaderAttribute> headerAttribute)
 {
 	this->basicHeader = headerAttribute;
-} 
+}
+
+uint64_t AttributeNTFS::getNextAttributeAddress() const
+{
+	return basicHeader->GetAttributeAddress() + basicHeader->getSize();
+}
+
+
 
 Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute)
 {
@@ -95,9 +118,22 @@ std::wstring File_Name::getFileName() const
 	return NameOfFile;
 }
 
-Data::Data(shared_ptr<HeaderAttribute> headerAttribute)
+Data::Data(shared_ptr<HeaderAttribute> header)
 {
-	AttributeNTFS(headerAttribute);
+	AttributeNTFS(header);
+	if (!basicHeader->isResident())
+	{
+		// n?u là non resident ta c?n ??c run list ? byte 64 trong data attribute
+		// c?u trúc run list g?m 1 header và 1 content liên ti?p nhau
+		// - header là 1 byte 
+		// 1/2 byte th?p cho bik S? BYTE quy ??nh s? cluster ?? l?u d? li?u
+		// 1/2 byte cao cho bik S? BYTE quy ??nh offset c?a cluster ??u tiên khi l?u tr?
+		// - content là 1 dãy byte v?i các byte ??u l?u tr? s? cluster và các byte sau l?u tr? offset cluster ??u tiên
+		vector<BYTE> memory = basicHeader->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->GetAttributeAddress() + 64, 32);
+		uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
+		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1, (memory[0] | 15)) * bytePerCluster);
+		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster - bytePerCluster + 1);
+	}
 }
 
 void Data::getBasicInfo()
