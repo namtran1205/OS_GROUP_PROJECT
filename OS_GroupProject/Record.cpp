@@ -4,16 +4,17 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 {
 	this->FirstReadPoint = FirstReadPoint;
 	this->bootSector = bootSector;
-	vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(FirstReadPoint, 42);
+	vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(FirstReadPoint, bootSector->getMFTsize());
+    //printSector(data);
 	for (int i = 0; i < 4; i++)
 		mask += static_cast<char>(data[i]);
 	firstAttribute = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x14, 2);
 
 	// Read list Attribute
 	uint64_t AdressAttribute = firstAttribute;
-	while (Utils::MyINTEGER::Convert2LitleEndian((bootSector->GetSectorReader()->ReadBytes(AdressAttribute,4)).begin(), 4) != 0xffffffff && AdressAttribute < FirstReadPoint + bootSector->getMFTsize())
+	while (Utils::MyINTEGER::Convert2LitleEndian(data.begin() + AdressAttribute, 4) != 0xffffffff && AdressAttribute < bootSector->getMFTsize())
 	{
-		shared_ptr<HeaderAttribute> tmp = make_shared<HeaderAttribute>(HeaderAttribute(AdressAttribute, bootSector));
+		shared_ptr<HeaderAttribute> tmp = make_shared<HeaderAttribute>(HeaderAttribute(AdressAttribute + FirstReadPoint, bootSector));
 		shared_ptr<AttributeNTFS> attribute;
 		if (tmp->getID() == 16)		//Standard Information
 		{
@@ -38,8 +39,9 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 		}
 
 		listAttribute.push_back(attribute);
-		AdressAttribute = attribute->getNextAttributeAddress();
-		
+		// sai AdressAttribute = attribute->getNextAttributeAddress();
+		exit(0);
+		///////////////////////////////
 	}
 
 }

@@ -93,3 +93,4 @@ namespace Utils
         //int hour = 0;
     };
 }
+void printSector(vector<BYTE> sector);

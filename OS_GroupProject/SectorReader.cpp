@@ -21,7 +21,7 @@ void SectorReader::SetDirve(LPCWSTR drive)
     this->drive = drive;
 }
 
-std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, uint64_t sector) const
+std::vector<BYTE> SectorReader::ReadSector( uint64_t readPoint, uint64_t sector) const
 {
     int retCode = 0;
     DWORD bytesRead;
@@ -60,7 +60,7 @@ std::vector<BYTE> SectorReader::ReadSector( int64_t readPoint, uint64_t sector) 
     
 }
 
-vector<BYTE> SectorReader::ReadBytes(int64_t readPoint, uint64_t numberByte) const
+vector<BYTE> SectorReader::ReadBytes(uint64_t readPoint, uint64_t numberByte) const
 {
     int retCode = 0;
     DWORD bytesRead;
@@ -81,10 +81,12 @@ vector<BYTE> SectorReader::ReadBytes(int64_t readPoint, uint64_t numberByte) con
     SetFilePointerEx(device, filePointer, NULL, FILE_BEGIN);
 
 
-    BYTE* tmpSector = new BYTE[numberByte];
+    uint64_t numReadByte = numberByte / byteOfSector * byteOfSector;
+    if (numberByte % byteOfSector > 0) numReadByte += byteOfSector;
+    BYTE* tmpSector = new BYTE[numReadByte];
     std::vector<BYTE> resultSector(1, 0);
     // Read 512 bytes from the specified position
-    if (ReadFile(device, tmpSector, numberByte, &bytesRead, NULL))
+    if (ReadFile(device, tmpSector, numReadByte, &bytesRead, NULL))
     {
         resultSector.resize(numberByte, 0);
         for (int i = 0; i < numberByte; i++) resultSector[i] = tmpSector[i];

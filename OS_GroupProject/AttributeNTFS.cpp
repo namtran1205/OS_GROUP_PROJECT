@@ -5,7 +5,8 @@ HeaderAttribute::HeaderAttribute(uint64_t Address, shared_ptr<BPB> bootSector)
 	
 	this->bootSector = bootSector;
 
-	std::vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(Address, 22);
+	std::vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(Address, 512);
+	printSector(data);
 	ID = Utils::MyINTEGER::Convert2LitleEndian(data.begin(), 4);                     // 0x0->0x3 
     Size = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x4, 4);             // 0x4->0x7
     nonResidentFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x8, 1);  // 0x8->0x8 
@@ -98,7 +99,7 @@ uint64_t AttributeNTFS::getNextAttributeAddress() const
 
 Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute)
 {
-	AttributeNTFS(headerAttribute);
+	basicHeader = headerAttribute;
 	vector<BYTE> data = headerAttribute->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->getContentAddress(), basicHeader->getContentSize());
 
 	flag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x32, 4);
@@ -106,7 +107,7 @@ Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute)
 
 File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute)
 {
-	AttributeNTFS(headerAttribute);
+	basicHeader = headerAttribute;
 	vector<BYTE> data = headerAttribute->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->getContentAddress(), basicHeader->getContentSize());
 	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x64, 1);
 	NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin() + 0x66, data.begin() + 0x66 + LengthOfName* 2 - 1));
@@ -120,7 +121,7 @@ std::wstring File_Name::getFileName() const
 
 Data::Data(shared_ptr<HeaderAttribute> header)
 {
-	AttributeNTFS(header);
+	basicHeader = header;
 	if (!basicHeader->isResident())
 	{
 		// nễu là non resident, ta cần đọc run list ở byte 64 trong data attribute
@@ -132,7 +133,7 @@ Data::Data(shared_ptr<HeaderAttribute> header)
 		vector<BYTE> memory = basicHeader->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->GetAttributeAddress() + 64, 32);
 		uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
 		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1, (memory[0] | 15)) * bytePerCluster);
-		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster - bytePerCluster + 1);
+		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster);
 	}
 }
 

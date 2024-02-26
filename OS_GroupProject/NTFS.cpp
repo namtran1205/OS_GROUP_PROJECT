@@ -5,6 +5,8 @@ NTFS::NTFS(LPCWSTR drive)
 {
     sectorReader = make_shared<SectorReader>(drive);
     bootSector = make_shared<BPB>(sectorReader);
+    uint64_t RecordAddress = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector() ;
+    shared_ptr<Record> tmp = make_shared<Record>(Record(RecordAddress, bootSector));
 }
 NTFS::~NTFS()
 {

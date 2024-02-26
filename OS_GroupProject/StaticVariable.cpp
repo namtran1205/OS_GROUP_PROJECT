@@ -290,3 +290,56 @@ wstring Utils::MyTIME::toString(vector<BYTE> bytes)
         res = to_wstring(hour) + L":" + to_wstring(minute);
     return res;
 }
+void printSector(vector<BYTE> sector)
+{
+    int count = 0;
+    int num = 0;
+
+    wcout << "offset   0  1  2  3  4  5  6  7    8  9  A  B  C  D  E  F" << endl;
+
+    wcout << "0x0" << num << "0  ";
+    bool flag = 0;
+    for (int i = 0; i < 512; i++)
+    {
+        count++;
+        if (i % 8 == 0)
+            wcout << "  ";
+        wprintf(L"%02X ", sector[i]);
+        if (i == 255)
+        {
+            flag = 1;
+            num = 0;
+        }
+
+        if (i == 511) break;
+        if (count == 16)
+        {
+            int index = i;
+            wcout << endl;
+            if (flag == 0)
+            {
+                num++;
+                if (num < 10)
+                    wcout << "0x0" << num << "0  ";
+                else
+                {
+                    char hex = char(num - 10 + 'A');
+                    wcout << "0x0" << hex << "0  ";
+                }
+            }
+            else
+            {
+                if (num < 10)
+                    wcout << "0x1" << num << "0  ";
+                else
+                {
+                    char hex = char(num - 10 + 'A');
+                    wcout << "0x1" << hex << "0  ";
+                }
+                num++;
+            }
+            count = 0;
+        }
+    }
+    wcout << endl;
+}

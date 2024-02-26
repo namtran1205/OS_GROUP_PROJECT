@@ -8,7 +8,7 @@ BPB::BPB(shared_ptr<SectorReader> sectorReader)
 	memory = sectorReader->ReadSector(BPB_Address, 1);                           // reset the memory with start index at the address of BPB  
 	BytePerSector = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0xB, 2);       // 0xB 2 byte
 	SectorPerCluster = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0xD, 1);    // 0xD->0xD
-	MFTsize = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0x40, 1);            // 0x40->0x40  the true size is 2^abs(MFTsize)
+	MFTsize = (char) memory[0x40];        // 0x40->0x40  the true size is 2^abs(MFTsize)
 	SectorVolume = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0x28, 8);       // 0x28->0x2F
 	StartMFTCluster = Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 0x30, 8);    // 0x30->0x37
 	sectorReader->SetByteOfSector(BytePerSector);
@@ -23,7 +23,7 @@ void BPB::readVolumeBootRecord()
 {
 	
 	std::wcout << L"Sectors per cluster - Sc = " << (int)SectorPerCluster << std::endl;
-	std::wcout << L"MFTsize (true value) = " << "2^" << MFTsize << std::endl;
+	std::wcout << L"MFTsize (true value) = " << "2^"<<abs(MFTsize) << std::endl;
 	std::wcout << L"Sector of Volume - Sv = " << SectorVolume << std::endl;
 	std::wcout << L"Bytes per Sectors - BytePerSector = " << BytePerSector << std::endl;
 	std::wcout << L"Start cluster of MFT = " << StartMFTCluster << std::endl;
@@ -48,4 +48,9 @@ uint64_t BPB::getMFTsize() const
 {
 	if (abs(MFTsize) > 64) return -1;
 	return 1 << abs(MFTsize);
+}
+
+uint64_t BPB::getStartMFTCluster() const
+{
+	return StartMFTCluster;
 }
