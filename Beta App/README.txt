@@ -1,0 +1,1 @@
+Sử dụng phần mềm Inno Setup để chỉnh sửa, chạy file .iss
