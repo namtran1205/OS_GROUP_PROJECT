@@ -63,12 +63,6 @@
     <ClCompile Include="StaticVariable.cpp" />
     <ClCompile Include="VolumeBootRecord.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Project2.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\Admin\Desktop\usb-1773302_1280.ico" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
