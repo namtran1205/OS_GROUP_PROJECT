@@ -43,3 +43,9 @@ uint64_t BPB::getBytePerSector() const
 {
 	return BytePerSector;
 }
+
+uint64_t BPB::getMFTsize() const
+{
+	if (abs(MFTsize) > 64) return -1;
+	return 1 << abs(MFTsize);
+}

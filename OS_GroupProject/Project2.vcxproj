@@ -53,6 +53,7 @@
     <ClCompile Include="NTFS.cpp" />
     <ClCompile Include="PseudoShell.cpp" />
     <ClCompile Include="RDET.cpp" />
+    <ClCompile Include="Record.cpp" />
     <ClCompile Include="SectorReader.cpp" />
     <ClCompile Include="StaticVariable.cpp" />
     <ClCompile Include="VolumeBootRecord.cpp" />
