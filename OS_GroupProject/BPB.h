@@ -14,7 +14,7 @@ public:
 public:
     uint64_t getSectorPerCluster() const;
     uint64_t getBytePerSector() const;
-    uint128_t getMFTsize() const;
+    uint64_t getMFTsize() const;
 
 private:
     std::wstring driveName;
