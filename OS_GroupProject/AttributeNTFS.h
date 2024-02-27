@@ -4,7 +4,7 @@
 class HeaderAttribute
 {
 public:
-    HeaderAttribute(uint64_t Address, shared_ptr<BPB>);
+    HeaderAttribute(uint64_t ,vector<BYTE>&, shared_ptr<BPB>);
 public:
     void setContentAddress(uint64_t);
     void setContentSize(uint64_t);
@@ -33,7 +33,7 @@ class AttributeNTFS {
 
 public:
     AttributeNTFS();
-    AttributeNTFS(shared_ptr<HeaderAttribute>);
+    AttributeNTFS(shared_ptr<HeaderAttribute>, vector<BYTE>&);
     uint64_t getNextAttributeAddress() const;
 
 protected:
@@ -45,7 +45,7 @@ protected:
 class Standard_Info : public AttributeNTFS
 {
 public:
-    Standard_Info(shared_ptr<HeaderAttribute>);
+    Standard_Info(shared_ptr<HeaderAttribute>, vector<BYTE>&);
 private:
     uint32_t flag; // 0x32 -> 0x35
 
@@ -54,7 +54,7 @@ private:
 class File_Name : public AttributeNTFS
 {
 public:
-    File_Name(shared_ptr<HeaderAttribute>);
+    File_Name(shared_ptr<HeaderAttribute>, vector<BYTE>&);
     std::wstring getFileName() const;
 private:
     std::wstring NameOfFile; // 0x66 8 byte
@@ -64,10 +64,11 @@ private:
 class Data : public AttributeNTFS
 {
 public:
-    Data(shared_ptr<HeaderAttribute>);
+    Data(shared_ptr<HeaderAttribute>,vector<BYTE>&);
 public:
     void getBasicInfo();
-
+private:
+    std::string residentContent;
 };
 
 

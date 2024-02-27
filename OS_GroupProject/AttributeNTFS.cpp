@@ -1,21 +1,19 @@
 ﻿#include "AttributeNTFS.h"
 
-HeaderAttribute::HeaderAttribute(uint64_t Address, shared_ptr<BPB> bootSector)
+HeaderAttribute::HeaderAttribute(uint64_t Address,vector<BYTE>& data, shared_ptr<BPB> bootSector)
 {
-	
-	this->bootSector = bootSector;
-
-	std::vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(Address, 512);
 	//printSector(data);
-	ID = Utils::MyINTEGER::Convert2LitleEndian(data.begin(), 4);                     // 0x0->0x3 
-    Size = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x4, 4);             // 0x4->0x7
-    nonResidentFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x8, 1);  // 0x8->0x8 
-    maskFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0xC, 2);         // 0xC->0xD
+	this->bootSector = bootSector;
+	attributeAddress = Address;
+	ID = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address, 4);                     // 0x0->0x3 
+    Size = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0x4, 4);             // 0x4->0x7
+    nonResidentFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin()+ Address + 0x8, 1);  // 0x8->0x8 
+    maskFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0xC, 2);         // 0xC->0xD
 
-	if (!nonResidentFlag)
+	if (!nonResidentFlag) // check
 	{
-	    contentSize = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x16, 4);
-    	contentAddress = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x20, 2) + Address;
+	    contentSize = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0x16, 4);
+    	contentAddress = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0x20, 2) + Address;
 	}
 	else
 	{
@@ -85,7 +83,7 @@ uint64_t HeaderAttribute::getContentSize() const
 
 AttributeNTFS::AttributeNTFS() {}
 
-AttributeNTFS::AttributeNTFS(shared_ptr<HeaderAttribute> headerAttribute)
+AttributeNTFS::AttributeNTFS(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	this->basicHeader = headerAttribute;
 }
@@ -97,20 +95,19 @@ uint64_t AttributeNTFS::getNextAttributeAddress() const
 
 
 
-Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute)
+Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
-	vector<BYTE> data = headerAttribute->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->getContentAddress(), basicHeader->getContentSize());
-
-	flag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x32, 4);
+	
+	flag = Utils::MyINTEGER::Convert2LitleEndian(data.begin()+ headerAttribute->GetAttributeAddress() + 0x32, 4);
 }
 
-File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute)
+File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
-	vector<BYTE> data = headerAttribute->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->getContentAddress(), basicHeader->getContentSize());
-	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x64, 1);
-	NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin() + 0x66, data.begin() + 0x66 + LengthOfName* 2 - 1));
+	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + headerAttribute->GetAttributeAddress() + 0x64, 1);
+	
+	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->GetAttributeAddress() + 0x66, data.begin()+ headerAttribute->GetAttributeAddress() + 0x66 + LengthOfName* 2 - 1));
 
 }
 
@@ -119,7 +116,7 @@ std::wstring File_Name::getFileName() const
 	return NameOfFile;
 }
 
-Data::Data(shared_ptr<HeaderAttribute> header)
+Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 {
 	basicHeader = header;
 	if (!basicHeader->isResident())
@@ -130,15 +127,25 @@ Data::Data(shared_ptr<HeaderAttribute> header)
 		// 1/2 byte thấp cho bik SỐ BYTE quy định số cluster để lưu dữ liệu
 		// 1/2 byte cao cho bik SỐ BYTE quy định offset của cluster đầu tiên khi lưu trữ
 		// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
-		vector<BYTE> memory = basicHeader->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->GetAttributeAddress() + 64, 32);
+		
 		uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
-		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1, (memory[0] | 15)) * bytePerCluster);
-		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster);
+		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LitleEndian(memory.begin()+ header->GetAttributeAddress() + 1, (memory[0] | 15)) * basicHeader->GetBPB()->getSectorPerCluster());
+		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + header->GetAttributeAddress()+ 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster);
+	}
+	else 
+	{
+		this->residentContent = string(memory.begin() + basicHeader->getContentAddress(), memory.begin() + basicHeader->getContentAddress() + basicHeader->getContentSize());
 	}
 }
 
 void Data::getBasicInfo()
 {
-	vector<BYTE> data = basicHeader->GetBPB()->GetSectorReader()->ReadBytes(basicHeader->getContentAddress(), basicHeader->getContentSize());
-	for(auto c:data) std::wcout << c;
+	if (basicHeader->isResident())
+	{
+		std::wcout << residentContent.c_str() << '\n';
+		return;
+	}
+	vector<BYTE> data = basicHeader->GetBPB()->GetSectorReader()->ReadSector(basicHeader->getContentAddress(), basicHeader->getContentSize());
+	for(char c:data) std::wcout << c;
+	wcout << '\n';
 }
