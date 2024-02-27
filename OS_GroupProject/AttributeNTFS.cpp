@@ -6,7 +6,7 @@ HeaderAttribute::HeaderAttribute(uint64_t Address, shared_ptr<BPB> bootSector)
 	this->bootSector = bootSector;
 
 	std::vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(Address, 512);
-	printSector(data);
+	//printSector(data);
 	ID = Utils::MyINTEGER::Convert2LitleEndian(data.begin(), 4);                     // 0x0->0x3 
     Size = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x4, 4);             // 0x4->0x7
     nonResidentFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x8, 1);  // 0x8->0x8 
