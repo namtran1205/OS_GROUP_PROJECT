@@ -93,7 +93,7 @@ uint64_t Utils::MyINTEGER::Convert2LitleEndian(byteArrayPointer offset, int numB
     uint64_t res = 0;
     for (int i = 0; i < numBytes; i++)
     {
-        res |= (*offset) << (i * 8);
+        res |= (uint64_t)(*offset) << (i * 8);
         offset++;
     }
     return res;

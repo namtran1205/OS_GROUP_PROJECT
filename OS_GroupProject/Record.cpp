@@ -15,7 +15,7 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 	// Read list Attribute
 	uint64_t AdressAttribute = firstAttribute;
 	uint64_t tmp = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 408, 4);
-	while (Utils::MyINTEGER::Convert2LitleEndian(data.begin() + AdressAttribute, 4) != 0xffffffffffffffff  && AdressAttribute < data.size())
+	while (Utils::MyINTEGER::Convert2LitleEndian(data.begin() + AdressAttribute, 4) != 0xffffffff && AdressAttribute < data.size())
 	{
 		shared_ptr<HeaderAttribute> tmp = make_shared<HeaderAttribute>(HeaderAttribute(AdressAttribute , data, bootSector));
 		shared_ptr<AttributeNTFS> attribute;
