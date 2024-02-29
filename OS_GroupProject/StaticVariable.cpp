@@ -85,7 +85,7 @@ namespace StaticVariable
 }
 
 
-uint64_t Utils::MyINTEGER::Convert2LitleEndian(byteArrayPointer offset, int numBytes)
+uint64_t Utils::MyINTEGER::Convert2LittleEndian(byteArrayPointer offset, int numBytes)
 {
     if (numBytes <= 0 || numBytes > 8)
         return 0;
@@ -108,10 +108,10 @@ std::wstring Utils::MySTRING::convertBytesToWstring( std::vector<BYTE> bytes)
         uint64_t tmp;
         if(i == bytes.size() - 1)
         {
-            tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 1);
+            tmp = Utils::MyINTEGER::Convert2LittleEndian(bytes.begin() + i, 1);
             break;
         }
-        tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 2);
+        tmp = Utils::MyINTEGER::Convert2LittleEndian(bytes.begin() + i, 2);
         if(bytes[i] == 0xFF || bytes[i+1] == 0xFF || tmp == 0)
             break;
         WCHAR += static_cast<wchar_t> (tmp);
@@ -151,10 +151,10 @@ wstring Utils::MySTRING::convertBYTEToWstring( std::vector<BYTE>& bytes)
         uint64_t tmp;
         if (i == bytes.size() - 1)
         {
-            tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 1);
+            tmp = Utils::MyINTEGER::Convert2LittleEndian(bytes.begin() + i, 1);
             break;
         }
-        tmp = Utils::MyINTEGER::Convert2LitleEndian(bytes.begin() + i, 2);
+        tmp = Utils::MyINTEGER::Convert2LittleEndian(bytes.begin() + i, 2);
         if (bytes[i] == 0xFF || bytes[i + 1] == 0xFF || tmp == 0)
             break;
         WCHAR += static_cast<wchar_t> (tmp);

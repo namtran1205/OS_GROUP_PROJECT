@@ -10,12 +10,12 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 
 	for (int i = 0; i < 4; i++)
 		mask += static_cast<char>(data[i]);
-	firstAttribute = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 0x14, 2);
+	firstAttribute = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x14, 2);
 
 	// Read list Attribute
 	uint64_t AdressAttribute = firstAttribute;
-	uint64_t tmp = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + 408, 4);
-	while (Utils::MyINTEGER::Convert2LitleEndian(data.begin() + AdressAttribute, 4) != 0xffffffff && AdressAttribute < data.size())
+	uint64_t tmp = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 408, 4);
+	while (Utils::MyINTEGER::Convert2LittleEndian(data.begin() + AdressAttribute, 4) != 0xffffffff && AdressAttribute < data.size())
 	{
 		shared_ptr<HeaderAttribute> tmp = make_shared<HeaderAttribute>(HeaderAttribute(AdressAttribute , data, bootSector));
 		shared_ptr<AttributeNTFS> attribute;

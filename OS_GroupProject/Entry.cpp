@@ -95,13 +95,13 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes
 
     reserved = datas[0xC];
 
-    int highWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x14, 2));
-    int lowWord = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1A,2));
+    int highWord = int(Utils::MyINTEGER::Convert2LittleEndian(datas.begin() + 0x14, 2));
+    int lowWord = int(Utils::MyINTEGER::Convert2LittleEndian(datas.begin() + 0x1A,2));
     startCluster = (highWord << 8) + lowWord;
     
     lastWriteTime = Utils::MyTIME::toString(vector<BYTE>(datas.begin() + 0x16, datas.begin() + 0x16 + 2));
     lastWriteDate = Utils::MyDATE::toString(vector<BYTE>(datas.begin() + 0x18, datas.begin() + 0x18 + 2));
-    sizeData = (Utils::MyINTEGER::Convert2LitleEndian(datas.begin() + 0x1C, 4));
+    sizeData = (Utils::MyINTEGER::Convert2LittleEndian(datas.begin() + 0x1C, 4));
     if(attributes->isDirectory())
     {
         fullName = Utils::MySTRING::fixSpaceWString(mainName) + Utils::MySTRING::fixSpaceWString(extendedName);
@@ -226,7 +226,7 @@ SubEntry::SubEntry() : Entry()
 
 SubEntry::SubEntry(vector<BYTE> bytesData) : Entry(bytesData)
 {
-    seq = int(Utils::MyINTEGER::Convert2LitleEndian(datas.begin(), 1));
+    seq = int(Utils::MyINTEGER::Convert2LittleEndian(datas.begin(), 1));
     unicode =  Utils::MySTRING::convertBytesToWstring(vector<BYTE>(datas.begin() + 1, datas.begin() + 11));
     extend1 = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(datas.begin() +  0xE, datas.begin() + 0xE + 0xC));
     extend2 = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(datas.begin() +  0x1C, datas.end()));

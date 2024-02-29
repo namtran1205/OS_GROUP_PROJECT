@@ -65,7 +65,7 @@ namespace Utils
     class MyINTEGER
     {
         public:
-            static uint64_t Convert2LitleEndian(byteArrayPointer offset, int numBytes);
+            static uint64_t Convert2LittleEndian(byteArrayPointer offset, int numBytes);
     };
 
     class MyTABLE

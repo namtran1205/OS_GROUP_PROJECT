@@ -5,15 +5,15 @@ HeaderAttribute::HeaderAttribute(uint64_t Address,vector<BYTE>& data, shared_ptr
 	//printSector(data);
 	this->bootSector = bootSector;
 	attributeAddress = Address;
-	ID = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address, 4);                     // 0x0->0x3 
-    Size = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0x4, 4);             // 0x4->0x7
-    nonResidentFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin()+ Address + 0x8, 1);  // 0x8->0x8 
-    maskFlag = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0xC, 2);         // 0xC->0xD
+	ID = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address, 4);                     // 0x0->0x3 
+    Size = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x4, 4);             // 0x4->0x7
+    nonResidentFlag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ Address + 0x8, 1);  // 0x8->0x8 
+    maskFlag = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0xC, 2);         // 0xC->0xD
 
 	if (!nonResidentFlag) // check
 	{
-	    contentSize = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0x16, 4);
-    	contentAddress = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + Address + 0x20, 2) + Address;
+	    contentSize = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x16, 4);
+    	contentAddress = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x20, 2) + Address;
 	}
 	else
 	{
@@ -99,13 +99,13 @@ Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector
 {
 	basicHeader = headerAttribute;
 	
-	flag = Utils::MyINTEGER::Convert2LitleEndian(data.begin()+ headerAttribute->GetAttributeAddress() + 0x32, 4);
+	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ headerAttribute->GetAttributeAddress() + 0x32, 4);
 }
 
 File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
-	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LitleEndian(data.begin() + headerAttribute->GetAttributeAddress() + 0x64, 1);
+	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->GetAttributeAddress() + 0x64, 1);
 	
 	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->GetAttributeAddress() + 0x66, data.begin()+ headerAttribute->GetAttributeAddress() + 0x66 + LengthOfName* 2 - 1));
 
@@ -129,8 +129,8 @@ Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 		// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
 		
 		uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
-		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LitleEndian(memory.begin()+ header->GetAttributeAddress() + 1, (memory[0] | 15)) * basicHeader->GetBPB()->getSectorPerCluster());
-		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LitleEndian(memory.begin() + header->GetAttributeAddress()+ 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster);
+		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LittleEndian(memory.begin()+ header->GetAttributeAddress() + 1, (memory[0] | 15)) * basicHeader->GetBPB()->getSectorPerCluster());
+		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + header->GetAttributeAddress()+ 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster);
 	}
 	else 
 	{
