@@ -10,17 +10,9 @@ HeaderAttribute::HeaderAttribute(uint64_t Address,vector<BYTE>& data, shared_ptr
     nonResidentFlag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ Address + 0x8, 1);  // 0x8->0x8 
     maskFlag = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0xC, 2);         // 0xC->0xD
 
-	if (!nonResidentFlag) // check
-	{
+    contentAddress = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x20, 2) + Address;
+	if (!nonResidentFlag) 
 	    contentSize = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x16, 4);
-    	contentAddress = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x20, 2) + Address;
-	}
-	else
-	{
-		contentSize = 0;
-		contentAddress = 0;
-	}
-
 }
 
 void HeaderAttribute::setContentAddress(uint64_t contentAddress)
@@ -93,21 +85,28 @@ uint64_t AttributeNTFS::getNextAttributeAddress() const
 	return basicHeader->GetAttributeAddress() + basicHeader->getSize();
 }
 
+shared_ptr<HeaderAttribute> AttributeNTFS::getBasicHeader() const
+{
+	return basicHeader;
+}
+
 
 
 Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
 	
-	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ headerAttribute->GetAttributeAddress() + 0x32, 4);
+	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ headerAttribute->getContentAddress() + 0x32, 4);
 }
 
 File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
-	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->GetAttributeAddress() + 0x64, 1);
+	parentID = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress(), 6);
+	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress() + 0x64, 1);
 	
-	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->GetAttributeAddress() + 0x66, data.begin()+ headerAttribute->GetAttributeAddress() + 0x66 + LengthOfName* 2 - 1));
+	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->getContentAddress() + 0x66, data.begin() + headerAttribute->getContentAddress() + 0x66 + LengthOfName * 2 - 1));
+	
 
 }
 
@@ -119,23 +118,31 @@ std::wstring File_Name::getFileName() const
 Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 {
 	basicHeader = header;
-	if (!basicHeader->isResident())
-	{
-		// nễu là non resident, ta cần đọc run list ở byte 64 trong data attribute
-		// cấu trúc run list gồm 1 header và 1 content liên tiếp nhau
-		// - header là 1 byte 
-		// 1/2 byte thấp cho bik SỐ BYTE quy định số cluster để lưu dữ liệu
-		// 1/2 byte cao cho bik SỐ BYTE quy định offset của cluster đầu tiên khi lưu trữ
-		// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
-		
-		uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
-		basicHeader->setContentSize(Utils::MyINTEGER::Convert2LittleEndian(memory.begin()+ header->GetAttributeAddress() + 1, (memory[0] | 15)) * basicHeader->GetBPB()->getSectorPerCluster());
-		basicHeader->setContentAddress(Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + header->GetAttributeAddress()+ 1 + (memory[0] | 15), (memory[0] >> 4)) * bytePerCluster);
-	}
-	else 
+	if (basicHeader->isResident())
 	{
 		this->residentContent = string(memory.begin() + basicHeader->getContentAddress(), memory.begin() + basicHeader->getContentAddress() + basicHeader->getContentSize());
+		return;
 	}
+
+	// nễu là non resident, ta cần đọc run list ở byte 64 trong data attribute
+	// cấu trúc run list gồm 1 header và 1 content liên tiếp nhau
+	// - header là 1 byte 
+	// 1/2 byte thấp cho bik SỐ BYTE quy định số cluster để lưu dữ liệu
+	// 1/2 byte cao cho bik SỐ BYTE quy định offset của cluster đầu tiên khi lưu trữ
+	// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
+	
+	uint64_t curRunsListAddress = basicHeader->getContentAddress();
+	uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
+	uint64_t attributeLim = basicHeader->GetAttributeAddress() + basicHeader->getSize();
+	while (curRunsListAddress < attributeLim && Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress, 1) != 0)
+	{
+		BYTE runsListHeader = memory[curRunsListAddress];
+		uint64_t contentSize = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1, runsListHeader & 15) * bytePerCluster;
+		uint64_t contentAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1 + (runsListHeader & 15), (runsListHeader >> 4)) * bytePerCluster;
+		this->runsList.push_back(make_pair(contentAddress, contentSize));
+		curRunsListAddress += (runsListHeader & 15) + (runsListHeader >> 4);
+	}
+
 }
 
 void Data::getBasicInfo()
@@ -145,7 +152,18 @@ void Data::getBasicInfo()
 		std::wcout << residentContent.c_str() << '\n';
 		return;
 	}
-	vector<BYTE> data = basicHeader->GetBPB()->GetSectorReader()->ReadSector(basicHeader->getContentAddress(), basicHeader->getContentSize());
-	for(char c:data) std::wcout << c;
-	wcout << '\n';
+
+
+	vector<BYTE> data;
+	for(auto it:runsList)
+	{
+		data = basicHeader->GetBPB()->GetSectorReader()->ReadSector(it.first, it.second);
+		for(char c:data) std::wcout << c;
+	}
+	cout << '\n';
+}
+
+uint32_t Standard_Info::getFlag() const
+{
+	return flag;
 }

@@ -6,11 +6,11 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 	this->bootSector = bootSector;
 	vector<BYTE> data = bootSector->GetSectorReader()->ReadBytes(FirstReadPoint, bootSector->getMFTsize());
     
-	
 
 	for (int i = 0; i < 4; i++)
 		mask += static_cast<char>(data[i]);
 	firstAttribute = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x14, 2);
+	this->status = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x16, 2);
 
 	// Read list Attribute
 	uint64_t AdressAttribute = firstAttribute;
@@ -52,4 +52,48 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 uint64_t Record::GetNextAddressRecord() const
 {
 	return FirstReadPoint + bootSector->getMFTsize() ;
+}
+
+std::string Record::getMask() const
+{
+	return mask;
+}
+
+uint64_t Record::getFlag()
+{
+	for (auto it : listAttribute)
+	{
+		if (it->getBasicHeader()->getID() == 16) {
+		
+			return std::dynamic_pointer_cast<Standard_Info>(it)->getFlag();
+			
+
+		}
+	}
+	return 2;
+}
+
+std::wstring Record::getName() const
+{
+	return L"";
+}
+
+int Record::isUse()
+{
+	return (status & 1);
+}
+
+bool Record::isFolder()
+{
+	return (status & 2);
+}
+
+void Record::printFileContent() 
+{
+	for(const auto &it: listAttribute)
+		if (it->getBasicHeader()->getID() == 128)
+		{
+			std::dynamic_pointer_cast<Data>(it)->getBasicInfo();
+			return;
+		}
 }

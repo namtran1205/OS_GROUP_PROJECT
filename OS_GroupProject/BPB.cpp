@@ -54,3 +54,8 @@ uint64_t BPB::getStartMFTCluster() const
 {
 	return StartMFTCluster;
 }
+
+uint64_t BPB::getSizeOfVolume() const
+{
+	return SectorVolume * BytePerSector;
+}

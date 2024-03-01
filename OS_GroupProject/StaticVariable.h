@@ -25,7 +25,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <tuple>
-
+#include<memory>
 
 using namespace std;
 

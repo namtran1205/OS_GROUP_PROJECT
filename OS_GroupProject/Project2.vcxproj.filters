@@ -84,6 +84,9 @@
     <ClInclude Include="resource5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DirectoryTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttributeNTFS.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Record.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectoryTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

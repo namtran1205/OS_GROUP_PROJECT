@@ -23,6 +23,7 @@
     <ClInclude Include="BootSector.h" />
     <ClInclude Include="BPB.h" />
     <ClInclude Include="Content.h" />
+    <ClInclude Include="DirectoryTree.h" />
     <ClInclude Include="Entry.h" />
     <ClInclude Include="FAT.h" />
     <ClInclude Include="FAT32.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="BootSector.cpp" />
     <ClCompile Include="BPB.cpp" />
     <ClCompile Include="Content.cpp" />
+    <ClCompile Include="DirectoryTree.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="FAT.cpp" />
     <ClCompile Include="FAT32.cpp" />

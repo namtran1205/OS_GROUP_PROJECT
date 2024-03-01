@@ -1,14 +1,15 @@
 #include "NTFS.h"
 
 
-NTFS::NTFS(LPCWSTR drive) 
+NTFS::NTFS(LPCWSTR drive)
 {
     sectorReader = make_shared<SectorReader>(drive);
     bootSector = make_shared<BPB>(sectorReader);
     vector<BYTE> data = sectorReader->ReadSector(0, 1);
-    uint64_t RecordAddress = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector() ;
-    shared_ptr<Record> tmp = make_shared<Record>(Record(RecordAddress, bootSector));
+    uint64_t RecordAddress = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
+    
 }
+    
 NTFS::~NTFS()
 {
 
