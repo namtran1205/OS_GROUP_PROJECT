@@ -64,6 +64,7 @@ public:
     wstring getLastWriteDate() const;
     wstring getLastWriteTime() const;
 public:
+    void initializeContent();
 public:
     wstring toString(int level) const override;
 protected:

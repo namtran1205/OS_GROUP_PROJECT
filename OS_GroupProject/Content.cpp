@@ -66,4 +66,5 @@ wstring Content::getContent() const
         return res;
     }
     return L"App to open this file: " +  content;
+    wcin.ignore();
 }

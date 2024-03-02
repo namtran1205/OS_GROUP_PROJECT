@@ -88,9 +88,8 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes
     this->fatTable = fatTable;
     
     mainName = wstring(datas.begin(), datas.begin() + 7);
-    extendedName = wstring(datas.begin() + 8, datas.begin() + 11);
+    extendedName = wstring(datas.begin() + 7, datas.begin() + 11);
     fullName = Utils::MySTRING::fixSpaceWString(mainName) + L"." + Utils::MySTRING::fixSpaceWString(extendedName);
-
     attributes = make_shared<Attribute>(datas[0xB]);
 
     reserved = datas[0xC];
@@ -102,20 +101,21 @@ MainEntry::MainEntry(shared_ptr<FAT> fatTable, vector<BYTE> bytes) : Entry(bytes
     lastWriteTime = Utils::MyTIME::toString(vector<BYTE>(datas.begin() + 0x16, datas.begin() + 0x16 + 2));
     lastWriteDate = Utils::MyDATE::toString(vector<BYTE>(datas.begin() + 0x18, datas.begin() + 0x18 + 2));
     sizeData = (Utils::MyINTEGER::Convert2LittleEndian(datas.begin() + 0x1C, 4));
-    if(attributes->isDirectory())
+    if (attributes->isDirectory())
     {
         fullName = Utils::MySTRING::fixSpaceWString(mainName) + Utils::MySTRING::fixSpaceWString(extendedName);
         uint64_t startByte = this->getFatTable()->getBootSector()->ClusterToSector(startCluster) * this->getFatTable()->getBootSector()->getBytePerSector();
         subDirectory = make_shared<SDET>(fatTable, startByte);
         content = nullptr;
     }
-    else
+    else if (attributes->isVollabel())
     {
-        subDirectory = nullptr;
-        wstring extendedName = Utils::MySTRING::parseExtendedFileNameWString(fullName);
-        content = make_shared<Content>(extendedName,startCluster, fatTable);
+        fullName = mainName + extendedName;
     }
 
+    //If the attribute belongs to Archive
+    else
+        this->initializeContent();
 }
 
 void MainEntry::addSubEntry(vector<shared_ptr<SubEntry>> subEntries)
@@ -131,6 +131,8 @@ void MainEntry::addSubEntry(vector<shared_ptr<SubEntry>> subEntries)
         
     }
     this->fullName = fullNameOfMainEntry;
+    if (attributes->isArchive())
+        this->initializeContent();
 }
 
 std::wstring MainEntry::getMainName() const
@@ -190,6 +192,13 @@ wstring MainEntry::getLastWriteDate() const
 wstring MainEntry::getLastWriteTime() const
 {
     return lastWriteTime;
+}
+
+void MainEntry::initializeContent()
+{
+    subDirectory = nullptr;
+    wstring extendedName = Utils::MySTRING::parseExtendedFileNameWString(fullName);
+    content = make_shared<Content>(extendedName, startCluster, fatTable);
 }
 
 

@@ -181,7 +181,7 @@ wstring Utils::MySTRING::fixSpaceWString(wstring name)
     for (size_t i = 0; i < name.size(); ++i)
     {
         if (name[i] == L' ')
-            break;
+            continue;
         res += name[i];
     }
     return res;
