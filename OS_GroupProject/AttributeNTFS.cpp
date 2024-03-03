@@ -90,6 +90,25 @@ shared_ptr<HeaderAttribute> AttributeNTFS::getBasicHeader() const
 	return basicHeader;
 }
 
+uint32_t AttributeNTFS::getFlag() const
+{
+	return 0;
+}
+
+uint64_t AttributeNTFS::getParentID() const
+{
+	return 0;
+}
+
+std::wstring AttributeNTFS::getFileName() const
+{
+	return std::wstring();
+}
+
+void AttributeNTFS::getBasicInfo()
+{
+}
+
 
 
 Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)

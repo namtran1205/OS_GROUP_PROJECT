@@ -35,6 +35,10 @@ public:
     AttributeNTFS();
     AttributeNTFS(shared_ptr<HeaderAttribute>, vector<BYTE>&);
     virtual uint64_t getNextAttributeAddress() const;
+    virtual uint32_t getFlag() const;
+    virtual uint64_t getParentID() const;
+    virtual std::wstring getFileName() const;
+    virtual void getBasicInfo();
     shared_ptr<HeaderAttribute> getBasicHeader() const;
 protected:
     uint64_t AttributeAddress;
@@ -46,7 +50,7 @@ class Standard_Info : public AttributeNTFS
 {
 public:
     Standard_Info(shared_ptr<HeaderAttribute>, vector<BYTE>&);
-    uint32_t getFlag() const;
+    uint32_t getFlag() const override;
 private:
     uint32_t flag; // 0x32 -> 0x35
 
@@ -56,8 +60,8 @@ class File_Name : public AttributeNTFS
 {
 public:
     File_Name(shared_ptr<HeaderAttribute>, vector<BYTE>&);
-    std::wstring getFileName() const;
-    uint64_t getParentID() const;
+    std::wstring getFileName() const override;
+    uint64_t getParentID() const override;
 private:
     std::wstring NameOfFile; // 0x66 8 byte
     uint64_t parentID;    //0x0 6 byte // parentID is MTFentry parent
@@ -69,7 +73,7 @@ class Data : public AttributeNTFS
 public:
     Data(shared_ptr<HeaderAttribute>,vector<BYTE>&);
 public:
-    void getBasicInfo();
+    void getBasicInfo() override;
 private:
     std::string residentContent;
     vector<std::pair<uint64_t, uint64_t>> runsList;

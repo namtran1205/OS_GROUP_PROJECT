@@ -65,9 +65,8 @@ uint64_t Record::getFlag()
 	{
 		if (it->getBasicHeader()->getID() == 16) {
 		
-			AttributeNTFS* tmp = it.get();
-			Standard_Info* Tmp = dynamic_cast<Standard_Info*>(tmp);
-			return std::dynamic_pointer_cast<Standard_Info>(it)->getFlag();
+			
+			return it->getFlag();
 			
 
 		}
@@ -80,7 +79,7 @@ std::wstring Record::getName()
 	for (const auto& it : listAttribute)
 		if (it->getBasicHeader()->getID() == 48)
 		{
-			return std::dynamic_pointer_cast<File_Name>(it)->getFileName();
+			return it->getFileName();
 		}
 	return L"";
 }
@@ -100,7 +99,7 @@ void Record::printFileContent()
 	for(const auto &it: listAttribute)
 		if (it->getBasicHeader()->getID() == 128)
 		{
-			std::dynamic_pointer_cast<Data>(it)->getBasicInfo();
+			it->getBasicInfo();
 			return;
 		}
 }
@@ -110,7 +109,7 @@ uint64_t Record::getParentID()
 	for (const auto& it : listAttribute)
 		if (it->getBasicHeader()->getID() == 48)
 		{
-			return std::dynamic_pointer_cast<File_Name>(it)->getParentID();
+			return it->getParentID();
 		}
 	return 0;
 }
