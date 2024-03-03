@@ -3,24 +3,49 @@
 DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
 {
     uint64_t firstReadPoint = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
+    uint64_t curReadPoint = firstReadPoint;
     uint64_t endPoint = firstReadPoint + bootSector->getSizeOfVolume();
-    while (firstReadPoint < endPoint)
+    for (; curReadPoint < endPoint; curReadPoint += bootSector->getMFTsize())
     {
-        shared_ptr<Record> tmp = make_shared<Record>(Record(firstReadPoint, bootSector));
-        if (tmp->isFolder() || tmp->isUse())
+        shared_ptr<Record> tmp = make_shared<Record>(Record(curReadPoint, bootSector));
+        if (tmp->getMask() != "FILE") break;
+        if (!tmp->isFolder() && !tmp->isUse()) continue;
+        
+        FileNode newNode;
+        newNode.flag = tmp->getFlag();
+        newNode.name = tmp->getName();
+        newNode.parentID = tmp->getParentID() * bootSector->getMFTsize() + firstReadPoint;
+        
+        if (listNode.find(newNode.parentID) == listNode.end())
         {
-            FileNode newNode;
-            newNode.flag = tmp->getFlag();
-            newNode.name = tmp->getName();
-            newNode.parentID = tmp->getParentID();
-            if (listNode.find(newNode.parentID) != listNode.end())
-            {
-
-            }
+            listNode.insert(make_pair(newNode.parentID, FileNode()));
+            listNode[newNode.parentID].childID.push_back(curReadPoint);
         }
-
-        firstReadPoint += bootSector->getMFTsize();
+        else 
+        {
+            bool isExist = false;
+            for(auto id:listNode[newNode.parentID].childID)
+                if (id == curReadPoint) 
+                {
+                    isExist = true;
+                    break;
+                }
+            if (isExist) continue;
+            listNode[newNode.parentID].childID.push_back(curReadPoint);
+        }
+        if (listNode.find(curReadPoint) == listNode.end())
+            listNode.insert(make_pair(curReadPoint, newNode));
     }
+
+    for(auto it:listNode)
+    {
+        if (it.first == it.second.parentID)
+        {
+            rootID = it.first;
+            break;
+        }
+    }
+    throw (std::string) "doesnt have root id";
 }
 
 std::vector<FileNode> DirectoryTree::getChild(uint64_t parentID)
@@ -57,4 +82,21 @@ bool FileNode::isFolder() const
 bool FileNode::isFile() const
 {
 	return !FileNode::isFolder();
+}
+
+
+FileNode DirectoryTree::getRoot()
+{
+    return listNode[rootID];
+}
+
+bool DirectoryTree::isRoot(uint64_t ID)
+{
+    return ID = rootID;
+}
+
+FileNode DirectoryTree::getNode(uint64_t nodeID)
+{
+    if (listNode.find(nodeID) == listNode.end()) return FileNode();
+    return listNode[nodeID];
 }

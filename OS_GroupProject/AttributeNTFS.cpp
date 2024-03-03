@@ -10,9 +10,9 @@ HeaderAttribute::HeaderAttribute(uint64_t Address,vector<BYTE>& data, shared_ptr
     nonResidentFlag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ Address + 0x8, 1);  // 0x8->0x8 
     maskFlag = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0xC, 2);         // 0xC->0xD
 
-    contentAddress = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x20, 2) + Address;
+    contentAddress = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 20, 2) + Address;
 	if (!nonResidentFlag) 
-	    contentSize = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 0x16, 4);
+	    contentSize = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address + 16, 4);
 }
 
 void HeaderAttribute::setContentAddress(uint64_t contentAddress)
@@ -96,16 +96,16 @@ Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector
 {
 	basicHeader = headerAttribute;
 	
-	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ headerAttribute->getContentAddress() + 0x32, 4);
+	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ headerAttribute->getContentAddress() + 32, 4);
 }
 
 File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
 	parentID = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress(), 6);
-	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress() + 0x64, 1);
+	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress() + 64, 1);
 	
-	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->getContentAddress() + 0x66, data.begin() + headerAttribute->getContentAddress() + 0x66 + LengthOfName * 2 - 1));
+	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->getContentAddress() + 66, data.begin() + headerAttribute->getContentAddress() + 66 + LengthOfName * 2 - 1));
 	
 
 }

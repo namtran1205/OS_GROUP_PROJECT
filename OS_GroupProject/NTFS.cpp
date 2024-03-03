@@ -5,9 +5,8 @@ NTFS::NTFS(LPCWSTR drive)
 {
     sectorReader = make_shared<SectorReader>(drive);
     bootSector = make_shared<BPB>(sectorReader);
-    vector<BYTE> data = sectorReader->ReadSector(0, 1);
-    uint64_t RecordAddress = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
-    
+    directoryTree = make_shared<DirectoryTree>(bootSector);
+    //currentFileNode = directoryTree->getRoot();
 }
     
 NTFS::~NTFS()
@@ -22,8 +21,9 @@ void NTFS::readVolumeBootRecord()
 
 void NTFS::readDirectory()
 {
-    cout << 2;
+    readDirectory(this->directoryTree->getRoot(), L"");
 }
+
 
 bool NTFS::changeDirectory(wstring folderName)
 {
@@ -38,6 +38,18 @@ bool NTFS::accessFile(wstring fileName)
 bool NTFS::returnPreviousDirectory()
 {
     return false;
+}
+
+void NTFS::readDirectory(const FileNode& cur, const wstring& space)
+{
+    wcout << space << cur.name << endl;
+    if (!cur.isFolder()) return;
+    for (auto x: cur.childID)
+    {
+        auto childFile = directoryTree->getNode(x);
+        readDirectory(childFile, space + L"     ");
+    }
+
 }
 
 wstring NTFS::toString() const

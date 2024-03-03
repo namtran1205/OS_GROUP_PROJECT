@@ -2,7 +2,8 @@
 #include "StaticVariable.h"
 #include "FileManagementSystem.h"
 #include "BPB.h"
-#include "Record.h"
+
+#include"DirectoryTree.h"
 using namespace std;
 
 
@@ -26,10 +27,13 @@ public:
     
     bool returnPreviousDirectory() override;
 
+    void readDirectory(const FileNode&, const wstring&);
+
 private:
     shared_ptr<BPB> bootSector;
     shared_ptr<SectorReader> sectorReader;
-  
+    shared_ptr<DirectoryTree> directoryTree;
+    FileNode currentFileNode;
 
 
 };

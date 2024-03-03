@@ -65,6 +65,8 @@ uint64_t Record::getFlag()
 	{
 		if (it->getBasicHeader()->getID() == 16) {
 		
+			AttributeNTFS* tmp = it.get();
+			Standard_Info* Tmp = dynamic_cast<Standard_Info*>(tmp);
 			return std::dynamic_pointer_cast<Standard_Info>(it)->getFlag();
 			
 
