@@ -21,19 +21,19 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 		shared_ptr<AttributeNTFS> attribute;
 		if (tmp->getID() == 16)		//Standard Information
 		{
-			 attribute = make_shared<AttributeNTFS>(Standard_Info(tmp, data));
+			 attribute = make_shared<Standard_Info>(Standard_Info(tmp, data));
 			
 			
 		}
 
 		else if (tmp->getID() == 48) //File Name
 		{
-			 attribute = make_shared<AttributeNTFS>(File_Name(tmp, data));
+			 attribute = make_shared<File_Name>(File_Name(tmp, data));
 			
 		}
 		else if (tmp->getID() == 128)	//Data
 		{
-			 attribute = make_shared<AttributeNTFS>(Data(tmp, data));
+			 attribute = make_shared<Data>(Data(tmp, data));
 			
 		}
 		else // another attribute
