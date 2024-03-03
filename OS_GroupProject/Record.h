@@ -9,10 +9,11 @@ public:
     uint64_t GetNextAddressRecord() const;
     std::string getMask() const;
     uint64_t getFlag(); // flag is flag of filename attribute -> archive of directory
-    std::wstring getName() const;
+    std::wstring getName();
     int isUse(); 
     bool isFolder();
     void printFileContent();
+    uint64_t getParentID();
 private:
     std::vector<shared_ptr<AttributeNTFS>> listAttribute;
     std::string mask;           // 0x00->0x03 address in Record header

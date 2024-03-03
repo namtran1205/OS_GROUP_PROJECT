@@ -73,8 +73,13 @@ uint64_t Record::getFlag()
 	return 2;
 }
 
-std::wstring Record::getName() const
+std::wstring Record::getName() 
 {
+	for (const auto& it : listAttribute)
+		if (it->getBasicHeader()->getID() == 48)
+		{
+			return std::dynamic_pointer_cast<File_Name>(it)->getFileName();
+		}
 	return L"";
 }
 
@@ -96,4 +101,14 @@ void Record::printFileContent()
 			std::dynamic_pointer_cast<Data>(it)->getBasicInfo();
 			return;
 		}
+}
+
+uint64_t Record::getParentID()
+{
+	for (const auto& it : listAttribute)
+		if (it->getBasicHeader()->getID() == 48)
+		{
+			return std::dynamic_pointer_cast<File_Name>(it)->getParentID();
+		}
+	return 0;
 }

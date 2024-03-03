@@ -115,6 +115,11 @@ std::wstring File_Name::getFileName() const
 	return NameOfFile;
 }
 
+uint64_t File_Name::getParentID() const
+{
+	return parentID;
+}
+
 Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 {
 	basicHeader = header;

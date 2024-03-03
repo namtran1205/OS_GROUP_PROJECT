@@ -3,8 +3,24 @@
 DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
 {
     uint64_t firstReadPoint = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
+    uint64_t endPoint = firstReadPoint + bootSector->getSizeOfVolume();
+    while (firstReadPoint < endPoint)
+    {
+        shared_ptr<Record> tmp = make_shared<Record>(Record(firstReadPoint, bootSector));
+        if (tmp->isFolder() || tmp->isUse())
+        {
+            FileNode newNode;
+            newNode.flag = tmp->getFlag();
+            newNode.name = tmp->getName();
+            newNode.parentID = tmp->getParentID();
+            if (listNode.find(newNode.parentID) != listNode.end())
+            {
 
-    
+            }
+        }
+
+        firstReadPoint += bootSector->getMFTsize();
+    }
 }
 
 std::vector<FileNode> DirectoryTree::getChild(uint64_t parentID)

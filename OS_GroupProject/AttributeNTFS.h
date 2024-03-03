@@ -57,6 +57,7 @@ class File_Name : public AttributeNTFS
 public:
     File_Name(shared_ptr<HeaderAttribute>, vector<BYTE>&);
     std::wstring getFileName() const;
+    uint64_t getParentID() const;
 private:
     std::wstring NameOfFile; // 0x66 8 byte
     uint64_t parentID;    //0x0 6 byte // parentID is MTFentry parent
