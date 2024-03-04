@@ -10,9 +10,8 @@ using namespace std;
 class FileManagementSystem
 {
 public:
-    // FileManagementSystem(const FileManagementSystem &) = delete;
-    // FileManagementSystem &operator=(const FileManagementSystem &) = delete;
-    FileManagementSystem();
+     FileManagementSystem(const FileManagementSystem &) = delete;
+     FileManagementSystem &operator=(const FileManagementSystem &) = delete;
     static shared_ptr<FileManagementSystem> getObject(LPCWSTR);
 
 public:
@@ -32,6 +31,6 @@ public:
     virtual bool accessFile(wstring fileName) = 0;
 
     virtual bool returnPreviousDirectory() = 0;
-private:
-
+protected:
+    FileManagementSystem();
 };
