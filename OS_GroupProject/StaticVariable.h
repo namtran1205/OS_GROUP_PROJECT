@@ -26,12 +26,9 @@
 #include <iomanip>
 #include <tuple>
 #include<memory>
-
 using namespace std;
 
 typedef std::vector<BYTE>::iterator byteArrayPointer;
-
-
 //This place contains global variable
 namespace StaticVariable
 {
@@ -39,12 +36,15 @@ namespace StaticVariable
     extern int BYTES_PER_ENTRY;
     extern vector<wstring> TABLE_OF_COMMANDS;
 }
-
-
 namespace Utils
 {
-
-    class MySTRING
+	class MyBOOL
+	{
+	public:
+		static bool volumeExists(const wchar_t* volumePath);
+		static bool getVolumeFileSystem(const std::wstring& volumePath, std::wstring& fileSystem);
+	};
+	class MySTRING
     {
         public:
             static wstring convertBytesToWstring( std::vector<BYTE> bytes);

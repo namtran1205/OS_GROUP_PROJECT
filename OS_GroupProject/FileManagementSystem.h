@@ -1,12 +1,20 @@
 #pragma once
 #include "StaticVariable.h"
 
+
+// class FAT32;
+// class NTFS;
+
 using namespace std;
 
 class FileManagementSystem
 {
 public:
+    // FileManagementSystem(const FileManagementSystem &) = delete;
+    // FileManagementSystem &operator=(const FileManagementSystem &) = delete;
     FileManagementSystem();
+    static shared_ptr<FileManagementSystem> getObject(LPCWSTR);
+
 public:
     virtual wstring toString() const = 0;
 public:
@@ -25,4 +33,5 @@ public:
 
     virtual bool returnPreviousDirectory() = 0;
 private:
+
 };

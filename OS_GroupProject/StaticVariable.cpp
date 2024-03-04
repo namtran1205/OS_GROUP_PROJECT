@@ -343,3 +343,30 @@ void printSector(vector<BYTE> sector)
     }
     wcout << endl;
 }
+
+bool Utils::MyBOOL::volumeExists(const wchar_t* volumeName)
+{
+    wstring volumePath = volumeName;
+    volumePath += L":\\";
+    UINT driveType = GetDriveType(volumePath.c_str());
+    return (driveType != DRIVE_NO_ROOT_DIR && driveType != DRIVE_UNKNOWN);
+}
+
+bool Utils::MyBOOL::getVolumeFileSystem(const std::wstring& volumePath, std::wstring& fileSystem)
+{
+	WCHAR volumeName[MAX_PATH + 1];
+	DWORD volumeSerialNumber;
+	DWORD maximumComponentLength;
+	DWORD fileSystemFlags;
+	WCHAR fileSystemName[MAX_PATH + 1];
+	if (GetVolumeInformationW(volumePath.c_str(), volumeName, MAX_PATH + 1, &volumeSerialNumber,
+
+		&maximumComponentLength, &fileSystemFlags, fileSystemName, MAX_PATH + 1)) {
+
+		fileSystem = fileSystemName;
+
+		return true;
+
+	}
+	return false;
+}

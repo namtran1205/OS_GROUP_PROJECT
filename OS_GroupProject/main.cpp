@@ -1,41 +1,28 @@
 ﻿#include "StaticVariable.h"
-#include "FileManagementFactory.h"
+#include "FileManagementSystem.h"
 #include "IParsable.h"
 #include "PseudoShell.h"
-#include <conio.h>
-#include <io.h>
-#include <fcntl.h>
+#include "FAT32.h"
 
 
 int main()
 {
     _setmode(_fileno(stdout), _O_U16TEXT);
-    //wcout << L"Xin chào Việt Nam" << endl;
     wstring partition;
-    const char* colon = ":";
     wcout << L"Enter the drive or partition name: ";
     wcin >> partition;
-    wstring fullPath = L"\\\\.\\";
-    fullPath += partition + Utils::MySTRING::convertCharToWString(colon);
-    //LPCWSTR drive = fullPath; //User input this
-    FileManagementFactory myFactory(fullPath.c_str());
-    myFactory.registerWith(make_shared<FAT32Parser>());
-    myFactory.registerWith(make_shared<NTFSParser>());
-
-    wcin.ignore();
-    wstring tokens;  //User input this
-    wcout << L"Enter your file system: ";
-    getline(wcin, tokens);
-    shared_ptr<IParsable> fileSystem = myFactory.createObject(tokens);
-
-    if(!fileSystem)
+    while(Utils::MyBOOL::volumeExists(partition.c_str()) == false)
     {
-        wcout << "INVALID ERRORS";
-        return 0;   
+        wcout << "The volume is not existed!" << endl;
+        wcout << L"Enter the drive or partition name: ";
+        wcin >> partition;
     }
-
+    wcin.ignore();
+    wstring fullPath =  L"\\\\.\\" + partition + L":" ;
+    shared_ptr<FileManagementSystem> fileSystem = FileManagementSystem::getObject(fullPath.c_str());
+    fullPath += L":";
     PseudoShell cmdEnvironment;
-    cmdEnvironment.accessEnvironment(fileSystem->parse(), partition, tokens);
+    cmdEnvironment.accessEnvironment(fileSystem, partition, fileSystem->toString());
     return 0;
 }
 
