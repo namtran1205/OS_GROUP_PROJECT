@@ -16,7 +16,7 @@ shared_ptr<FileManagementSystem> FileManagementSystem::getObject(LPCWSTR drive)
     {
         if(fileSystemName == L"FAT32")
             return make_shared<FAT32>(drive);
-        else if(fileSystemName == L"NTFS")
+        if(fileSystemName == L"NTFS")
             return make_shared<NTFS>(drive);
     }
     return NULL;

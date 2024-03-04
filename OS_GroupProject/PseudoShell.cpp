@@ -86,7 +86,6 @@ void PseudoShell::printShellTable(const wstring& partition, const wstring& token
     }
     else if (userInput == L"exit")
     {
-        std::wcout << L"Exit!" << std::endl;
         return;
     }
 }
