@@ -26,7 +26,6 @@ int main()
         wcin.ignore();
         wstring fullPath =  L"\\\\.\\" + partition + L":" ;
         shared_ptr<FileManagementSystem> fileSystem = FileManagementSystem::getObject(fullPath.c_str());
-        fullPath += L":";
         PseudoShell cmdEnvironment;
         cmdEnvironment.accessEnvironment(fileSystem, partition, fileSystem->toString());
     }

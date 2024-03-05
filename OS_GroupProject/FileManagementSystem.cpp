@@ -15,9 +15,9 @@ shared_ptr<FileManagementSystem> FileManagementSystem::getObject(LPCWSTR drive)
     if (Utils::MyBOOL::getVolumeFileSystem(fullDrive, fileSystemName))
     {
         if(fileSystemName == L"FAT32")
-            return make_shared<FAT32>(drive);
+            return dynamic_pointer_cast<FileManagementSystem>(make_shared<FAT32>(drive));
         if(fileSystemName == L"NTFS")
-            return make_shared<NTFS>(drive);
+            return dynamic_pointer_cast<FileManagementSystem>(make_shared<NTFS>(drive));
     }
     return NULL;
 }
