@@ -36,9 +36,6 @@
     <ClInclude Include="FAT32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileManagementFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileManagementSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -108,9 +105,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FAT32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FileManagementFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileManagementSystem.cpp">

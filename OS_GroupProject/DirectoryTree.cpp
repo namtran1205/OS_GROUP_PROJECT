@@ -5,6 +5,7 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
     uint64_t firstReadPoint = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
     uint64_t curReadPoint = firstReadPoint;
     uint64_t endPoint = firstReadPoint + bootSector->getSizeOfVolume();
+    int cnt = 0;
     for (; curReadPoint < endPoint; curReadPoint += bootSector->getMFTsize())
     {
         shared_ptr<Record> tmp = make_shared<Record>(Record(curReadPoint, bootSector));
@@ -34,7 +35,17 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             listNode[newNode.parentID].childID.push_back(curReadPoint);
         }
         if (listNode.find(curReadPoint) == listNode.end())
+        {
             listNode.insert(make_pair(curReadPoint, newNode));
+            std::ofstream ofs;
+            ofs.open("check.txt", ios::app|ios::out);
+            if (!ofs.is_open()) continue;
+            // ofs << newNode.name << '\n';
+            ofs << tmp->getParentID() << '\n';
+            ofs << cnt++ << '\n';
+            ofs << "------------------\n";
+            ofs.close();
+        }
     }
 
     for(auto it:listNode)
