@@ -5,7 +5,7 @@ NTFS::NTFS(LPCWSTR drive)
 {
     sectorReader = make_shared<SectorReader>(drive);
     bootSector = make_shared<BPB>(sectorReader);
-  directoryTree = make_shared<DirectoryTree>(bootSector);
+//  directoryTree = make_shared<DirectoryTree>(bootSector);
     //currentFileNode = directoryTree->getRoot();
 }
     

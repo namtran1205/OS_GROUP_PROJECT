@@ -7,6 +7,8 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
     uint64_t endPoint = bootSector->getMFTMirror();
     //bootSector->getMFTMirror();
     int cnt = 0;
+    shared_ptr<Record> firstEntry = make_shared<Record>(Record(curReadPoint, bootSector));
+
     for (; curReadPoint < endPoint; curReadPoint += bootSector->getMFTsize())
     {
 
