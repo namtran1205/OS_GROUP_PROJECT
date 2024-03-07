@@ -13,7 +13,6 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
         if (tmp->getStatus() == 0) continue;
         if (tmp->getMask() != "FILE") continue;
         if (!tmp->isFolder() && !tmp->isUse()) continue;
-        if (tmp->getStatus() == 0) continue;
         FileNode newNode;
         newNode.flag = tmp->getFlag();
         newNode.name = tmp->getName();
