@@ -33,7 +33,7 @@ private:
     shared_ptr<BPB> bootSector;
     shared_ptr<SectorReader> sectorReader;
     shared_ptr<DirectoryTree> directoryTree;
-    FileNode currentFileNode;
+    uint64_t currentFileNodeID;
 
 
 };

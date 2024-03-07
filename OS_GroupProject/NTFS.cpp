@@ -5,8 +5,8 @@ NTFS::NTFS(LPCWSTR drive)
 {
     sectorReader = make_shared<SectorReader>(drive);
     bootSector = make_shared<BPB>(sectorReader);
-//  directoryTree = make_shared<DirectoryTree>(bootSector);
-    //currentFileNode = directoryTree->getRoot();
+    directoryTree = make_shared<DirectoryTree>(bootSector);
+    currentFileNodeID = directoryTree->getRoot().parentID;
 }
     
 NTFS::~NTFS()
@@ -27,6 +27,30 @@ void NTFS::readDirectory()
 
 bool NTFS::changeDirectory(wstring folderName)
 {
+    bool res = false;
+    auto curNode = directoryTree->getNode(currentFileNodeID);
+
+
+    // find valid child
+    for(auto id:curNode.childID)
+    {
+        auto childFile = directoryTree->getNode(id);
+        if (!childFile.isSystem() && childFile.name == folderName)
+        {
+            currentFileNodeID = id;
+            res = true;
+            break;
+        }
+    }
+
+    if (!res) return false;
+
+    // print list child of the current folder 
+    auto listChild = directoryTree->getChild(currentFileNodeID);
+    for(auto child:listChild) 
+        if (!child.isSystem())
+            wcout << child.name << '\n';
+
     return true;
 }
 
@@ -42,12 +66,14 @@ bool NTFS::returnPreviousDirectory()
 
 void NTFS::readDirectory(const FileNode& cur, const wstring& space)
 {
-    wcout << space << cur.name << endl;
+    if ((cur.flag & 6)) return;
+    wcout << space  << ((cur.status & 2)? "Folder: " : "File: ") << cur.name << '\n';
     if (!cur.isFolder()) return;
-    for (auto x: cur.childID)
+    for (auto x : cur.childID)
     {
+        if (x == cur.parentID) continue;
         auto childFile = directoryTree->getNode(x);
-        readDirectory(childFile, space + L"     ");
+        readDirectory(childFile, space + L"      ");
     }
 
 }

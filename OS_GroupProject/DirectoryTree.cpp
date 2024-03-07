@@ -4,10 +4,9 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
 {
     uint64_t firstReadPoint = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
     uint64_t curReadPoint = firstReadPoint;
-    uint64_t endPoint = bootSector->getMFTMirror();
-    //bootSector->getMFTMirror();
+    uint64_t endPoint = firstReadPoint + 50*1024;
     int cnt = 0;
-    shared_ptr<Record> firstEntry = make_shared<Record>(Record(curReadPoint, bootSector));
+    
 
     for (; curReadPoint < endPoint; curReadPoint += bootSector->getMFTsize())
     {
@@ -18,9 +17,12 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
         if (tmp->getMask() != "FILE") continue;
         if (!tmp->isFolder() && !tmp->isUse()) continue;
         FileNode newNode;
-        newNode.flag = tmp->getFlag();
-        newNode.name = tmp->getName();
-        newNode.parentID = tmp->getParentID() * bootSector->getMFTsize() + firstReadPoint;
+        {
+            newNode.flag = tmp->getFlag();
+            newNode.name = tmp->getName();
+            newNode.parentID = tmp->getParentID() * bootSector->getMFTsize() + firstReadPoint;
+            newNode.status = tmp->getStatus();
+        }
         if (listNode.find(newNode.parentID) == listNode.end())
         {
             listNode.insert(make_pair(newNode.parentID, FileNode()));
@@ -41,30 +43,41 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
         if (listNode.find(curReadPoint) == listNode.end())
         {
             listNode.insert(make_pair(curReadPoint, newNode));
-            std::wofstream ofs;
-            ofs.open("check.txt", ios::app|ios::out);
-            if (!ofs.is_open()) continue;
-            ofs << newNode.name << '\n';
-            ofs << tmp->getParentID() << '\n';
-            ofs << tmp->getStatus() << '\n';
-            ofs << newNode.flag << '\n';
-            ofs << cnt << '\n';
+            // std::wofstream ofs;
+            // ofs.open("check.txt", ios::app|ios::out);
+            // if (!ofs.is_open()) continue;
+            // ofs << newNode.name << '\n';
+            // ofs << tmp->getParentID() << '\n';
+            // ofs << tmp->getStatus() << '\n';
+            // ofs << newNode.flag << '\n';
+            // ofs << cnt << '\n';
 
-            //ofs << "mask:" << tmp->getMask() << '\n';
-            ofs << "------------------\n";
-            ofs.close();
+            // //ofs << "mask:" << tmp->getMask() << '\n';
+            // ofs << "------------------\n";
+            // ofs.close();
         }
     }
 
-    for(auto it:listNode)
-    {
-        if (it.first == it.second.parentID)
-        {
-            rootID = it.first;
-            break;
-        }
-    }
     rootID = firstReadPoint + bootSector->getMFTsize() * 5;
+    listNode[rootID].status |= 2;
+    listNode[rootID].flag &= ~(6);
+    listNode[rootID].name = L"Drive";
+    listNode[rootID].parentID = rootID;
+    // for(auto it:listNode) 
+    // {
+    //     wcout << "Status: " << ((it.second.status >> 1) & 1) << '\n';
+    //     wcout << "ID: " << (it.first - firstReadPoint) / 1024 << '\n';
+    //     wcout << "Name: " << it.second.name << '\n';
+    //     wcout << "Flag: ";
+    //     for(int i = 0; i < 8; i++) 
+    //         wcout << ((it.second.flag >> i) & 1) << ' ';
+    //     wcout << "\nChild: ";
+    //     for(auto id : it.second.childID)
+    //     {
+    //         wcout << (id - firstReadPoint) / 1024 << ' ';
+    //     }
+    //     wcout << "\n-------------------\n";
+    // }
 }
 
 std::vector<FileNode> DirectoryTree::getChild(uint64_t parentID)
@@ -88,19 +101,23 @@ FileNode DirectoryTree::getParent(uint64_t childID)
 
 FileNode::FileNode()
 {
+    flag = 6;
+    childID.resize(0);
 }
 
 bool FileNode::isFolder() const
 {
-    for(auto c:name) 
-        if (c == wchar_t('.')) 
-            return true;
-	return false;
+    return (status & 2) != 0;
 }
 
 bool FileNode::isFile() const
 {
-	return !FileNode::isFolder();
+	return (flag & (1<<5)) != 0;
+}
+
+bool FileNode::isSystem() const
+{
+    return (flag & 6); 
 }
 
 
@@ -111,7 +128,7 @@ FileNode DirectoryTree::getRoot()
 
 bool DirectoryTree::isRoot(uint64_t ID)
 {
-    return ID = rootID;
+    return ID == rootID;
 }
 
 FileNode DirectoryTree::getNode(uint64_t nodeID)

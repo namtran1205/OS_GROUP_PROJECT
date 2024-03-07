@@ -18,6 +18,7 @@ public:
     uint64_t getStartMFTCluster() const;
     uint64_t getSizeOfVolume() const; // bytes
     uint64_t getMFTMirror() const;
+    uint64_t getEndMFT();
 private:
     std::wstring driveName;
     uint64_t BytePerSector;    // 0xB 2 byte

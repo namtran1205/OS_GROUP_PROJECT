@@ -66,3 +66,23 @@ uint64_t BPB::getMFTMirror() const
 {
 	return StartMFTMirrorCluster * SectorPerCluster * BytePerSector;
 }
+
+
+uint64_t BPB::getEndMFT()
+{
+	vector<BYTE> memory = sectorReader->ReadSector(SectorPerCluster * BytePerSector * StartMFTCluster , 2);
+	uint64_t curPointer = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + 0x14, 2);
+
+	while (curPointer + 4 <= memory.size())
+	{
+		uint64_t ID = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curPointer, 4);
+		if (ID == 0xffffffff || ID == 128) break;
+		uint64_t AttributeSize = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curPointer + 4, 4);
+		curPointer += AttributeSize;
+	}
+
+	if (curPointer + 4 > memory.size() || Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curPointer, 4) != 128 || Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curPointer + 8, 1) == 0) return 0; // read fail
+
+	return Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curPointer + 24, 8)  * SectorPerCluster * BytePerSector;
+}
+

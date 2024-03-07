@@ -9,12 +9,14 @@ public:
 public:
     bool isFolder() const;
     bool isFile() const;
+    bool isSystem() const;
 
 public:
     std::wstring name;
     uint64_t flag;
     uint64_t parentID;
     std::vector<uint64_t> childID;
+    uint64_t status;
 };
 
 class DirectoryTree
@@ -28,6 +30,7 @@ public:
     FileNode getRoot();
     FileNode getNode(uint64_t nodeID);
     bool isRoot(uint64_t ID);
+
 private:
     uint64_t rootID;
     std::map<uint64_t, FileNode> listNode; 
