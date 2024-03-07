@@ -113,3 +113,8 @@ uint64_t Record::getParentID()
 		}
 	return 0;
 }
+
+int Record::getStatus()
+{
+	return status;
+}
