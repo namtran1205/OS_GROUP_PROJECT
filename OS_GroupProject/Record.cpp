@@ -11,10 +11,10 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 		mask += static_cast<char>(data[i]);
 	firstAttribute = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x14, 2);
 	this->status = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x16, 2);
-
+	if (status == 0) return;
 	// Read list Attribute
 	uint64_t AdressAttribute = firstAttribute;
-	uint64_t tmp = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 408, 4);
+	//uint64_t tmp = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 408, 4);
 	while (Utils::MyINTEGER::Convert2LittleEndian(data.begin() + AdressAttribute, 4) != 0xffffffff && AdressAttribute < data.size())
 	{
 		shared_ptr<HeaderAttribute> tmp = make_shared<HeaderAttribute>(HeaderAttribute(AdressAttribute , data, bootSector));
@@ -112,4 +112,9 @@ uint64_t Record::getParentID()
 			return it->getParentID();
 		}
 	return 0;
+}
+
+uint64_t Record::getStatus()
+{
+	return status;
 }

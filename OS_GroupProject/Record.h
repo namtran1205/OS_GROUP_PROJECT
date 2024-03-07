@@ -14,6 +14,7 @@ public:
     bool isFolder();
     void printFileContent();
     uint64_t getParentID();
+    uint64_t getStatus();
 private:
     std::vector<shared_ptr<AttributeNTFS>> listAttribute;
     std::string mask;           // 0x00->0x03 address in Record header
