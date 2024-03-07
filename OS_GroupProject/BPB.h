@@ -17,6 +17,7 @@ public:
     uint64_t getMFTsize() const;
     uint64_t getStartMFTCluster() const;
     uint64_t getSizeOfVolume() const; // bytes
+    uint64_t getMFTMirror() const;
 private:
     std::wstring driveName;
     uint64_t BytePerSector;    // 0xB 2 byte
@@ -24,6 +25,7 @@ private:
     int64_t MFTsize;           // 0x40->0x40  the true size is 2^abs(MFTsize) 
     uint64_t SectorVolume;     // 0x28->0x2F
     uint64_t StartMFTCluster;  // 0x30->0x37
+    uint64_t StartMFTMirrorCluster;
     shared_ptr<SectorReader> sectorReader;
     
 

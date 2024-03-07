@@ -11,6 +11,8 @@ BPB::BPB(shared_ptr<SectorReader> sectorReader)
 	MFTsize = (char) memory[0x40];        // 0x40->0x40  the true size is 2^abs(MFTsize)
 	SectorVolume = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + 0x28, 8);       // 0x28->0x2F
 	StartMFTCluster = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + 0x30, 8);    // 0x30->0x37
+	StartMFTMirrorCluster = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + 0x38, 8); 
+
 	sectorReader->SetByteOfSector(BytePerSector);
 
 }
@@ -58,4 +60,9 @@ uint64_t BPB::getStartMFTCluster() const
 uint64_t BPB::getSizeOfVolume() const
 {
 	return SectorVolume * BytePerSector;
+}
+
+uint64_t BPB::getMFTMirror() const
+{
+	return StartMFTMirrorCluster * SectorPerCluster * BytePerSector;
 }

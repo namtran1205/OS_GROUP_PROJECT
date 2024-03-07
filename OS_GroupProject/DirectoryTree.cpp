@@ -4,12 +4,14 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
 {
     uint64_t firstReadPoint = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
     uint64_t curReadPoint = firstReadPoint;
-    uint64_t endPoint = firstReadPoint + bootSector->getSizeOfVolume();
+    uint64_t endPoint = bootSector->getMFTMirror();
+    //bootSector->getMFTMirror();
     int cnt = 0;
     for (; curReadPoint < endPoint; curReadPoint += bootSector->getMFTsize())
     {
+
         shared_ptr<Record> tmp = make_shared<Record>(Record(curReadPoint, bootSector));
-       
+        cnt++;
         if (tmp->getStatus() == 0) continue;
         if (tmp->getMask() != "FILE") continue;
         if (!tmp->isFolder() && !tmp->isUse()) continue;
@@ -17,7 +19,6 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
         newNode.flag = tmp->getFlag();
         newNode.name = tmp->getName();
         newNode.parentID = tmp->getParentID() * bootSector->getMFTsize() + firstReadPoint;
-        
         if (listNode.find(newNode.parentID) == listNode.end())
         {
             listNode.insert(make_pair(newNode.parentID, FileNode()));
@@ -43,7 +44,9 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             if (!ofs.is_open()) continue;
             ofs << newNode.name << '\n';
             ofs << tmp->getParentID() << '\n';
-            ofs << cnt++ << '\n';
+            ofs << tmp->getStatus() << '\n';
+            ofs << newNode.flag << '\n';
+            ofs << cnt << '\n';
 
             //ofs << "mask:" << tmp->getMask() << '\n';
             ofs << "------------------\n";
@@ -59,7 +62,7 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             break;
         }
     }
-    throw (std::string) "doesnt have root id";
+    rootID = firstReadPoint + bootSector->getMFTsize() * 5;
 }
 
 std::vector<FileNode> DirectoryTree::getChild(uint64_t parentID)

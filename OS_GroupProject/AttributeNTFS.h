@@ -77,6 +77,7 @@ public:
 private:
     std::string residentContent;
     vector<std::pair<uint64_t, uint64_t>> runsList;
+    uint64_t endingPoint;
 };
 
 
