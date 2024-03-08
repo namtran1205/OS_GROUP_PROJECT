@@ -13,6 +13,8 @@ public:
 
 public:
     std::wstring name;
+    std::pair<std::wstring, std::wstring> lastWriteTime;
+    uint64_t size;
     uint64_t flag;
     uint64_t parentID;
     std::vector<uint64_t> childID;

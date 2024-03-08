@@ -17,6 +17,8 @@ public:
     void printFileContent();
     uint64_t getParentID();
     uint64_t getStatus();
+    uint64_t getSize();
+    std::pair<std::wstring, std::wstring> getLastWriteTime();
 private:
     std::vector<shared_ptr<AttributeNTFS>> listAttribute;
     std::string mask;           // 0x00->0x03 address in Record header

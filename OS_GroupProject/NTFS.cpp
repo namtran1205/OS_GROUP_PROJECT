@@ -21,7 +21,17 @@ void NTFS::readVolumeBootRecord()
 
 void NTFS::readDirectory()
 {
-    readDirectory(this->directoryTree->getRoot(), L"");
+    vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>> lines;
+    auto curNode = directoryTree->getNode(currentFileNodeID);
+    for(auto x:curNode.childID)
+    {
+        auto childFile = directoryTree->getNode(x);
+        if (childFile.isSystem()) continue;
+        wstring type = childFile.isFolder()? L"Directory" : L"Archive"; 
+        auto line = make_tuple(type, childFile.lastWriteTime.first, childFile.lastWriteTime.second, x / bootSector->getBytePerSector(), childFile.size, childFile.name);
+        lines.push_back(line);
+    }
+    Utils::MyTABLE::display(lines);
 }
 
 
@@ -30,28 +40,18 @@ bool NTFS::changeDirectory(wstring folderName)
     bool res = false;
     auto curNode = directoryTree->getNode(currentFileNodeID);
 
-
     // find valid child
     for(auto id:curNode.childID)
     {
         auto childFile = directoryTree->getNode(id);
-        if (!childFile.isSystem() && childFile.name == folderName)
+        if (!childFile.isSystem() && childFile.name == folderName )
         {
             currentFileNodeID = id;
-            res = true;
-            break;
+            return true;
         }
     }
 
-    if (!res) return false;
-
-    // print list child of the current folder 
-    auto listChild = directoryTree->getChild(currentFileNodeID);
-    for(auto child:listChild) 
-        if (!child.isSystem())
-            wcout << child.name << '\n';
-
-    return true;
+    return false;
 }
 
 bool NTFS::accessFile(wstring fileName)
@@ -61,22 +61,12 @@ bool NTFS::accessFile(wstring fileName)
 
 bool NTFS::returnPreviousDirectory()
 {
-    return false;
+    if (directoryTree->isRoot(currentFileNodeID)) return false;
+    auto curNode = directoryTree->getNode(currentFileNodeID);
+    currentFileNodeID = curNode.parentID;
+    return true;
 }
 
-void NTFS::readDirectory(const FileNode& cur, const wstring& space)
-{
-    if ((cur.flag & 6)) return;
-    wcout << space  << ((cur.status & 2)? "Folder: " : "File: ") << cur.name << '\n';
-    if (!cur.isFolder()) return;
-    for (auto x : cur.childID)
-    {
-        if (x == cur.parentID) continue;
-        auto childFile = directoryTree->getNode(x);
-        readDirectory(childFile, space + L"      ");
-    }
-
-}
 
 wstring NTFS::toString() const
 {

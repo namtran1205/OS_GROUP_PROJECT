@@ -108,13 +108,18 @@ std::wstring AttributeNTFS::getFileName() const
 void AttributeNTFS::getBasicInfo()
 {
 }
-wstring Standard_Info::getLastWriteTime() const
+std::pair<std::wstring, std::wstring> Standard_Info::getLastWriteTime() const
 {
 	return lastWriteTime;
 }
-wstring AttributeNTFS::getLastWriteTime() const
+std::pair<std::wstring, std::wstring> AttributeNTFS::getLastWriteTime() const
 {
-	return wstring();
+	return std::pair<std::wstring, std::wstring>();
+}
+
+uint64_t AttributeNTFS::getSize()
+{
+	return 0;
 }
 
 
@@ -165,13 +170,13 @@ Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 	// 1/2 byte cao cho bik SỐ BYTE quy định offset của cluster đầu tiên khi lưu trữ
 	// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
 	
-	uint64_t curRunsListAddress = basicHeader->getContentAddress();
+	uint64_t curRunsListAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + basicHeader->GetAttributeAddress() + 32, 2);
 	uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
 	uint64_t attributeLim = basicHeader->GetAttributeAddress() + basicHeader->getSize();
 	while (curRunsListAddress < attributeLim && Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress, 1) != 0)
 	{
 		BYTE runsListHeader = memory[curRunsListAddress];
-		uint64_t contentSize = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1, runsListHeader & 15) * bytePerCluster;
+		uint64_t contentSize = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1, (runsListHeader & 15)) * bytePerCluster;
 		uint64_t contentAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1 + (runsListHeader & 15), (runsListHeader >> 4)) * bytePerCluster;
 		this->runsList.push_back(make_pair(contentAddress, contentSize));
 		curRunsListAddress += (runsListHeader & 15) + (runsListHeader >> 4);
@@ -195,6 +200,15 @@ void Data::getBasicInfo()
 		for(char c:data) std::wcout << c;
 	}
 	cout << '\n';
+}
+
+uint64_t Data::getSize()
+{
+	if (basicHeader->isResident()) return basicHeader->getContentSize();
+	
+	uint64_t sumSize = 0;
+	for(auto it:runsList) sumSize += it.second;
+	return sumSize;
 }
 
 uint32_t Standard_Info::getFlag() const

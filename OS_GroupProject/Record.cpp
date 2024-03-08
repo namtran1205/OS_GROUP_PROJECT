@@ -118,3 +118,27 @@ uint64_t Record::getStatus()
 {
 	return status;
 }
+
+uint64_t Record::getSize()
+{
+	if (isFolder()) return 0;
+	for(auto it : listAttribute)
+		if (it->getBasicHeader()->getID() == 128)
+		{
+			return it->getSize();
+		}
+	return 0;
+}
+
+std::pair<std::wstring, std::wstring> Record::getLastWriteTime()
+{
+	for (auto it : listAttribute)
+	{
+		if (it->getBasicHeader()->getID() == 16)
+		{
+			return it->getLastWriteTime();
+		}
+	}
+
+	return std::pair<std::wstring, std::wstring>();
+}

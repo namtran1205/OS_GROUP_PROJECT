@@ -27,8 +27,6 @@ public:
     
     bool returnPreviousDirectory() override;
 
-    void readDirectory(const FileNode&, const wstring&);
-
 private:
     shared_ptr<BPB> bootSector;
     shared_ptr<SectorReader> sectorReader;

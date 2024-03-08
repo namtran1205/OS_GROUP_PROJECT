@@ -13,8 +13,12 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
 
         shared_ptr<Record> tmp = make_shared<Record>(Record(curReadPoint, bootSector));
         cnt++;
+        if (tmp->getMask() != "FILE")
+        {
+            // if (tmp->getMask() != "BAAD") break;
+            continue;
+        }
         if (tmp->getStatus() == 0) continue;
-        if (tmp->getMask() != "FILE") continue;
         if (!tmp->isFolder() && !tmp->isUse()) continue;
         FileNode newNode;
         {
@@ -22,13 +26,15 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             newNode.name = tmp->getName();
             newNode.parentID = tmp->getParentID() * bootSector->getMFTsize() + firstReadPoint;
             newNode.status = tmp->getStatus();
+            newNode.lastWriteTime = tmp->getLastWriteTime();
+            newNode.size = tmp->getSize();
         }
         if (listNode.find(newNode.parentID) == listNode.end())
         {
             listNode.insert(make_pair(newNode.parentID, FileNode()));
             listNode[newNode.parentID].childID.push_back(curReadPoint);
         }
-        else 
+        else if (newNode.parentID != curReadPoint)
         {
             bool isExist = false;
             for(auto id:listNode[newNode.parentID].childID)
@@ -40,22 +46,20 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             if (isExist) continue;
             listNode[newNode.parentID].childID.push_back(curReadPoint);
         }
-        if (listNode.find(curReadPoint) == listNode.end())
-        {
-            listNode.insert(make_pair(curReadPoint, newNode));
-            // std::wofstream ofs;
-            // ofs.open("check.txt", ios::app|ios::out);
-            // if (!ofs.is_open()) continue;
-            // ofs << newNode.name << '\n';
-            // ofs << tmp->getParentID() << '\n';
-            // ofs << tmp->getStatus() << '\n';
-            // ofs << newNode.flag << '\n';
-            // ofs << cnt << '\n';
+        if (listNode.find(curReadPoint) == listNode.end()) listNode.insert(make_pair(curReadPoint, newNode));
+        // std::wofstream ofs;
+        // ofs.open("check.txt", ios::app|ios::out);
+        // if (!ofs.is_open()) continue;
+        // ofs << newNode.name << '\n';
+        // ofs << tmp->getParentID() << '\n';
+        // ofs << tmp->getStatus() << '\n';
+        // ofs << newNode.flag << '\n';
+        // ofs << cnt << '\n';
 
-            // //ofs << "mask:" << tmp->getMask() << '\n';
-            // ofs << "------------------\n";
-            // ofs.close();
-        }
+        // //ofs << "mask:" << tmp->getMask() << '\n';
+        // ofs << "------------------\n";
+        // ofs.close();
+
     }
 
     rootID = firstReadPoint + bootSector->getMFTsize() * 5;

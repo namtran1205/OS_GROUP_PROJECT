@@ -278,30 +278,42 @@ wstring Utils::MyDATE::toString(vector<BYTE> bytes)
     return res;
 }
 
-std::wstring Utils::MyDATE::extractTime_NTFS(const std::vector<uint8_t>& byteVector, int startIndex, int numberByte)
+std::pair<std::wstring, std::wstring> Utils::MyDATE::extractTime_NTFS(const std::vector<uint8_t>& byteVector, int startIndex, int numberByte)
 {
-    // Tạo một chuỗi hex từ vector byte từ chỉ số bắt đầu đến chỉ số cuối
-    std::stringstream hexStream;
-    for (int i = startIndex; i < startIndex + numberByte; ++i) {
-        hexStream << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(byteVector[i]);
-    }
-    std::string hexString = hexStream.str();
+    //std::stringstream hexStream;
+    //for (int i = startIndex; i < startIndex + numberByte; ++i) {
+    //    hexStream << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(byteVector[i]);
+    //}
+    //std::string hexString = hexStream.str();
 
-    // Chuyển đổi chuỗi hex thành số nguyên dương 64-bit
-    uint64_t fileTime = std::stoull(hexString, nullptr, 16);
+    //// Chuyển đổi chuỗi hex thành số nguyên dương 64-bit
+    //uint64_t fileTime = std::stoull(hexString, nullptr, 16);
 
-    // Chuyển đổi số nguyên thành thời gian
-    uint64_t windowsEpochDiff = 116444736000000000; // Số giây từ 01/01/1601 tới 01/01/1970
-    uint64_t secondsSinceEpoch = (fileTime - windowsEpochDiff) / 10000000; // Chuyển từ định dạng FILETIME sang Unix timestamp
-    std::time_t timeT = secondsSinceEpoch;
-    std::tm* timeStruct = std::gmtime(&timeT); // Chuyển thời gian sang UTC
+    //// Chuyển đổi số nguyên thành thời gian
+    //uint64_t windowsEpochDiff = 116444736000000000; // Số giây từ 01/01/1601 tới 01/01/1970
+    //uint64_t secondsSinceEpoch = (fileTime - windowsEpochDiff) / 10000000; // Chuyển từ định dạng FILETIME sang Unix timestamp
+    //std::time_t timeT = secondsSinceEpoch;
 
-    // Chuyển đổi thời gian thành chuỗi wstring
-    std::wstringstream wss;
-    std::wstring weekdays[] = { L"Sunday", L"Monday", L"Tuesday", L"Wednesday", L"Thursday", L"Friday", L"Saturday" };
-    wss << weekdays[timeStruct->tm_wday] << L", " << timeStruct->tm_year + 1900 << L"-" << std::setw(2) << std::setfill(L'0') << timeStruct->tm_mon + 1 << L"-" << std::setw(2) << std::setfill(L'0') << timeStruct->tm_mday << L" " << std::setw(2) << std::setfill(L'0') << timeStruct->tm_hour << L":" << std::setw(2) << std::setfill(L'0') << timeStruct->tm_min << L":" << std::setw(2) << std::setfill(L'0') << timeStruct->tm_sec;
+    //// Kiểm tra xem timeT có hợp lệ không
+    //if (timeT == static_cast<std::time_t>(-1)) {
+    //    // Trả về giá trị mặc định nếu không hợp lệ
+    //    return std::make_pair(L"Invalid time", L"Invalid time");
+    //}
 
-    return wss.str();
+    //std::tm* timeStruct = std::gmtime(&timeT); // Chuyển thời gian sang UTC
+
+    //// Tạo ngày tháng năm định dạng dd/mm/yyyy
+    //std::wstringstream dateSS;
+    //dateSS << std::setfill(L'0') << std::setw(2) << timeStruct->tm_mday << L"/" << std::setw(2) << timeStruct->tm_mon + 1 << L"/" << timeStruct->tm_year + 1900;
+    //std::wstring date = dateSS.str();
+
+    //// Tạo giờ phút giây định dạng hh:mm:ss
+    //std::wstringstream timeSS;
+    //timeSS << std::setfill(L'0') << std::setw(2) << timeStruct->tm_hour << L":" << std::setw(2) << timeStruct->tm_min << L":" << std::setw(2) << timeStruct->tm_sec;
+    //std::wstring time = timeSS.str();
+
+    //return std::make_pair(date, time);
+    return std::pair<std::wstring, std::wstring>();
 }
 
 wstring Utils::MyTIME::toString(vector<BYTE> bytes)
