@@ -77,6 +77,7 @@ namespace Utils
     {
     public:
         static wstring toString(vector<BYTE>);
+        static std::wstring extractTime_NTFS(const std::vector<uint8_t>& byteVector, int startIndex, int numberByte);
     private:
         //int day = 0;
         //int month = 0;

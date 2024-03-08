@@ -39,6 +39,7 @@ public:
     virtual uint64_t getParentID() const;
     virtual std::wstring getFileName() const;
     virtual void getBasicInfo();
+    virtual wstring getLastWriteTime() const ;
     shared_ptr<HeaderAttribute> getBasicHeader() const;
 protected:
     uint64_t AttributeAddress;
@@ -51,8 +52,10 @@ class Standard_Info : public AttributeNTFS
 public:
     Standard_Info(shared_ptr<HeaderAttribute>, vector<BYTE>&);
     uint32_t getFlag() const override;
+    wstring getLastWriteTime() const override;
 private:
     uint32_t flag; // 0x32 -> 0x35
+    wstring lastWriteTime;
 
 };
 

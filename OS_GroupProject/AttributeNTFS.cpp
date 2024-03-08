@@ -108,14 +108,24 @@ std::wstring AttributeNTFS::getFileName() const
 void AttributeNTFS::getBasicInfo()
 {
 }
+wstring Standard_Info::getLastWriteTime() const
+{
+	return lastWriteTime;
+}
+wstring AttributeNTFS::getLastWriteTime() const
+{
+	return wstring();
+}
 
 
 
 Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
-	
-	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin()+ headerAttribute->getContentAddress() + 32, 4);
+
+	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress() + 32, 4);
+	lastWriteTime = Utils::MyDATE::extractTime_NTFS(data, headerAttribute->getContentAddress() + 24,8);
+
 }
 
 File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
