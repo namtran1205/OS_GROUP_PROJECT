@@ -159,7 +159,9 @@ Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 	basicHeader = header;
 	if (basicHeader->isResident())
 	{
-		this->residentContent = string(memory.begin() + basicHeader->getContentAddress(), memory.begin() + basicHeader->getContentAddress() + basicHeader->getContentSize());
+		this->residentContent.resize(0);
+		for (int i = basicHeader->getContentAddress(); i < basicHeader->getContentAddress() + basicHeader->getContentSize(); i++)
+			residentContent.push_back(memory[i]);
 		return;
 	}
 
@@ -170,7 +172,7 @@ Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 	// 1/2 byte cao cho bik SỐ BYTE quy định offset của cluster đầu tiên khi lưu trữ
 	// - content là 1 dãy byte với các byte đầu lưu trữ số cluster và các byte sau lưu trữ offset cluster đầu tiên
 	
-	uint64_t curRunsListAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + basicHeader->GetAttributeAddress() + 32, 2);
+	uint64_t curRunsListAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + basicHeader->GetAttributeAddress() + 32, 2) + basicHeader->GetAttributeAddress();
 	uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
 	uint64_t attributeLim = basicHeader->GetAttributeAddress() + basicHeader->getSize();
 	while (curRunsListAddress < attributeLim && Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress, 1) != 0)
@@ -188,7 +190,7 @@ void Data::getBasicInfo()
 {
 	if (basicHeader->isResident())
 	{
-		std::wcout << residentContent.c_str() << '\n';
+		std::wcout << residentContent.c_str();
 		return;
 	}
 
@@ -197,9 +199,12 @@ void Data::getBasicInfo()
 	for(auto it:runsList)
 	{
 		data = basicHeader->GetBPB()->GetSectorReader()->ReadSector(it.first, it.second);
-		for(char c:data) std::wcout << c;
+		for (char c : data)
+		{
+			if (c == '\0') return;
+			std::wcout << c;
+		}
 	}
-	cout << '\n';
 }
 
 uint64_t Data::getSize()

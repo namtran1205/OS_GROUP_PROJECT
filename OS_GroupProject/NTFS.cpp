@@ -56,7 +56,18 @@ bool NTFS::changeDirectory(wstring folderName)
 
 bool NTFS::accessFile(wstring fileName)
 {
-    return true;
+    auto curNode = directoryTree->getNode(currentFileNodeID);
+    for (auto id:curNode.childID)
+    {
+        auto childFile = directoryTree->getNode(id);
+        if (!childFile.isSystem() && childFile.name == fileName)
+        {
+            shared_ptr<Record> it = make_shared<Record>(Record(id, bootSector));
+            it->printFileContent();
+            return true;
+        }
+    }
+    return false;
 }
 
 bool NTFS::returnPreviousDirectory()
