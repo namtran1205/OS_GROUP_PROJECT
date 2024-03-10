@@ -315,7 +315,7 @@ std::pair<std::wstring, std::wstring> Utils::MyDATE::extractTime_NTFS(std::vecto
     uint64_t minutes = timeinfo->tm_min;
     uint64_t seconds = timeinfo->tm_sec;
     std::wstringstream dateSS;
-    dateSS << std::setfill(L'0') << std::setw(2) << to_wstring(day) << L"/" << std::setw(2) << to_wstring(month + 1) << L"/" << to_wstring(year);
+    dateSS << std::setfill(L'0') << std::setw(2) << to_wstring(day) << L"/" << std::setw(2) << to_wstring(month) << L"/" << to_wstring(year);
     std::wstring date = dateSS.str() + L"  ";
 
     std::wstringstream timeSS;
