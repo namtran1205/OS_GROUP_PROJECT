@@ -26,6 +26,8 @@
 #include <iomanip>
 #include <tuple>
 #include<memory>
+#include <chrono>
+#include <ctime>
 using namespace std;
 
 typedef std::vector<BYTE>::iterator byteArrayPointer;
@@ -77,7 +79,8 @@ namespace Utils
     {
     public:
         static wstring toString(vector<BYTE>);
-        static std::pair<std::wstring, std::wstring> extractTime_NTFS(const std::vector<BYTE>& byteVector, int startIndex, int numberByte);
+        //wstring secondsToDateTime(uint64_t milliseconds);
+        static std::pair<std::wstring, std::wstring> extractTime_NTFS(std::vector<BYTE>& byteVector, int startIndex, int numberByte);
     private:
         //int day = 0;
         //int month = 0;
