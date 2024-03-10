@@ -42,6 +42,7 @@ public:
     virtual std::pair<std::wstring, std::wstring> getLastWriteTime() const ;
     virtual uint64_t getSize();
     shared_ptr<HeaderAttribute> getBasicHeader() const;
+    bool isResident() const;
 protected:
     uint64_t AttributeAddress;
     shared_ptr<HeaderAttribute> basicHeader;

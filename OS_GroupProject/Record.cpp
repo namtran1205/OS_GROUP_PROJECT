@@ -122,12 +122,15 @@ uint64_t Record::getStatus()
 uint64_t Record::getSize()
 {
 	if (isFolder()) return 0;
+	uint64_t sumNon = 0, sum = 0;
 	for(auto it : listAttribute)
 		if (it->getBasicHeader()->getID() == 128)
 		{
-			return it->getSize();
+			if (it->isResident()) sum += it->getSize();
+			else sumNon += it->getSize();
 		}
-	return 0;
+	if (sumNon > 0) return sumNon;
+	return sum;
 }
 
 std::pair<std::wstring, std::wstring> Record::getLastWriteTime()

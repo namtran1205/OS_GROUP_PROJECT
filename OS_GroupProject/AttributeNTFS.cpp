@@ -90,6 +90,11 @@ shared_ptr<HeaderAttribute> AttributeNTFS::getBasicHeader() const
 	return basicHeader;
 }
 
+bool AttributeNTFS::isResident() const
+{
+	return this->basicHeader->isResident();
+}
+
 uint32_t AttributeNTFS::getFlag() const
 {
 	return 0;
