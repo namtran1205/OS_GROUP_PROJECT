@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "AttributeNTFS.h"
 
-
+// Record là entry của MFT (MasterFileTable)
 class Record {
 public:
     
