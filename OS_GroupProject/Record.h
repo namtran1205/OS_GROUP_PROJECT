@@ -27,6 +27,5 @@ private:
     shared_ptr<BPB> bootSector;
     int status; // status is in use
 
-
 };
 
