@@ -10,7 +10,7 @@ bool PseudoShell::isValidCommand(std::wstring command) const
 
 void PseudoShell::printShellTable(const wstring& partition, const wstring& tokens)
 {
-    std::wcout << L"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬《 SHELL ENVIRONMENT 》▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
+    std::wcout << L"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 《 SHELL ENVIRONMENT 》▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
     std::wcout << L"▎                                                                   ▎" << endl;
     std::wcout << L"▎                          ";
     std::wcout << setw(41) << left <<         L"(" + partition + L":) - " + tokens << L"▎" << endl;
