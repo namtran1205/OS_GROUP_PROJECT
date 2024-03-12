@@ -2,7 +2,7 @@
 
 HeaderAttribute::HeaderAttribute(uint64_t Address,vector<BYTE>& data, shared_ptr<BPB> bootSector)
 {
-	//printSector(data);
+	
 	this->bootSector = bootSector;
 	attributeAddress = Address;
 	ID = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + Address, 4);                     // 0x0->0x3 
@@ -132,8 +132,9 @@ uint64_t AttributeNTFS::getSize()
 Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
-
+	// đọc trạng thái: system, archive,.....
 	flag = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress() + 32, 4);
+	// đọc thời gian truy cập
 	lastWriteTime = Utils::MyDATE::extractTime_NTFS(data, headerAttribute->getContentAddress() + 24,8);
 
 }
@@ -141,9 +142,11 @@ Standard_Info::Standard_Info(shared_ptr<HeaderAttribute> headerAttribute, vector
 File_Name::File_Name(shared_ptr<HeaderAttribute> headerAttribute, vector<BYTE>& data)
 {
 	basicHeader = headerAttribute;
+	// đọc thứ tự entry cha : đọc 6 byte đầu
 	parentID = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress(), 6);
+	// đọc chiều dài tên
 	uint64_t LengthOfName = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + headerAttribute->getContentAddress() + 64, 1);
-	
+	// đọc tên
 	if (LengthOfName > 0) NameOfFile = Utils::MySTRING::convertBytesToWstring(vector<BYTE>(data.begin()+ headerAttribute->getContentAddress() + 66, data.begin() + headerAttribute->getContentAddress() + 66 + LengthOfName * 2 ));
 	
 
@@ -193,13 +196,14 @@ Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 
 void Data::getBasicInfo()
 {
+	// xử lí in nội dung với trường hợp resident
 	if (basicHeader->isResident())
 	{
 		std::wcout << residentContent.c_str();
 		return;
 	}
 
-
+	// xử lí in nội dung với trường hơp non-resident
 	vector<BYTE> data;
 	for(auto it:runsList)
 	{
@@ -215,7 +219,7 @@ void Data::getBasicInfo()
 uint64_t Data::getSize()
 {
 	if (basicHeader->isResident()) return basicHeader->getContentSize();
-	
+	// xử lí riêng với trường hợp non-resident
 	uint64_t sumSize = 0;
 	for(auto it:runsList) sumSize += it.second;
 	return sumSize;
@@ -223,5 +227,5 @@ uint64_t Data::getSize()
 
 uint32_t Standard_Info::getFlag() const
 {
-	return flag;
+	return flag; // trạng thái entry
 }
