@@ -4,7 +4,7 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
 {
     uint64_t firstReadPoint = bootSector->getStartMFTCluster() * bootSector->getSectorPerCluster() * bootSector->getBytePerSector();
     uint64_t curReadPoint = firstReadPoint;
-    uint64_t endPoint = firstReadPoint + 50*1024;
+    uint64_t endPoint =firstReadPoint + 100*1024;
     int cnt = 0;
     
 
