@@ -18,8 +18,7 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             // if (tmp->getMask() != "BAAD") break;
             continue;
         }
-        if (tmp->getStatus() == 0) continue;
-        if (!tmp->isUse()) continue;
+        if (tmp->getStatus() == 0 || !tmp->isUse()) continue;
         FileNode newNode;
         {
             newNode.flag = tmp->getFlag();
@@ -47,18 +46,11 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
             listNode[newNode.parentID].childID.push_back(curReadPoint);
         }
         if (listNode.find(curReadPoint) == listNode.end()) listNode.insert(make_pair(curReadPoint, newNode));
-        // std::wofstream ofs;
-        // ofs.open("check.txt", ios::app|ios::out);
-        // if (!ofs.is_open()) continue;
-        // ofs << newNode.name << '\n';
-        // ofs << tmp->getParentID() << '\n';
-        // ofs << tmp->getStatus() << '\n';
-        // ofs << newNode.flag << '\n';
-        // ofs << cnt << '\n';
-
-        // //ofs << "mask:" << tmp->getMask() << '\n';
-        // ofs << "------------------\n";
-        // ofs.close();
+        else
+        {
+            newNode.childID = listNode[curReadPoint].childID;
+            listNode[curReadPoint] = newNode;
+        }
 
     }
 
@@ -67,21 +59,6 @@ DirectoryTree::DirectoryTree(shared_ptr<BPB> bootSector)
     listNode[rootID].flag &= ~(6);
     listNode[rootID].name = L"Drive";
     listNode[rootID].parentID = rootID;
-    // for(auto it:listNode) 
-    // {
-    //     wcout << "Status: " << ((it.second.status >> 1) & 1) << '\n';
-    //     wcout << "ID: " << (it.first - firstReadPoint) / 1024 << '\n';
-    //     wcout << "Name: " << it.second.name << '\n';
-    //     wcout << "Flag: ";
-    //     for(int i = 0; i < 8; i++) 
-    //         wcout << ((it.second.flag >> i) & 1) << ' ';
-    //     wcout << "\nChild: ";
-    //     for(auto id : it.second.childID)
-    //     {
-    //         wcout << (id - firstReadPoint) / 1024 << ' ';
-    //     }
-    //     wcout << "\n-------------------\n";
-    // }
 }
 
 std::vector<FileNode> DirectoryTree::getChild(uint64_t parentID)
