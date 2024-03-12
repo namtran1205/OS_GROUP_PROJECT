@@ -19,7 +19,7 @@ public:
     uint64_t getStartMFTCluster() const; // trả về cluster bắt đầu của MFT
     uint64_t getSizeOfVolume() const; // trả về kích thước phân vùng
     uint64_t getMFTMirror() const;
-
+    uint64_t getSizeVolume();
 private:
     std::wstring driveName;
     uint64_t BytePerSector;    // 0xB 2 byte
