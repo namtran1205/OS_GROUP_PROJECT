@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "StaticVariable.h"
 #include "FileManagementSystem.h"
 #include "BPB.h"
@@ -28,10 +28,10 @@ public:
     bool returnPreviousDirectory() override;
 
 private:
-    shared_ptr<BPB> bootSector;
+    shared_ptr<BPB> bootSector; // vùng Bios Parameter Block
     shared_ptr<SectorReader> sectorReader;
-    shared_ptr<DirectoryTree> directoryTree;
-    uint64_t currentFileNodeID;
+    shared_ptr<DirectoryTree> directoryTree; // cây thư mục
+    uint64_t currentFileNodeID; // địa chỉ bắt đầu của entry quản lí thư mục đang được trỏ đến hiện tại của phân vùng
 
 
 };

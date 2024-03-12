@@ -1,4 +1,4 @@
-#include "NTFS.h"
+﻿#include "NTFS.h"
 
 
 NTFS::NTFS(LPCWSTR drive)
@@ -18,7 +18,7 @@ void NTFS::readVolumeBootRecord()
 {
     bootSector->readVolumeBootRecord();
 }
-
+// Xử lí in ra cây thư mục (lệnh dir)
 void NTFS::readDirectory()
 {
     vector<tuple<wstring, wstring, wstring, uint64_t, uint64_t, wstring>> lines;
@@ -40,7 +40,7 @@ bool NTFS::changeDirectory(wstring folderName)
     bool res = false;
     auto curNode = directoryTree->getNode(currentFileNodeID);
 
-    // find valid child
+    // tìm con hợp lệ
     for(auto id:curNode.childID)
     {
         auto childFile = directoryTree->getNode(id);
