@@ -10,7 +10,7 @@ Record::Record(uint64_t FirstReadPoint, shared_ptr<BPB> bootSector)
 	// đọc mask của record; có thể là FILE, BAAD,..
 	for (int i = 0; i < 4; i++)
 		mask += static_cast<char>(data[i]);
-
+	
 	firstAttribute = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x14, 2);
 	// đọc trạng thái
 	this->status = Utils::MyINTEGER::Convert2LittleEndian(data.begin() + 0x16, 2);
