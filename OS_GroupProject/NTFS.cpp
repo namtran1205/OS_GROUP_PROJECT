@@ -56,18 +56,47 @@ bool NTFS::changeDirectory(wstring folderName)
 
 bool NTFS::accessFile(wstring fileName)
 {
+    fileName = Utils::MySTRING::toUpperCase(fileName);
+    wstring extendName = L"";
+    for (int i = fileName.size() - 1; i >= 0; i--)
+    {
+        if (fileName[i] == L'.') break;
+        extendName.push_back(fileName[i]);
+    }
+
     auto curNode = directoryTree->getNode(currentFileNodeID);
-    for (auto id:curNode.childID)
+    uint64_t fileID = 0;
+    for (auto id : curNode.childID)
     {
         auto childFile = directoryTree->getNode(id);
-        if (!childFile.isSystem() && childFile.name == fileName)
+        if (!childFile.isSystem() && Utils::MySTRING::toUpperCase(childFile.name) == fileName)
         {
-            shared_ptr<Record> it = make_shared<Record>(Record(id, bootSector));
-            it->printFileContent();
-            return true;
+            if (!childFile.isFolder())
+            {
+                fileID = id;
+                break;
+            }
+            else
+            {
+                wcout << "Can't open a directory.\n";
+                return true;
+            }
         }
     }
-    return false;
+
+    if (!fileID) return false;
+
+    if (extendName != L"TXT")
+    {
+        reverse(extendName.begin(), extendName.end());
+        wcout << "Can't open file. Please use " << Utils::MySTRING::AppToOpen(extendName) << '\n';
+        return true;
+    }
+
+    auto it = make_shared<Record>(Record(fileID, bootSector));
+    it->printFileContent();
+
+    return true;
 }
 
 bool NTFS::returnPreviousDirectory()

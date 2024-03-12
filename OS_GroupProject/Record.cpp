@@ -96,12 +96,9 @@ bool Record::isFolder()
 
 void Record::printFileContent() 
 {
-	for(const auto &it: listAttribute)
+	for (const auto& it : listAttribute)
 		if (it->getBasicHeader()->getID() == 128)
-		{
 			it->getBasicInfo();
-			return;
-		}
 }
 
 uint64_t Record::getParentID()

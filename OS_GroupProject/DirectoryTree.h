@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"StaticVariable.h"
 #include "Record.h"
 
@@ -11,14 +11,14 @@ public:
     bool isFile() const;
     bool isSystem() const;
 
-public:
-    std::wstring name;
-    std::pair<std::wstring, std::wstring> lastWriteTime;
-    uint64_t size;
-    uint64_t flag;
-    uint64_t parentID;
-    std::vector<uint64_t> childID;
-    uint64_t status;
+public: 
+    std::wstring name;                                    // tên tệp tin(File_Name)
+    std::pair<std::wstring, std::wstring> lastWriteTime;  // thời gian thay đổi cuối cùng(Standard_Info)
+    uint64_t size;                                        // kích thước(Data)
+    uint64_t flag;                                        // cờ báo(Standard_Info)
+    uint64_t parentID;                                    // địa chỉ của thư mục cha (tính từ File_Name)  
+    std::vector<uint64_t> childID;                        // được nạp vào nhờ parentID của tệp tin con  
+    uint64_t status;                                      // tình trạng của tệp tin(Entry Header)  
 };
 
 class DirectoryTree
