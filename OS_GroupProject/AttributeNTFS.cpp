@@ -183,13 +183,15 @@ Data::Data(shared_ptr<HeaderAttribute> header, vector<BYTE>& memory)
 	uint64_t curRunsListAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + basicHeader->GetAttributeAddress() + 32, 2) + basicHeader->GetAttributeAddress();
 	uint64_t bytePerCluster = basicHeader->GetBPB()->getBytePerSector() * basicHeader->GetBPB()->getSectorPerCluster();
 	uint64_t attributeLim = basicHeader->GetAttributeAddress() + basicHeader->getSize();
-	while (curRunsListAddress < attributeLim && Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress, 1) != 0)
+	while (curRunsListAddress < attributeLim)
 	{
-		BYTE runsListHeader = memory[curRunsListAddress];
-		uint64_t contentSize = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1, (runsListHeader & 15)) * bytePerCluster;
-		uint64_t contentAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1 + (runsListHeader & 15), (runsListHeader >> 4)) * bytePerCluster;
+		BYTE numByteContentSize = memory[curRunsListAddress] & 15;
+		BYTE numByteContentAddress = (memory[curRunsListAddress] >> 4);
+		if (!numByteContentSize || !numByteContentAddress || curRunsListAddress + numByteContentAddress + numByteContentSize + 1 >= attributeLim) break;
+		uint64_t contentSize = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1, numByteContentSize) * bytePerCluster;
+		uint64_t contentAddress = Utils::MyINTEGER::Convert2LittleEndian(memory.begin() + curRunsListAddress + 1 + numByteContentSize, numByteContentAddress) * bytePerCluster;
 		this->runsList.push_back(make_pair(contentAddress, contentSize));
-		curRunsListAddress += (runsListHeader & 15) + (runsListHeader >> 4);
+		curRunsListAddress += numByteContentAddress + numByteContentSize + 1;
 	}
 
 }
