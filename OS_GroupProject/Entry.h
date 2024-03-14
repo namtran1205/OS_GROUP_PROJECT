@@ -79,8 +79,8 @@ private:
     wstring lastWriteTime;
 private:
     shared_ptr<Content> content; //If the entry represents for a File, then get it contents.
-    shared_ptr<SDET> subDirectory;
-    shared_ptr<FAT> fatTable;
+    shared_ptr<SDET> subDirectory; //If the entry represent for SDET, then create an SDET object
+    shared_ptr<FAT> fatTable; //Always initialize FAT table for readinng things
     //If the file/folder's name is too long:
     //then the LFN Entry (Long Files Name) will be created to store these names without changing Main Entry's format
     //LFN Entry is the other name of SubEntry.

@@ -30,7 +30,6 @@ private:
 };
 
 class AttributeNTFS {
-
 public:
     AttributeNTFS();
     AttributeNTFS(shared_ptr<HeaderAttribute>, vector<BYTE>&);
@@ -44,14 +43,11 @@ public:
     virtual void getBasicInfo();
     virtual std::pair<std::wstring, std::wstring> getLastWriteTime() const ;
     virtual uint64_t getSize();
-
-
     shared_ptr<HeaderAttribute> getBasicHeader() const; // trả về HeaderAttribute
     bool isResident() const;
 protected:
     uint64_t AttributeAddress; // địa chỉ bắt đầu của attribute
     shared_ptr<HeaderAttribute> basicHeader; // HeaderAttribute
-
 };
 
 class Standard_Info : public AttributeNTFS
@@ -63,7 +59,6 @@ public:
 private:
     uint32_t flag; // 0x32 -> 0x35
     std::pair<std::wstring, std::wstring> lastWriteTime;
-
 };
 
 class File_Name : public AttributeNTFS

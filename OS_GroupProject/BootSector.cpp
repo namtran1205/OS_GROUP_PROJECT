@@ -99,7 +99,7 @@ uint32_t BootSector::getNumberSectorOfRDET() const
 
 uint64_t BootSector::ClusterToSector(uint64_t k) const
 {
-    int i = sectorPerBootsector + sectorPerFat * numberOfFat + (k - 2) * sectorPerCluster;
+    uint64_t i = sectorPerBootsector + sectorPerFat * numberOfFat + (k - 2) * sectorPerCluster;
     return i;
 }
 
